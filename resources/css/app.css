@@ -1,9 +1,89 @@
-@import 'tailwindcss';
+@import "bootstrap/dist/css/bootstrap.min.css";
+@import "bootstrap-icons/font/bootstrap-icons.css";
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
+/* ==========================
+   DASHBOARD PAGE
+========================== */
 
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+body {
+    background: #E0EFF7;
+    font-family: "Inter", sans-serif;
+}
+
+.sidebar {
+    width: 260px;
+    min-height: 100vh;
+    background: #508CAD;
+}
+
+.sidebar .nav-link {
+    color: white;
+    border-radius: 10px;
+    margin: 4px 10px;
+}
+
+.sidebar .nav-link:hover {
+    background: rgba(255, 255, 255, .15);
+}
+
+.sidebar .nav-link.active {
+    background: white;
+    color: #508CAD !important;
+}
+
+.content-wrapper {
+    min-height: 100vh;
+}
+
+.top-navbar {
+    height: 70px;
+    background: white;
+}
+
+.card-stat {
+    border: none;
+    border-radius: 16px;
+}
+
+.footer {
+    background: white;
+    border-top: 1px solid #dee2e6;
+}
+
+/* ==========================
+   LOGIN PAGE
+========================== */
+
+.login-page {
+    background: #E0EFF7;
+}
+
+.login-card {
+    border: none;
+    border-radius: 20px;
+}
+
+.text-primary-custom {
+    color: #508CAD;
+}
+
+.btn-primary-custom {
+    background: #508CAD;
+    border-color: #508CAD;
+    color: white;
+}
+
+.btn-primary-custom:hover {
+    background: #42779D;
+    border-color: #42779D;
+    color: white;
+}
+
+.form-control {
+    border-radius: 10px;
+}
+
+.form-control:focus {
+    border-color: #508CAD;
+    box-shadow: 0 0 0 .2rem rgba(80, 140, 173, .2);
 }
