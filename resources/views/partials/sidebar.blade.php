@@ -63,8 +63,9 @@
         </li>
 
         <li>
-            <a href="#"
-                class="nav-link">
+            <a
+                href="{{ route('admin.quizzes.index') }}"
+                class="nav-link {{ request()->routeIs('admin.quizzes.*') || request()->routeIs('admin.quiz-questions.*') ? 'active' : '' }}">
                 <i class="bi bi-patch-question me-2"></i>
                 Kuis
             </a>

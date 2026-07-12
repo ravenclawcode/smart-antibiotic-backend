@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\Admin\MedicineCatalogController;
 use App\Http\Controllers\Admin\AntibioticController;
 use App\Http\Controllers\Admin\AntibioticCategoryController;
+use App\Http\Controllers\Admin\QuizController;
+use App\Http\Controllers\Admin\QuizQuestionController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -50,5 +52,15 @@ Route::middleware('auth')
         Route::resource(
             'categories',
             AntibioticCategoryController::class
+        );
+
+        Route::resource(
+            'quizzes',
+            QuizController::class
+        );
+
+        Route::resource(
+            'quizzes.questions',
+            QuizQuestionController::class
         );
     });
