@@ -4,7 +4,7 @@
 
 @section('content')
 
-<div class="card shadow-sm border-0 rounded-4">
+<div class="card shadow-sm border-0">
 
     <div class="card-header bg-white d-flex justify-content-between align-items-center">
 
@@ -102,7 +102,7 @@
                         <a href="{{ route('admin.antibiotics.edit',$item) }}"
                             class="btn btn-warning btn-sm">
 
-                            <i class="bi bi-pencil"></i>
+                            <i class="bi bi-pencil text-white"></i>
 
                         </a>
 
@@ -119,7 +119,7 @@
                                 onclick="return confirm('Hapus detail?')"
                                 class="btn btn-danger btn-sm">
 
-                                <i class="bi bi-trash"></i>
+                                <i class="bi bi-trash text-white"></i>
 
                             </button>
 

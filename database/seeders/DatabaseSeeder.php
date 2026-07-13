@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             AntibioticCategorySeeder::class,
             AdminSeeder::class,
             UserSeeder::class,
+            DummyMedicineSeeder::class,
         ]);
     }
 }

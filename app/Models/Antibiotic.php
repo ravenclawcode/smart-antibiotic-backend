@@ -24,4 +24,11 @@ class Antibiotic extends Model
             'antibiotic_category_id'
         );
     }
+
+    public function medicines()
+    {
+        return $this->hasMany(
+            Medicine::class
+        );
+    }
 }

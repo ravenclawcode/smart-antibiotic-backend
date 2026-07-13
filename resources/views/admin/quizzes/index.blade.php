@@ -4,7 +4,7 @@
 
 @section('content')
 
-<div class="card shadow-sm border-0 rounded-4">
+<div class="card shadow-sm border-0">
 
     <div class="card-header bg-white d-flex justify-content-between align-items-center">
 
@@ -99,14 +99,14 @@
                                 href="{{ route('admin.quizzes.questions.index',$quiz) }}"
                                 class="btn btn-success btn-sm">
 
-                                <i class="bi bi-list-check"></i>
+                                <i class="bi bi-list-check text-white"></i>
 
                             </a>
 
                             <a
                                 href="{{ route('admin.quizzes.edit',$quiz) }}"
                                 class="btn btn-warning btn-sm">
-                                <i class="bi bi-pencil"></i>
+                                <i class="bi bi-pencil text-white"></i>
 
                             </a>
 
@@ -122,7 +122,7 @@
                                 <button
                                     onclick="return confirm('Hapus kuis?')"
                                     class="btn btn-danger btn-sm">
-                                    <i class="bi bi-trash"></i>
+                                    <i class="bi bi-trash text-white"></i>
 
                                 </button>
 

@@ -4,13 +4,13 @@
 
 @section('content')
 
-<div class="card shadow-sm border-0 rounded-4">
+<div class="card shadow-sm border-0">
 
     <div class="card-header bg-white d-flex justify-content-between align-items-center">
 
         <div>
 
-            <h4 class="mb-1">
+            <h4 class="mb-0">
 
                 {{ $quiz->title }}
 
@@ -111,7 +111,7 @@
                             <a
                                 href="{{ route('admin.quizzes.questions.edit',[$quiz,$question]) }}"
                                 class="btn btn-warning btn-sm">
-                                <i class="bi bi-pencil"></i>
+                                <i class="bi bi-pencil text-white"></i>
 
                             </a>
 
@@ -127,7 +127,7 @@
                                 <button
                                     class="btn btn-danger btn-sm"
                                     onclick="return confirm('Hapus soal?')">
-                                    <i class="bi bi-trash"></i>
+                                    <i class="bi bi-trash text-white"></i>
 
                                 </button>
 

@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('schedule_times', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->foreignId('schedule_id')
+                ->constrained('medicine_schedules')
+                ->cascadeOnDelete();
+            $table->time('reminder_time');
         });
     }
 

@@ -13,7 +13,16 @@ return new class extends Migration
     {
         Schema::create('schedule_days', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->foreignId('schedule_id')
+                ->constrained('medicine_schedules')
+                ->cascadeOnDelete();
+            /**
+             * 0 Minggu
+             * 1 Senin
+             * ...
+             * 6 Sabtu
+             */
+            $table->integer('day_of_week');
         });
     }
 

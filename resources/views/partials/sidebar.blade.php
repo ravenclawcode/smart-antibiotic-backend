@@ -91,10 +91,12 @@
         </li>
 
         <li>
-            <a href="#"
-                class="nav-link">
+            <a
+                href="{{ route('admin.medicines.index') }}"
+                class="nav-link {{ request()->routeIs('admin.medicines.*') ? 'active' : '' }}">
                 <i class="bi bi-clock-history me-2"></i>
                 Riwayat Obat
+
             </a>
         </li>
 

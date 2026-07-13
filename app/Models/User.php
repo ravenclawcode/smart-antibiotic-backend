@@ -24,4 +24,11 @@ class User extends Model
             UserPreference::class
         );
     }
+
+    public function medicines()
+    {
+        return $this->hasMany(
+            Medicine::class
+        );
+    }
 }

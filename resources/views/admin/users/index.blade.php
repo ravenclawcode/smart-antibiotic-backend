@@ -4,7 +4,7 @@
 
 @section('content')
 
-<div class="card shadow-sm border-0 rounded-4">
+<div class="card shadow-sm border-0">
 
     <div class="card-header bg-white">
 
@@ -30,96 +30,96 @@
 
         @endif
 
-            <table class="table table-hover align-middle">
+        <table class="table table-hover align-middle">
 
-                <thead>
+            <thead>
 
-                    <tr>
+                <tr>
 
-                        <th width="70">No</th>
+                    <th width="70">No</th>
 
-                        <th>Nama</th>
+                    <th>Nama</th>
 
-                        <th>Umur</th>
+                    <th>Umur</th>
 
-                        <th>Jenis Kelamin</th>
+                    <th>Jenis Kelamin</th>
 
-                        <th>Dibuat</th>
+                    <th>Dibuat</th>
 
-                        <th width="150">Aksi</th>
+                    <th width="150">Aksi</th>
 
-                    </tr>
+                </tr>
 
-                </thead>
+            </thead>
 
-                <tbody>
+            <tbody>
 
-                    @forelse($users as $user)
+                @forelse($users as $user)
 
-                    <tr>
+                <tr>
 
-                        <td>
+                    <td>
 
-                            {{ $users->firstItem() + $loop->index }}
+                        {{ $users->firstItem() + $loop->index }}
 
-                        </td>
+                    </td>
 
-                        <td>
+                    <td>
 
-                            {{ $user->name }}
+                        {{ $user->name }}
 
-                        </td>
+                    </td>
 
-                        <td>
+                    <td>
 
-                            {{ $user->age ?? '-' }}
+                        {{ $user->age ?? '-' }}
 
-                        </td>
+                    </td>
 
-                        <td>
+                    <td>
 
-                            {{ $user->gender ?? '-' }}
+                        {{ $user->gender ?? '-' }}
 
-                        </td>
+                    </td>
 
-                        <td>
+                    <td>
 
-                            {{ $user->created_at->format('d M Y') }}
+                        {{ $user->created_at->format('d M Y') }}
 
-                        </td>
+                    </td>
 
-                        <td>
+                    <td>
 
-                            <a
-                                href="{{ route('admin.users.show',$user) }}"
-                                class="btn btn-info btn-sm">
-                                <i class="bi bi-three-dots"></i>
+                        <a
+                            href="{{ route('admin.users.show',$user) }}"
+                            class="btn btn-info btn-sm">
+                            <i class="bi bi-three-dots text-white"></i>
 
-                            </a>
+                        </a>
 
-                        </td>
+                    </td>
 
-                    </tr>
+                </tr>
 
-                    @empty
+                @empty
 
-                    <tr>
+                <tr>
 
-                        <td
-                            colspan="6"
-                            class="text-center">
+                    <td
+                        colspan="6"
+                        class="text-center py-4">
 
-                            Belum ada user.
+                        Belum ada user.
 
-                        </td>
+                    </td>
 
-                    </tr>
+                </tr>
 
-                    @endforelse
+                @endforelse
 
-                </tbody>
+            </tbody>
 
-            </table>
+        </table>
 
         <div class="mt-3">
 

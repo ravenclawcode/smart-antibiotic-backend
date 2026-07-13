@@ -1,0 +1,126 @@
+@extends('layouts.app')
+
+@section('title','Riwayat Obat')
+
+@section('content')
+
+<div class="card shadow-sm border-0">
+
+    <div class="card-header bg-white">
+
+        <h4 class="fw-bold mb-0">
+
+            Riwayat Obat
+
+        </h4>
+
+        <small class="text-muted">
+            Lihat informasi riwayat obat pengguna pada aplikasi.
+        </small>
+
+    </div>
+
+    <div class="card-body">
+
+        <table class="table table-hover align-middle">
+
+            <thead>
+
+                <tr>
+
+                    <th width="70">No</th>
+
+                    <th>Nama</th>
+
+                    <th>Antibiotik</th>
+
+                    <th>Dosis</th>
+
+                    <th>Mulai</th>
+
+                    <th>Selesai</th>
+
+                    <th>Status</th>
+
+                    <th width="150">Aksi</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @forelse($medicines as $medicine)
+
+                <tr>
+
+                    <td>{{ $loop->iteration }}</td>
+
+                    <td>{{ $medicine->user->name }}</td>
+
+                    <td>{{ $medicine->antibiotic->name }}</td>
+
+                    <td>{{ $medicine->dosage }}</td>
+
+                    <td>{{ $medicine->start_date }}</td>
+
+                    <td>{{ $medicine->end_date }}</td>
+
+                    <td>
+
+                        @if($medicine->is_active)
+
+                        <span class="badge bg-success">
+
+                            Aktif
+
+                        </span>
+
+                        @else
+
+                        <span class="badge bg-secondary">
+
+                            Selesai
+
+                        </span>
+
+                        @endif
+
+                    </td>
+
+                    <td>
+
+                        <a
+                            href="{{ route('admin.medicines.show',$medicine) }}"
+                            class="btn btn-sm btn-info">
+                            <i class="bi bi-three-dots text-white"></i>
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                @empty
+
+                <tr>
+
+                    <td colspan="7" class="text-center py-4">
+
+                        Belum ada data.
+
+                    </td>
+
+                </tr>
+
+                @endforelse
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+@endsection

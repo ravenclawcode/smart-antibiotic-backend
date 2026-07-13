@@ -13,6 +13,15 @@ return new class extends Migration
     {
         Schema::create('medicine_schedules', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('medicine_id')
+                ->constrained()
+                ->cascadeOnDelete();
+            // daily, weekly, monthly, interval
+            $table->string('frequency_type');
+            // 2x sehari
+            $table->integer('times_per_day')->default(1);
+            // setiap X
+            $table->integer('interval_value')->nullable();
             $table->timestamps();
         });
     }

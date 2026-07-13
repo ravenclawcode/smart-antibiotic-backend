@@ -13,6 +13,20 @@ return new class extends Migration
     {
         Schema::create('medicine_histories', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('schedule_time_id')
+                ->constrained('schedule_times')
+                ->cascadeOnDelete();
+            /**
+             * taken
+             * skipped
+             * rescheduled
+             * missed
+             */
+            $table->date('scheduled_date');
+            $table->string('status');
+            $table->timestamp('taken_at')->nullable();
+            $table->text('reason')->nullable();
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }

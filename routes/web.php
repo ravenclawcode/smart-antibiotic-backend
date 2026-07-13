@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\AntibioticCategoryController;
 use App\Http\Controllers\Admin\QuizController;
 use App\Http\Controllers\Admin\QuizQuestionController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\MedicineController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -71,5 +72,14 @@ Route::middleware('auth')
         )->only([
             'index',
             'show'
+        ]);
+
+        Route::resource(
+            'medicines',
+            MedicineController::class
+        )->only([
+            'index',
+            'show',
+            'destroy'
         ]);
     });
