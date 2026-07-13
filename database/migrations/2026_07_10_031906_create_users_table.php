@@ -14,12 +14,15 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->string('name')->nullable();
-            $table->enum('gender', [
-                'male',
-                'female'
-            ])->nullable();
-            $table->date('birth_date')->nullable();
+            $table->string('name');
+            $table->unsignedTinyInteger('age')->nullable();
+            $table->enum(
+                'gender',
+                [
+                    'Laki-laki',
+                    'Perempuan'
+                ]
+            )->nullable();
             $table->timestamps();
         });
     }

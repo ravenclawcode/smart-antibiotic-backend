@@ -8,7 +8,7 @@
 
     <div class="card-header bg-white">
 
-        <h4>
+        <h4 class="mb-0">
 
             Edit
 

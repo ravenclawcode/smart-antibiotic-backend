@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AntibioticController;
 use App\Http\Controllers\Admin\AntibioticCategoryController;
 use App\Http\Controllers\Admin\QuizController;
 use App\Http\Controllers\Admin\QuizQuestionController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -63,4 +64,12 @@ Route::middleware('auth')
             'quizzes.questions',
             QuizQuestionController::class
         );
+
+        Route::resource(
+            'users',
+            UserController::class
+        )->only([
+            'index',
+            'show'
+        ]);
     });

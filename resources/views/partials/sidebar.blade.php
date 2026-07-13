@@ -81,10 +81,12 @@
         </li>
 
         <li>
-            <a href="#"
-                class="nav-link">
+            <a
+                href="{{ route('admin.users.index') }}"
+                class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
                 <i class="bi bi-people me-2"></i>
-                User
+                Pengguna
+
             </a>
         </li>
 
