@@ -53,8 +53,6 @@
 
                         <th>Level</th>
 
-                        <th>Judul</th>
-
                         <th>Deskripsi</th>
 
                         <th width="150">Aksi</th>
@@ -83,12 +81,6 @@
 
                         <td>
 
-                            {{ $quiz->title }}
-
-                        </td>
-
-                        <td>
-
                             {{ Str::limit($quiz->description,60) }}
 
                         </td>
@@ -106,7 +98,7 @@
                             <a
                                 href="{{ route('admin.quizzes.edit',$quiz) }}"
                                 class="btn btn-warning btn-sm">
-                                <i class="bi bi-pencil text-white"></i>
+                                <i class="bi bi-pencil-fill text-white"></i>
 
                             </a>
 
@@ -122,7 +114,7 @@
                                 <button
                                     onclick="return confirm('Hapus kuis?')"
                                     class="btn btn-danger btn-sm">
-                                    <i class="bi bi-trash text-white"></i>
+                                    <i class="bi bi-trash-fill text-white"></i>
 
                                 </button>
 

@@ -101,8 +101,9 @@
         </li>
 
         <li>
-            <a href="#"
-                class="nav-link">
+            <a
+                href="{{ route('admin.feedbacks.index') }}"
+                class="nav-link {{ request()->routeIs('admin.feedbacks.*') ? 'active' : '' }}">
                 <i class="bi bi-chat-left-text me-2"></i>
                 Komentar & Masukan
             </a>

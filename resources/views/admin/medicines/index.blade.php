@@ -62,9 +62,9 @@
 
                     <td>{{ $medicine->dosage }}</td>
 
-                    <td>{{ $medicine->start_date }}</td>
+                    <td>{{ $medicine->start_date?->format('d M Y') ?? '-' }}</td>
 
-                    <td>{{ $medicine->end_date }}</td>
+                    <td>{{ $medicine->end_date?->format('d M Y') ?? '-' }}</td>
 
                     <td>
 
@@ -93,7 +93,7 @@
                         <a
                             href="{{ route('admin.medicines.show',$medicine) }}"
                             class="btn btn-sm btn-info">
-                            <i class="bi bi-three-dots text-white"></i>
+                            <i class="bi bi-three-dots-vertical text-white"></i>
 
                         </a>
 

@@ -6,20 +6,29 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('feedbacks', function (Blueprint $table) {
+
             $table->id();
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnDelete();
+            $table->foreignId('admin_id')
+                ->nullable()
+                ->constrained('users')
+                ->nullOnDelete();
+            $table->text('message');
+            $table->text('admin_reply')->nullable();
+            $table->enum('status', [
+                'pending',
+                'replied'
+            ])->default('pending');
+            $table->timestamp('replied_at')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('feedbacks');

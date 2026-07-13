@@ -40,14 +40,58 @@ body {
     background: white;
 }
 
-.card-stat {
-    border: none;
-    border-radius: 16px;
-}
-
 .footer {
     background: white;
     border-top: 1px solid #dee2e6;
+}
+
+.card-stat {
+    border: none;
+    border-radius: 18px;
+    transition: .25s;
+}
+
+.card-stat:hover {
+    transform: translateY(-4px);
+}
+
+.card-stat h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2F4D5E;
+}
+
+.icon-pill {
+    width: 74px;
+    height: 48px;
+    border-radius: 999px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-pill i {
+    font-size: 1.6rem;
+}
+
+.bg-user {
+    background: #E0EFF7;
+    color: #508CAD;
+}
+
+.bg-antibiotic {
+    background: #EAF8F0;
+    color: #2FA84F;
+}
+
+.bg-category {
+    background: #FFF6DD;
+    color: #E7A600;
+}
+
+.bg-feedback {
+    background: #FDECEC;
+    color: #DC3545;
 }
 
 /* ==========================

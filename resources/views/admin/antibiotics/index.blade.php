@@ -102,7 +102,7 @@
                         <a href="{{ route('admin.antibiotics.edit',$item) }}"
                             class="btn btn-warning btn-sm">
 
-                            <i class="bi bi-pencil text-white"></i>
+                            <i class="bi bi-pencil-fill text-white"></i>
 
                         </a>
 
@@ -119,7 +119,7 @@
                                 onclick="return confirm('Hapus detail?')"
                                 class="btn btn-danger btn-sm">
 
-                                <i class="bi bi-trash text-white"></i>
+                                <i class="bi bi-trash-fill text-white"></i>
 
                             </button>
 

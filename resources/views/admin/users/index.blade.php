@@ -93,7 +93,7 @@
                         <a
                             href="{{ route('admin.users.show',$user) }}"
                             class="btn btn-info btn-sm">
-                            <i class="bi bi-three-dots text-white"></i>
+                            <i class="bi bi-three-dots-vertical text-white"></i>
 
                         </a>
 

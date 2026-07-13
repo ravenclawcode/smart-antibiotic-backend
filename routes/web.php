@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\Admin\MedicineCatalogController;
 use App\Http\Controllers\Admin\AntibioticController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\Admin\QuizController;
 use App\Http\Controllers\Admin\QuizQuestionController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\MedicineController;
+use App\Http\Controllers\Admin\FeedbackController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -43,8 +45,10 @@ Route::middleware('auth')
     ->name('admin.')
     ->group(function () {
 
-        Route::view('/dashboard', 'dashboard.index')
-            ->name('dashboard');
+        Route::get(
+            '/dashboard',
+            [DashboardController::class, 'index']
+        )->name('dashboard');
 
         Route::resource(
             'medicine-catalog',
@@ -81,5 +85,14 @@ Route::middleware('auth')
             'index',
             'show',
             'destroy'
+        ]);
+
+        Route::resource(
+            'feedbacks',
+            FeedbackController::class
+        )->only([
+            'index',
+            'show',
+            'update'
         ]);
     });

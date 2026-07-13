@@ -46,22 +46,6 @@
 
                 <label>
 
-                    Judul
-
-                </label>
-
-                <input
-                    type="text"
-                    name="title"
-                    class="form-control"
-                    value="{{ old('title',$quiz->title) }}">
-
-            </div>
-
-            <div class="mb-3">
-
-                <label>
-
                     Deskripsi
 
                 </label>
