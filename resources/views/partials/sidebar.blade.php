@@ -14,7 +14,6 @@
 
     <ul class="nav flex-column">
 
-        {{-- Dashboard --}}
         <li class="nav-item">
             <a href="{{ route('admin.dashboard') }}"
                 class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
@@ -25,7 +24,6 @@
 
         <hr class="text-white">
 
-        {{-- OBAT --}}
         <li class="px-3 text-white-50 small mb-2">
             OBAT
         </li>
@@ -43,7 +41,6 @@
 
         <hr class="text-white">
 
-        {{-- EDUKASI --}}
         <li class="px-3 text-white-50 small mb-2">
             EDUKASI
         </li>
@@ -75,7 +72,6 @@
 
         <hr class="text-white">
 
-        {{-- MONITORING --}}
         <li class="px-3 text-white-50 small mb-2">
             MONITORING
         </li>
@@ -106,21 +102,6 @@
                 class="nav-link {{ request()->routeIs('admin.feedbacks.*') ? 'active' : '' }}">
                 <i class="bi bi-chat-left-text me-2"></i>
                 Komentar & Masukan
-            </a>
-        </li>
-
-        <hr class="text-white">
-
-        {{-- AI --}}
-        <li class="px-3 text-white-50 small mb-2">
-            AI
-        </li>
-
-        <li>
-            <a href="#"
-                class="nav-link">
-                <i class="bi bi-robot me-2"></i>
-                Chatbot Log
             </a>
         </li>
 
