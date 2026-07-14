@@ -23,4 +23,11 @@ class UserService
             $user
         );
     }
+
+    public function onboarding(
+        array $data
+    ) {
+        return $this->repository
+            ->onboarding($data);
+    }
 }
