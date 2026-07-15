@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOnboardingRequest;
 use App\Services\User\UserService;
+use App\Http\Requests\UpdateProfileRequest;
 
 class UserController extends Controller
 {
@@ -34,4 +35,67 @@ class UserController extends Controller
             'data' => $user
         ], 201);
     }
+
+    public function splash(
+        string $uuid
+    ) {
+        $user = $this->service
+            ->findByUuid($uuid);
+
+        if (!$user) {
+
+            return response()->json([
+
+                'success' => true,
+
+                'is_registered' => false
+
+            ]);
+        }
+
+        return response()->json([
+
+            'success' => true,
+
+            'is_registered' => true,
+
+            'data' => $user
+
+        ]);
+    }
+
+    public function profile(
+        string $uuid
+    ) {
+        $user = $this->service
+            ->getProfile($uuid);
+
+        return response()->json([
+
+            'success' => true,
+
+            'data' => $user
+
+        ]);
+    }
+
+    public function updateProfile(
+    UpdateProfileRequest $request,
+    string $uuid
+) {
+    $user = $this->service->updateProfile(
+        $uuid,
+        $request->validated()
+    );
+
+    return response()->json([
+
+        'success' => true,
+
+        'message' => 'Profil berhasil diperbarui.',
+
+        'data' => $user
+
+    ]);
+}
 }

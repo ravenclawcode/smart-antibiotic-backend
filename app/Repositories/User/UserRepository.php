@@ -34,7 +34,6 @@ class UserRepository
         ) {
 
             return null;
-
         }
 
         return DB::transaction(function () use ($data) {
@@ -56,5 +55,53 @@ class UserRepository
                 'preference'
             );
         });
+    }
+
+    public function findByUuid(
+        string $uuid
+    ) {
+        return User::with('preference')
+            ->where(
+                'uuid',
+                $uuid
+            )
+            ->first();
+    }
+
+    public function getProfile(
+        string $uuid
+    ) {
+        return User::with(
+            'preference'
+        )
+            ->where(
+                'uuid',
+                $uuid
+            )
+            ->firstOrFail();
+    }
+
+    public function updateProfile(
+        string $uuid,
+        array $data
+    ) {
+        $user = User::where(
+            'uuid',
+            $uuid
+        )->firstOrFail();
+
+        $user->update([
+
+            'name' => $data['name'],
+
+            'age' => $data['age'],
+
+            'gender' => $data['gender']
+
+        ]);
+
+        return $user->fresh(
+            'preference'
+        );
     }
 }

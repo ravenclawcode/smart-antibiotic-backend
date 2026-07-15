@@ -8,16 +8,17 @@ Route::post(
     [UserController::class, 'onboarding']
 );
 
-Route::middleware('resolve.user')
-    ->group(function () {
+Route::get(
+    '/splash/{uuid}',
+    [UserController::class, 'splash']
+);
 
-        Route::get(
-            '/profile',
-            [UserController::class, 'profile']
-        );
+Route::get(
+    '/profile/{uuid}',
+    [UserController::class, 'profile']
+);
 
-        Route::put(
-            '/profile',
-            [UserController::class, 'update']
-        );
-    });
+Route::put(
+    '/profile/{uuid}',
+    [UserController::class,'updateProfile']
+);
