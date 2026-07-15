@@ -24,84 +24,84 @@ class UserRepository
         );
     }
 
-    public function onboarding(array $data)
-    {
-        if (
-            User::where(
-                'uuid',
-                $data['uuid']
-            )->exists()
-        ) {
+    // public function onboarding(array $data)
+    // {
+    //     if (
+    //         User::where(
+    //             'uuid',
+    //             $data['uuid']
+    //         )->exists()
+    //     ) {
 
-            return null;
-        }
+    //         return null;
+    //     }
 
-        return DB::transaction(function () use ($data) {
-            $user = User::create([
-                'uuid'   => $data['uuid'],
-                'name'   => $data['name'],
-                'age'    => $data['age'],
-                'gender' => $data['gender'],
+    //     return DB::transaction(function () use ($data) {
+    //         $user = User::create([
+    //             'uuid'   => $data['uuid'],
+    //             'name'   => $data['name'],
+    //             'age'    => $data['age'],
+    //             'gender' => $data['gender'],
 
-            ]);
+    //         ]);
 
-            $user->preference()->create([
-                'reminder_type' => $data['reminder_type'],
-                'reminder_sound' => $data['reminder_sound'],
-                'pre_reminder_minutes' => 5
-            ]);
+    //         $user->preference()->create([
+    //             'reminder_type' => $data['reminder_type'],
+    //             'reminder_sound' => $data['reminder_sound'],
+    //             'pre_reminder_minutes' => 5
+    //         ]);
 
-            return $user->load(
-                'preference'
-            );
-        });
-    }
+    //         return $user->load(
+    //             'preference'
+    //         );
+    //     });
+    // }
 
-    public function findByUuid(
-        string $uuid
-    ) {
-        return User::with('preference')
-            ->where(
-                'uuid',
-                $uuid
-            )
-            ->first();
-    }
+    // public function findByUuid(
+    //     string $uuid
+    // ) {
+    //     return User::with('preference')
+    //         ->where(
+    //             'uuid',
+    //             $uuid
+    //         )
+    //         ->first();
+    // }
 
-    public function getProfile(
-        string $uuid
-    ) {
-        return User::with(
-            'preference'
-        )
-            ->where(
-                'uuid',
-                $uuid
-            )
-            ->firstOrFail();
-    }
+    // public function getProfile(
+    //     string $uuid
+    // ) {
+    //     return User::with(
+    //         'preference'
+    //     )
+    //         ->where(
+    //             'uuid',
+    //             $uuid
+    //         )
+    //         ->firstOrFail();
+    // }
 
-    public function updateProfile(
-        string $uuid,
-        array $data
-    ) {
-        $user = User::where(
-            'uuid',
-            $uuid
-        )->firstOrFail();
+    // public function updateProfile(
+    //     string $uuid,
+    //     array $data
+    // ) {
+    //     $user = User::where(
+    //         'uuid',
+    //         $uuid
+    //     )->firstOrFail();
 
-        $user->update([
+    //     $user->update([
 
-            'name' => $data['name'],
+    //         'name' => $data['name'],
 
-            'age' => $data['age'],
+    //         'age' => $data['age'],
 
-            'gender' => $data['gender']
+    //         'gender' => $data['gender']
 
-        ]);
+    //     ]);
 
-        return $user->fresh(
-            'preference'
-        );
-    }
+    //     return $user->fresh(
+    //         'preference'
+    //     );
+    // }
 }

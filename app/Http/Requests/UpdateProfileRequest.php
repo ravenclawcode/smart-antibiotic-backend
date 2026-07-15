@@ -22,14 +22,14 @@ class UpdateProfileRequest extends FormRequest
             ],
 
             'age' => [
-                'required',
+                'nullable',
                 'integer',
                 'min:1',
                 'max:120'
             ],
 
             'gender' => [
-                'required',
+                'nullable',
                 'in:Laki-laki,Perempuan'
             ],
 

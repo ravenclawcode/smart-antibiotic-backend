@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Services\Api\UserService;
 use App\Http\Requests\StoreOnboardingRequest;
-use App\Services\User\UserService;
 use App\Http\Requests\UpdateProfileRequest;
 
 class UserController extends Controller
@@ -80,22 +80,22 @@ class UserController extends Controller
     }
 
     public function updateProfile(
-    UpdateProfileRequest $request,
-    string $uuid
-) {
-    $user = $this->service->updateProfile(
-        $uuid,
-        $request->validated()
-    );
+        UpdateProfileRequest $request,
+        string $uuid
+    ) {
+        $user = $this->service->updateProfile(
+            $uuid,
+            $request->validated()
+        );
 
-    return response()->json([
+        return response()->json([
 
-        'success' => true,
+            'success' => true,
 
-        'message' => 'Profil berhasil diperbarui.',
+            'message' => 'Profil berhasil diperbarui.',
 
-        'data' => $user
+            'data' => $user
 
-    ]);
-}
+        ]);
+    }
 }

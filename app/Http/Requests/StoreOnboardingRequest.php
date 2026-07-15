@@ -26,18 +26,6 @@ class StoreOnboardingRequest extends FormRequest
                 'max:100'
             ],
 
-            'age' => [
-                'required',
-                'integer',
-                'min:1',
-                'max:120'
-            ],
-
-            'gender' => [
-                'required',
-                'in:Laki-laki,Perempuan'
-            ],
-
             'reminder_type' => [
                 'required',
                 'in:Ringkas,Layar Penuh'
