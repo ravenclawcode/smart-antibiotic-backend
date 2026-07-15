@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\Quiz;
+namespace App\Services\Admin;
 
 use App\Models\Quiz;
-use App\Repositories\Quiz\QuizRepository;
+use App\Repositories\Admin\QuizRepository;
 
 class QuizService
 {

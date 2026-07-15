@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Services\Feedback;
+namespace App\Services\Admin;
 
 use App\Models\Feedback;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use App\Repositories\Feedback\FeedbackRepository;
+use App\Repositories\Admin\FeedbackRepository;
 
 class FeedbackService
 {

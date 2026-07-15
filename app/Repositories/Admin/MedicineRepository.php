@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Medicine;
+namespace App\Repositories\Admin;
 
 use App\Models\Medicine;
 use App\Models\MedicineSchedule;

@@ -26,8 +26,6 @@ class StoreQuizRequest extends FormRequest
 
             'level' => 'required|integer|min:1|max:10',
 
-            'title' => 'required|max:255',
-
             'description' => 'nullable'
 
         ];

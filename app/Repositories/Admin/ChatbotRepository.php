@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Chatbot;
+namespace App\Repositories\Admin;
 
 use App\Models\ChatSession;
 

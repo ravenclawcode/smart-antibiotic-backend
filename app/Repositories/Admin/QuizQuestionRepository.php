@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Quiz;
+namespace App\Repositories\Admin;
 
 use App\Models\Quiz;
 use App\Models\QuizQuestion;

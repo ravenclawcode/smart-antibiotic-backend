@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Antibiotic;
+namespace App\Repositories\Admin;
 
 use App\Models\Antibiotic;
 

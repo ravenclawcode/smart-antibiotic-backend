@@ -10,8 +10,6 @@ class Quiz extends Model
 
         'level',
 
-        'title',
-
         'description'
 
     ];

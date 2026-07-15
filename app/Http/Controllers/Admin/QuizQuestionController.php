@@ -7,7 +7,7 @@ use App\Http\Requests\StoreQuizQuestionRequest;
 use App\Http\Requests\UpdateQuizQuestionRequest;
 use App\Models\Quiz;
 use App\Models\QuizQuestion;
-use App\Services\Quiz\QuizQuestionService;
+use App\Services\Admin\QuizQuestionService;
 
 class QuizQuestionController extends Controller
 {

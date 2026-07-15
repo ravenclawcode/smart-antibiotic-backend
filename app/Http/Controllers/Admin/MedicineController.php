@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Services\Medicine\MedicineService;
+use App\Services\Admin\MedicineService;
 
 class MedicineController extends Controller
 {

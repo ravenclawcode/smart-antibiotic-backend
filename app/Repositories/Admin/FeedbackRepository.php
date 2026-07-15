@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Feedback;
+namespace App\Repositories\Admin;
 
 use App\Models\Feedback;
 

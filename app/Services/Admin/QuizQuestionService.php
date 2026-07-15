@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\Quiz;
+namespace App\Services\Admin;
 
 use App\Models\Quiz;
 use App\Models\QuizQuestion;
-use App\Repositories\Quiz\QuizQuestionRepository;
+use App\Repositories\Admin\QuizQuestionRepository;
 
 class QuizQuestionService
 {

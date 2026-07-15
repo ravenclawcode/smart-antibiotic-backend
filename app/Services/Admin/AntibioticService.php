@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\Antibiotic;
+namespace App\Services\Admin;
 
 use App\Models\Antibiotic;
-use App\Repositories\Antibiotic\AntibioticRepository;
+use App\Repositories\Admin\AntibioticRepository;
 use Illuminate\Support\Facades\Storage;
 
 class AntibioticService

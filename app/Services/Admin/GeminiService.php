@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\AI;
+namespace App\Services\Admin;
 
 use Illuminate\Support\Facades\Http;
 

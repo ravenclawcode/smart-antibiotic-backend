@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Feedback;
 use App\Http\Controllers\Controller;
-use App\Services\Feedback\FeedbackService;
+use App\Services\Admin\FeedbackService;
 use App\Http\Requests\ReplyFeedbackRequest;
 
 class FeedbackController extends Controller

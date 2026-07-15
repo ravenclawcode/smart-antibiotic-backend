@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\Chatbot;
+namespace App\Services\Admin;
 
-use App\Repositories\Chatbot\ChatbotRepository;
-use App\Services\AI\GeminiService;
+use App\Repositories\Admin\ChatbotRepository;
+use App\Services\Admin\GeminiService;
 
 class ChatbotService
 {

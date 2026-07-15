@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreMedicineCatalogRequest;
 use App\Http\Requests\UpdateMedicineCatalogRequest;
 use App\Models\MedicineCatalog;
-use App\Services\MedicineCatalog\MedicineCatalogService;
+use App\Services\Admin\MedicineCatalogService;
 
 class MedicineCatalogController extends Controller
 {

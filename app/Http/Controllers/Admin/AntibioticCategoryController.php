@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Services\Category\AntibioticCategoryService;
+use App\Services\Admin\AntibioticCategoryService;
 use App\Http\Requests\StoreAntibioticCategoryRequest;
 use App\Http\Requests\UpdateAntibioticCategoryRequest;
 use App\Models\AntibioticCategory;

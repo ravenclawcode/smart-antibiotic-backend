@@ -7,7 +7,7 @@ use App\Http\Requests\StoreAntibioticRequest;
 use App\Http\Requests\UpdateAntibioticRequest;
 use App\Models\Antibiotic;
 use App\Models\AntibioticCategory;
-use App\Services\Antibiotic\AntibioticService;
+use App\Services\Admin\AntibioticService;
 
 class AntibioticController extends Controller
 {

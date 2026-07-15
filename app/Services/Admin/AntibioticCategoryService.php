@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\Category;
+namespace App\Services\Admin;
 
 use App\Models\AntibioticCategory;
-use App\Repositories\Category\AntibioticCategoryRepository;
+use App\Repositories\Admin\AntibioticCategoryRepository;
 use Illuminate\Support\Facades\Storage;
 
 class AntibioticCategoryService

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\MedicineCatalog;
+namespace App\Services\Admin;
 
 use App\Models\MedicineCatalog;
-use App\Repositories\MedicineCatalog\MedicineCatalogRepository;
+use App\Repositories\Admin\MedicineCatalogRepository;
 
 class MedicineCatalogService
 {
