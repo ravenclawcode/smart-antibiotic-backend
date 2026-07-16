@@ -13,16 +13,12 @@ class AntibioticController extends Controller
 
     public function show(
         int $id
-    )
-    {
+    ) {
         return response()->json([
-
             'success' => true,
-
             'data' => $this->service->find(
                 $id
             )
-
         ]);
     }
 }

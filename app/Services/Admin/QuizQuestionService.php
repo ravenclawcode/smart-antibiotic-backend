@@ -10,11 +10,11 @@ class QuizQuestionService
 {
     public function __construct(
         protected QuizQuestionRepository $repository
-    ){}
+    ) {}
 
     public function getByQuiz(
         Quiz $quiz
-    ){
+    ) {
         return $this->repository->getByQuiz($quiz);
     }
 
@@ -26,7 +26,7 @@ class QuizQuestionService
     public function update(
         QuizQuestion $question,
         array $data
-    ){
+    ) {
         return $this->repository->update(
             $question,
             $data
@@ -35,7 +35,7 @@ class QuizQuestionService
 
     public function delete(
         QuizQuestion $question
-    ){
+    ) {
         return $this->repository->delete(
             $question
         );

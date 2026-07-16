@@ -8,9 +8,6 @@ use Illuminate\Validation\Rule;
 
 class UpdateAntibioticCategoryRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
@@ -22,26 +19,17 @@ class UpdateAntibioticCategoryRequest extends FormRequest
      * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-{
-    return [
-
-        'name' => [
-
-            'required',
-
-            'string',
-
-            'max:100',
-
-            Rule::unique('antibiotic_categories')
-                ->ignore($this->route('category'))
-
-        ],
-
-        'description' => 'nullable|string',
-
-        'image' => 'nullable|image|mimes:png,jpg,jpeg|max:4096',
-
-    ];
-}
+    {
+        return [
+            'name' => [
+                'required',
+                'string',
+                'max:100',
+                Rule::unique('antibiotic_categories')
+                    ->ignore($this->route('category'))
+            ],
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:png,jpg,jpeg|max:4096',
+        ];
+    }
 }

@@ -31,11 +31,8 @@ class FeedbackService
         array $data
     ) {
         $data['admin_id'] = Auth::id();
-
         $data['status'] = 'replied';
-
         $data['replied_at'] = Carbon::now();
-
         return $this->repository->update(
             $feedback,
             $data

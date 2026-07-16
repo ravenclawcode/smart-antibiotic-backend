@@ -14,11 +14,8 @@ class AntibioticCategoryController extends Controller
     public function index()
     {
         return response()->json([
-
             'success' => true,
-
             'data' => $this->service->getAll()
-
         ]);
     }
 
@@ -26,13 +23,10 @@ class AntibioticCategoryController extends Controller
         int $category
     ) {
         return response()->json([
-
             'success' => true,
-
             'data' => $this->service->antibiotics(
                 $category
             )
-
         ]);
     }
 }

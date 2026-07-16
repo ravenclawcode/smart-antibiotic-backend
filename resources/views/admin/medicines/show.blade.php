@@ -67,7 +67,7 @@
                 <td>
                     @forelse($medicine->schedule?->days ?? [] as $day)
                     <span class="badge bg-primary">
-                        {{ ucfirst($day->day_of_week) }}
+                        {{ ucfirst($day->value) }}
                     </span>
                     @empty
                     -

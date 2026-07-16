@@ -43,7 +43,7 @@ class AntibioticController extends Controller
 
         return redirect()
             ->route('admin.antibiotics.index')
-            ->with('success','Data berhasil ditambahkan.');
+            ->with('success', 'Data berhasil ditambahkan.');
     }
 
     public function edit(Antibiotic $antibiotic)
@@ -70,7 +70,7 @@ class AntibioticController extends Controller
 
         return redirect()
             ->route('admin.antibiotics.index')
-            ->with('success','Data berhasil diubah.');
+            ->with('success', 'Data berhasil diubah.');
     }
 
     public function destroy(Antibiotic $antibiotic)

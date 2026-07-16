@@ -72,13 +72,9 @@ class UserRepository
         )->firstOrFail();
 
         $user->update([
-
             'name' => $data['name'],
-
             'age' => $data['age'],
-
             'gender' => $data['gender']
-
         ]);
 
         return $user->fresh(

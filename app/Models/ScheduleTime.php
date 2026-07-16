@@ -9,11 +9,8 @@ class ScheduleTime extends Model
     public $timestamps = false;
 
     protected $fillable = [
-
         'schedule_id',
-
         'reminder_time'
-
     ];
 
     public function schedule()

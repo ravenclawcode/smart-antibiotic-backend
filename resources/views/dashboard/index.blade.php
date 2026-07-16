@@ -40,7 +40,6 @@
 
     </div>
 
-    {{-- Total Antibiotik --}}
     <div class="col-lg-3 col-md-6">
 
         <div class="card card-stat shadow-sm">
@@ -75,7 +74,6 @@
 
     </div>
 
-    {{-- Materi Edukasi --}}
     <div class="col-lg-3 col-md-6">
 
         <div class="card card-stat shadow-sm">
@@ -110,7 +108,6 @@
 
     </div>
 
-    {{-- Feedback --}}
     <div class="col-lg-3 col-md-6">
 
         <div class="card card-stat shadow-sm">

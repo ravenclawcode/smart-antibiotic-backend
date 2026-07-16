@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('schedule_days', function (Blueprint $table) {
@@ -16,19 +13,10 @@ return new class extends Migration
             $table->foreignId('schedule_id')
                 ->constrained('medicine_schedules')
                 ->cascadeOnDelete();
-            /**
-             * 0 Minggu
-             * 1 Senin
-             * ...
-             * 6 Sabtu
-             */
-            $table->integer('day_of_week');
+            $table->string('value');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('schedule_days');

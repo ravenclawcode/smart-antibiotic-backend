@@ -12,8 +12,7 @@ class AntibioticService
 
     public function find(
         int $id
-    )
-    {
+    ) {
         return $this->repository->find(
             $id
         );

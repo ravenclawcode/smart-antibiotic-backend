@@ -7,9 +7,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreMedicineCatalogRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
@@ -23,11 +20,8 @@ class StoreMedicineCatalogRequest extends FormRequest
     public function rules(): array
     {
         return [
-
             'name' => 'required|max:100',
-
             'image' => 'nullable|image|max:4096',
-
         ];
     }
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\MedicineCatalogController;
 use App\Http\Controllers\Api\AntibioticCategoryController;
 use App\Http\Controllers\Api\AntibioticController;
+use App\Http\Controllers\Api\MedicineController;
 
 Route::post(
     '/onboarding',
@@ -45,3 +46,11 @@ Route::get(
     '/antibiotics/{id}',
     [AntibioticController::class, 'show']
 );
+
+Route::prefix('medicines')->group(function () {
+    Route::get('/', [MedicineController::class, 'index']);
+    Route::post('/', [MedicineController::class, 'store']);
+    Route::get('/{medicine}', [MedicineController::class, 'show']);
+    Route::put('/{medicine}', [MedicineController::class, 'update']);
+    Route::delete('/{medicine}', [MedicineController::class, 'destroy']);
+});

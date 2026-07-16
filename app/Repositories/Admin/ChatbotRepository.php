@@ -17,11 +17,8 @@ class ChatbotRepository
     public function createSession(int $userId)
     {
         return ChatSession::create([
-
             'user_id' => $userId,
-
             'title' => 'Percakapan ' . now()->format('d M Y')
-
         ]);
     }
 
@@ -32,11 +29,8 @@ class ChatbotRepository
     ) {
 
         return $session->messages()->create([
-
             'sender' => $sender,
-
             'message' => $message
-
         ]);
     }
 

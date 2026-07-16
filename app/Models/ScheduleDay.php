@@ -9,11 +9,8 @@ class ScheduleDay extends Model
     public $timestamps = false;
 
     protected $fillable = [
-
         'schedule_id',
-
-        'day_of_week'
-
+        'value'
     ];
 
     public function schedule()

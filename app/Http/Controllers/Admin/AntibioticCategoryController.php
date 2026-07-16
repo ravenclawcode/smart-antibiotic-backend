@@ -10,9 +10,6 @@ use App\Models\AntibioticCategory;
 
 class AntibioticCategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     protected AntibioticCategoryService $service;
 
     public function __construct(
@@ -31,17 +28,11 @@ class AntibioticCategoryController extends Controller
         );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('admin.categories.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreAntibioticCategoryRequest $request)
     {
         $this->service->create(
@@ -53,17 +44,6 @@ class AntibioticCategoryController extends Controller
             ->with('success', 'Kategori berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(AntibioticCategory $category)
     {
         return view(
@@ -72,9 +52,6 @@ class AntibioticCategoryController extends Controller
         );
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(
         UpdateAntibioticCategoryRequest $request,
         AntibioticCategory $category
@@ -89,9 +66,6 @@ class AntibioticCategoryController extends Controller
             ->with('success', 'Kategori berhasil diubah.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(
         AntibioticCategory $category
     ) {

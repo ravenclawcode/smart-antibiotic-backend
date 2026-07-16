@@ -9,7 +9,7 @@ class QuizQuestionRepository
 {
     public function getByQuiz(
         Quiz $quiz
-    ){
+    ) {
         return $quiz
             ->questions()
             ->latest()
@@ -24,7 +24,7 @@ class QuizQuestionRepository
     public function update(
         QuizQuestion $question,
         array $data
-    ){
+    ) {
         $question->update($data);
 
         return $question;
@@ -32,7 +32,7 @@ class QuizQuestionRepository
 
     public function delete(
         QuizQuestion $question
-    ){
+    ) {
         return $question->delete();
     }
 }

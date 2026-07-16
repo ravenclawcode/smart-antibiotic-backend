@@ -20,19 +20,16 @@ class UpdateProfileRequest extends FormRequest
                 'string',
                 'max:100'
             ],
-
             'age' => [
                 'nullable',
                 'integer',
                 'min:1',
                 'max:120'
             ],
-
             'gender' => [
                 'nullable',
                 'in:Laki-laki,Perempuan'
             ],
-
         ];
     }
 }

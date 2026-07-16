@@ -24,7 +24,6 @@ class MedicineCatalogService
                 'medicine_catalog',
                 'public'
             );
-
         }
 
         return $this->repository->create($data);
@@ -41,7 +40,6 @@ class MedicineCatalogService
                 'medicine_catalog',
                 'public'
             );
-
         }
 
         return $this->repository->update(

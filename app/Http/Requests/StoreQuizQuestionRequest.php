@@ -7,9 +7,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreQuizQuestionRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
@@ -23,19 +20,12 @@ class StoreQuizQuestionRequest extends FormRequest
     public function rules(): array
     {
         return [
-
             'question' => 'required',
-
             'option_a' => 'required',
-
             'option_b' => 'required',
-
             'option_c' => 'required',
-
             'option_d' => 'required',
-
             'correct_answer' => 'required|in:A,B,C,D'
-
         ];
     }
 }

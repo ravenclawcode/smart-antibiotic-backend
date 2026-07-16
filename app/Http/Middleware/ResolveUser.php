@@ -15,14 +15,11 @@ class ResolveUser
     ): Response {
 
         $uuid = $request->header('X-User-UUID');
-
         if (!$uuid) {
-
             return response()->json([
                 'success' => false,
                 'message' => 'Header X-User-UUID wajib dikirim.'
             ], 400);
-
         }
 
         $user = User::where(
@@ -31,19 +28,16 @@ class ResolveUser
         )->first();
 
         if (!$user) {
-
             return response()->json([
                 'success' => false,
                 'message' => 'User tidak ditemukan.'
             ], 404);
-
         }
 
         $request->attributes->set(
             'user',
             $user
         );
-
         return $next($request);
     }
 }

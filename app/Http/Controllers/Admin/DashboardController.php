@@ -13,18 +13,13 @@ class DashboardController extends Controller
     public function index()
     {
         return view('dashboard.index', [
-
             'totalUsers' => User::count(),
-
             'totalAntibiotics' => Antibiotic::count(),
-
             'totalCategories' => AntibioticCategory::count(),
-
             'newFeedbacks' => Feedback::where(
                 'status',
                 'pending'
             )->count(),
-
         ]);
     }
 }

@@ -20,7 +20,7 @@ class QuizRepository
     public function update(
         Quiz $quiz,
         array $data
-    ){
+    ) {
         $quiz->update($data);
 
         return $quiz;

@@ -45,22 +45,15 @@ class UserController extends Controller
         if (!$user) {
 
             return response()->json([
-
                 'success' => true,
-
                 'is_registered' => false
-
             ]);
         }
 
         return response()->json([
-
             'success' => true,
-
             'is_registered' => true,
-
             'data' => $user
-
         ]);
     }
 
@@ -71,11 +64,8 @@ class UserController extends Controller
             ->getProfile($uuid);
 
         return response()->json([
-
             'success' => true,
-
             'data' => $user
-
         ]);
     }
 
@@ -89,13 +79,9 @@ class UserController extends Controller
         );
 
         return response()->json([
-
             'success' => true,
-
             'message' => 'Profil berhasil diperbarui.',
-
             'data' => $user
-
         ]);
     }
 }

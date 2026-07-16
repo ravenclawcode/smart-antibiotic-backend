@@ -14,7 +14,6 @@
 
                 <div class="text-center mb-4">
 
-                    {{-- Ganti dengan logo nanti --}}
                     <img
                         src="{{ asset('images/logo.png') }}"
                         alt="Logo"

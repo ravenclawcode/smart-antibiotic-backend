@@ -14,11 +14,8 @@ class MedicineCatalogController extends Controller
     public function index()
     {
         return response()->json([
-
             'success' => true,
-
             'data' => $this->service->getAll()
-
         ]);
     }
 }

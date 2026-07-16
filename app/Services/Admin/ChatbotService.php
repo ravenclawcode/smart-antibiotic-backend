@@ -23,13 +23,9 @@ class ChatbotService
                 ->createSession($userId);
 
             $this->repository->addMessage(
-
                 $session,
-
                 'assistant',
-
                 'Hai! Saya Sherly. Ada yang bisa aku bantu hari ini?'
-
             );
 
             $session->load('messages');
@@ -45,13 +41,9 @@ class ChatbotService
         $session = $this->session($userId);
 
         $this->repository->addMessage(
-
             $session,
-
             'user',
-
             $message
-
         );
 
         $session->load('messages');
@@ -60,11 +52,8 @@ class ChatbotService
             ->map(function ($item) {
 
                 return [
-
                     'sender' => $item->sender,
-
                     'message' => $item->message
-
                 ];
             })
             ->toArray();
@@ -73,13 +62,9 @@ class ChatbotService
             ->generate($history);
 
         $assistant = $this->repository->addMessage(
-
             $session,
-
             'assistant',
-
             $reply
-
         );
 
         return $assistant;

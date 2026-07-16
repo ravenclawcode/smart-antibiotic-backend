@@ -21,8 +21,7 @@
         <form
             action="{{ route('admin.medicine-catalog.update',$medicine_catalog) }}"
             method="POST"
-            enctype="multipart/form-data"
-        >
+            enctype="multipart/form-data">
 
             @csrf
 
