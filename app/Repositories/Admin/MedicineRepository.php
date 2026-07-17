@@ -12,7 +12,7 @@ class MedicineRepository
     {
         return Medicine::with([
             'user',
-            'antibiotic',
+            'catalog',
             'schedule.days',
             'schedule.times'
         ])
@@ -23,7 +23,7 @@ class MedicineRepository
     public function getByUser(int $userId)
     {
         return Medicine::with([
-            'antibiotic',
+            'catalog',
             'schedule.days',
             'schedule.times'
         ])
@@ -36,7 +36,7 @@ class MedicineRepository
     {
         return Medicine::with([
             'user',
-            'antibiotic.category',
+            'catalog',
             'schedule.days',
             'schedule.times.histories'
         ])->findOrFail($id);
@@ -48,7 +48,7 @@ class MedicineRepository
 
             $medicine = Medicine::create([
                 'user_id'       => $data['user_id'],
-                'antibiotic_id' => $data['antibiotic_id'],
+                'medicine_catalog_id' => $data['medicine_catalog_id'],
                 'dosage'        => $data['dosage'],
                 'instruction'   => $data['instruction'] ?? null,
                 'start_date'    => $data['start_date'],
@@ -111,7 +111,7 @@ class MedicineRepository
         ) {
 
             $medicine->update([
-                'antibiotic_id' => $data['antibiotic_id'],
+                'medicine_catalog_id' => $data['medicine_catalog_id'],
                 'dosage' => $data['dosage'],
                 'instruction' => $data['instruction'] ?? null,
                 'start_date' => $data['start_date'],
@@ -165,7 +165,7 @@ class MedicineRepository
 
             return $medicine->load([
 
-                'antibiotic.category',
+                'catalog',
 
                 'schedule.days',
 

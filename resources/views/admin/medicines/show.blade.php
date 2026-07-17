@@ -13,12 +13,8 @@
     <div class="card-body">
         <table class="table">
             <tr>
-                <th width="180">Antibiotik</th>
-                <td>{{ $medicine->antibiotic?->name ?? '-' }}</td>
-            </tr>
-            <tr>
-                <th>Kategori</th>
-                <td>{{ $medicine->antibiotic?->category?->name ?? '-' }}</td>
+                <th width="180">Nama</th>
+                <td>{{ $medicine->catalog?->name ?? '-' }}</td>
             </tr>
             <tr>
                 <th>Dosis</th>
@@ -51,7 +47,17 @@
             <tr>
                 <th width="180">Frekuensi</th>
                 <td>
-                    {{ $medicine->schedule?->frequency_type ? ucfirst($medicine->schedule->frequency_type) : '-' }}
+                    @php
+                    $frequency = [
+                    'daily' => 'Harian',
+                    'certain_days' => 'Hari-hari Tertentu',
+                    'interval_days' => 'Interval Harian',
+                    'interval_weeks' => 'Interval Mingguan',
+                    'interval_months' => 'Interval Bulanan',
+                    ];
+                    @endphp
+
+                    {{ $frequency[$medicine->schedule?->frequency_type] ?? '-' }}
                 </td>
             </tr>
             <tr>

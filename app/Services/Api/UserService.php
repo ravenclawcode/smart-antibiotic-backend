@@ -18,11 +18,13 @@ class UserService
             ->onboarding($data);
     }
 
-    public function findByUuid(
+    public function existsByUuid(
         string $uuid
-    ) {
+    ): bool {
         return $this->repository
-            ->findByUuid($uuid);
+            ->existsByUuid(
+                $uuid
+            );
     }
 
     public function getProfile(

@@ -4,8 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\MedicineCatalogController;
 use App\Http\Controllers\Api\AntibioticCategoryController;
-use App\Http\Controllers\Api\AntibioticController;
 use App\Http\Controllers\Api\MedicineController;
+use App\Http\Controllers\Api\PreferenceController;
 
 Route::post(
     '/onboarding',
@@ -27,25 +27,38 @@ Route::put(
     [UserController::class, 'updateProfile']
 );
 
+Route::prefix('preferences')->group(function () {
+
+    Route::get('{uuid}', [
+        PreferenceController::class,
+        'show'
+    ]);
+
+    Route::put('{uuid}', [
+        PreferenceController::class,
+        'update'
+    ]);
+});
+
 Route::get(
-    '/medicine-catalog',
+    '/medicine-catalogs',
     [MedicineCatalogController::class, 'index']
 );
 
-Route::get(
-    '/categories',
-    [AntibioticCategoryController::class, 'index']
-);
+Route::get('/categories', [
+    AntibioticCategoryController::class,
+    'index'
+]);
 
-Route::get(
-    '/categories/{category}/antibiotics',
-    [AntibioticCategoryController::class, 'antibiotics']
-);
+Route::get('/categories/{category}/antibiotics', [
+    AntibioticCategoryController::class,
+    'antibiotics'
+]);
 
-Route::get(
-    '/antibiotics/{id}',
-    [AntibioticController::class, 'show']
-);
+Route::get('/categories/{category}/antibiotics/{antibiotic}', [
+    AntibioticCategoryController::class,
+    'show'
+]);
 
 Route::prefix('medicines')->group(function () {
     Route::get('/', [MedicineController::class, 'index']);

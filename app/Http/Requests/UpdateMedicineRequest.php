@@ -18,9 +18,9 @@ class UpdateMedicineRequest extends FormRequest
                 'required',
                 'uuid'
             ],
-            'antibiotic_id' => [
+            'medicine_catalog_id' => [
                 'required',
-                'exists:antibiotics,id'
+                'exists:medicine_catalogs,id'
             ],
             'dosage' => [
                 'required',

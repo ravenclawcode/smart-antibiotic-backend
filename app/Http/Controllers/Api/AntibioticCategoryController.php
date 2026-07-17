@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Services\Api\AntibioticCategoryService;
+use App\Http\Resources\CategoryResource;
+use App\Http\Resources\AntibioticListResource;
+use App\Http\Resources\AntibioticDetailResource;
 
 class AntibioticCategoryController extends Controller
 {
@@ -15,7 +18,9 @@ class AntibioticCategoryController extends Controller
     {
         return response()->json([
             'success' => true,
-            'data' => $this->service->getAll()
+            'data' => CategoryResource::collection(
+                $this->service->getAll()
+            )
         ]);
     }
 
@@ -24,9 +29,31 @@ class AntibioticCategoryController extends Controller
     ) {
         return response()->json([
             'success' => true,
-            'data' => $this->service->antibiotics(
-                $category
+            'data' => AntibioticListResource::collection(
+                $this->service->antibiotics(
+                    $category
+                )
             )
+        ]);
+    }
+
+    public function show(
+        int $category,
+        int $antibiotic
+    ) {
+        return response()->json([
+
+            'success' => true,
+
+            'data' => new AntibioticDetailResource(
+
+                $this->service->find(
+                    $category,
+                    $antibiotic
+                )
+
+            )
+
         ]);
     }
 }

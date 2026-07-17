@@ -22,4 +22,14 @@ class AntibioticCategoryService
             $categoryId
         );
     }
+
+    public function find(
+        int $categoryId,
+        int $antibioticId
+    ) {
+        return $this->repository->find(
+            $categoryId,
+            $antibioticId
+        );
+    }
 }

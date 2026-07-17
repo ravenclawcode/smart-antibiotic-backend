@@ -6,8 +6,21 @@ use App\Models\MedicineCatalog;
 
 class MedicineCatalogRepository
 {
-    public function getAll()
+    public function getAll(?string $search = null)
     {
-        return MedicineCatalog::latest()->get();
+        return MedicineCatalog::query()
+
+            ->when($search, function ($query) use ($search) {
+
+                $query->where(
+                    'name',
+                    'like',
+                    "%{$search}%"
+                );
+
+            })
+
+            ->orderBy('name')
+            ->get();
     }
 }

@@ -38,28 +38,22 @@ class UserRepository
         });
     }
 
-    public function findByUuid(
+    public function existsByUuid(
         string $uuid
-    ) {
-        return User::with('preference')
-            ->where(
-                'uuid',
-                $uuid
-            )
-            ->first();
+    ): bool {
+        return User::where(
+            'uuid',
+            $uuid
+        )->exists();
     }
 
     public function getProfile(
         string $uuid
     ) {
-        return User::with(
-            'preference'
-        )
-            ->where(
-                'uuid',
-                $uuid
-            )
-            ->firstOrFail();
+        return User::where(
+            'uuid',
+            $uuid
+        )->firstOrFail();
     }
 
     public function updateProfile(
@@ -77,8 +71,6 @@ class UserRepository
             'gender' => $data['gender']
         ]);
 
-        return $user->fresh(
-            'preference'
-        );
+        return $user->fresh();
     }
 }

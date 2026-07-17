@@ -10,4 +10,12 @@ class MedicineCatalog extends Model
         'name',
         'image',
     ];
+
+    public function medicines()
+    {
+        return $this->hasMany(
+            Medicine::class,
+            'medicine_catalog_id'
+        );
+    }
 }

@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('user_id')
                 ->constrained()
                 ->cascadeOnDelete();
-            $table->foreignId('antibiotic_id')
+            $table->foreignId('medicine_catalog_id')
                 ->constrained('antibiotics')
                 ->cascadeOnDelete();
             $table->string('dosage');

@@ -18,7 +18,7 @@ class MedicineRepository
         string $uuid
     ) {
         return Medicine::with([
-            'antibiotic.category',
+            'catalog',
             'schedule.days',
             'schedule.times'
         ])
@@ -38,7 +38,7 @@ class MedicineRepository
         string $uuid
     ) {
         return Medicine::with([
-            'antibiotic.category',
+            'catalog',
             'schedule.days',
             'schedule.times'
         ])
@@ -81,7 +81,7 @@ class MedicineRepository
         ) {
 
             $medicine->update([
-                'antibiotic_id' => $data['antibiotic_id'],
+                'medicine_catalog_id' => $data['medicine_catalog_id'],
                 'dosage' => $data['dosage'],
                 'instruction' => $data['instruction'] ?? null,
                 'start_date' => $data['start_date'],
@@ -127,7 +127,7 @@ class MedicineRepository
             }
 
             return $medicine->load([
-                'antibiotic.category',
+                'catalog',
                 'schedule.days',
                 'schedule.times'
             ]);

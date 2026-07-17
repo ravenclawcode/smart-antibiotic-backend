@@ -7,11 +7,15 @@ use App\Repositories\Api\MedicineCatalogRepository;
 class MedicineCatalogService
 {
     public function __construct(
+
         protected MedicineCatalogRepository $repository
+
     ) {}
 
-    public function getAll()
+    public function getAll(?string $search = null)
     {
-        return $this->repository->getAll();
+        return $this->repository->getAll(
+            $search
+        );
     }
 }

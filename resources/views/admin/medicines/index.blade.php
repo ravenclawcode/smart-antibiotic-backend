@@ -32,7 +32,7 @@
 
                     <th>Nama</th>
 
-                    <th>Antibiotik</th>
+                    <th>Obat</th>
 
                     <th>Dosis</th>
 
@@ -58,7 +58,7 @@
 
                     <td>{{ $medicine->user->name }}</td>
 
-                    <td>{{ $medicine->antibiotic->name }}</td>
+                    <td>{{ $medicine->catalog->name }}</td>
 
                     <td>{{ $medicine->dosage }}</td>
 
