@@ -27,6 +27,10 @@ class StoreOnboardingRequest extends FormRequest
                 'required',
                 'in:Ringkas,Layar Penuh'
             ],
+            'timezone' => [
+                'nullable',
+                'in:Asia/Jakarta,Asia/Makassar,Asia/Jayapura'
+            ],
             'reminder_sound' => [
                 'required',
                 'string'

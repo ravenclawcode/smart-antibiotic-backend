@@ -13,17 +13,16 @@ return new class extends Migration
             $table->foreignId('schedule_time_id')
                 ->constrained('schedule_times')
                 ->cascadeOnDelete();
-            /**
-             * taken
-             * skipped
-             * rescheduled
-             * missed
-             */
             $table->date('scheduled_date');
-            $table->string('status');
+            $table->enum('status', [
+                'taken',
+                'skipped',
+                'missed',
+                'rescheduled'
+            ]);
             $table->timestamp('taken_at')->nullable();
-            $table->text('reason')->nullable();
             $table->text('notes')->nullable();
+            $table->time('rescheduled_time')->nullable();
             $table->timestamps();
         });
     }

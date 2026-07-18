@@ -137,6 +137,8 @@
                         <span class="badge bg-danger">Terlewat</span>
                         @elseif($history->status == 'skipped')
                         <span class="badge bg-warning">Dilewati</span>
+                        @elseif($history->status == 'rescheduled')
+                        <span class="badge bg-info">Dijadwalkan Ulang</span>
                         @else
                         <span class="badge bg-secondary">Pending</span>
                         @endif

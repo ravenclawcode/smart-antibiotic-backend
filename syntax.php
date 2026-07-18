@@ -1,10 +1,33 @@
 POST http://127.0.0.1:8000/api/onboarding
 Kirim
 {
-    "uuid": "550e8400-e29b-41d4-a716-446655440005",
-    "name": "Aloy",
+    "uuid": "550e8400-e29b-41d4-a716-446655440001",
+    "name": "Syifa",
     "reminder_type": "Ringkas",
     "reminder_sound": "Serenity"
+}
+
+Hasil
+{
+    "success": true,
+    "message": "Onboarding berhasil.",
+    "data": {
+        "uuid": "550e8400-e29b-41d4-a716-446655440001",
+        "name": "Syifa",
+        "updated_at": "2026-07-18T08:42:26.000000Z",
+        "created_at": "2026-07-18T08:42:26.000000Z",
+        "id": 10,
+        "preference": {
+            "id": 8,
+            "user_id": 10,
+            "reminder_type": "Ringkas",
+            "reminder_sound": "Serenity",
+            "timezone": "Asia/Jakarta",
+            "pre_reminder_minutes": 30,
+            "created_at": "2026-07-18T08:42:26.000000Z",
+            "updated_at": "2026-07-18T08:42:26.000000Z"
+        }
+    }
 }
 
 GET http://127.0.0.1:8000/api/splash/{uuid}
@@ -29,9 +52,9 @@ Hasil
 PUT http://127.0.0.1:8000/api/profile/{uuid}
 Kirim
 {
-    "name": "Aloy",
-    "age": 27,
-    "gender": "Laki-laki"
+    "name": "Syifa",
+    "age": 23,
+    "gender": "Perempuan"
 }
 
 Hasil
@@ -39,10 +62,10 @@ Hasil
     "success": true,
     "message": "Profil berhasil diperbarui.",
     "data": {
-        "uuid": "550e8400-e29b-41d4-a716-446655440005",
-        "name": "Aloy",
-        "age": 27,
-        "gender": "Laki-laki"
+        "uuid": "550e8400-e29b-41d4-a716-446655440001",
+        "name": "Syifa",
+        "age": 23,
+        "gender": "Perempuan"
     }
 }
 
@@ -52,7 +75,8 @@ Hasil
     "success": true,
     "data": {
         "reminder_type": "Ringkas",
-        "reminder_sound": "Serenity"
+        "reminder_sound": "Serenity",
+        "timezone": "Asia/Jakarta"
     }
 }
 
@@ -60,7 +84,7 @@ PUT http://127.0.0.1:8000/api/preferences/{uuid}
 Kirim
 {
     "reminder_type": "Layar Penuh",
-    "reminder_sound": "Peaceful",
+    "reminder_sound": "Peaceful"
 }
 
 Hasil
@@ -69,7 +93,8 @@ Hasil
     "message": "Preferensi berhasil diperbarui.",
     "data": {
         "reminder_type": "Layar Penuh",
-        "reminder_sound": "Peaceful"
+        "reminder_sound": "Peaceful",
+        "timezone": "Asia/Jakarta"
     }
 }
 
@@ -463,4 +488,102 @@ Hasil
 {
     "success": true,
     "message": "Obat berhasil dihapus."
+}
+
+POST http://127.0.0.1:8000/api/medicine-histories/taken
+Kirim
+{
+    "schedule_time_id":57,
+    "scheduled_date":"2026-07-18"
+}
+
+Hasil
+{
+    "success": true,
+    "message": "Obat berhasil ditandai diminum.",
+    "data": {
+        "schedule_time_id": 57,
+        "scheduled_date": "2026-07-18T00:00:00.000000Z",
+        "status": "taken",
+        "taken_at": "2026-07-18T16:08:31.000000Z",
+        "notes": null,
+        "rescheduled_time": null,
+        "updated_at": "2026-07-18T09:08:31.000000Z",
+        "created_at": "2026-07-18T09:08:31.000000Z",
+        "id": 2
+    }
+}
+
+POST http://127.0.0.1:8000/api/medicine-histories/skipped
+Kirim
+{
+    "schedule_time_id":57,
+    "scheduled_date":"2026-07-18",
+    "notes":"Lupa membawa obat"
+}
+
+Hasil
+{
+    "success": true,
+    "message": "Obat berhasil dilewati.",
+    "data": {
+        "id": 2,
+        "schedule_time_id": 57,
+        "scheduled_date": "2026-07-18T00:00:00.000000Z",
+        "status": "skipped",
+        "taken_at": null,
+        "notes": "Lupa membawa obat",
+        "rescheduled_time": null,
+        "created_at": "2026-07-18T09:08:31.000000Z",
+        "updated_at": "2026-07-18T09:12:24.000000Z"
+    }
+}
+
+POST http://127.0.0.1:8000/api/medicine-histories/reschedule
+Kirim
+{
+    "schedule_time_id":57,
+    "scheduled_date":"2026-07-18",
+    "rescheduled_time":"2026-07-18 13:00:00"
+}
+
+Hasil
+{
+    "success": true,
+    "message": "Jadwal berhasil diubah.",
+    "data": {
+        "id": 2,
+        "schedule_time_id": 57,
+        "scheduled_date": "2026-07-18T00:00:00.000000Z",
+        "status": "rescheduled",
+        "taken_at": null,
+        "notes": null,
+        "rescheduled_time": "2026-07-18T13:00:00.000000Z",
+        "created_at": "2026-07-18T09:08:31.000000Z",
+        "updated_at": "2026-07-18T09:43:43.000000Z"
+    }
+}
+
+POST http://127.0.0.1:8000/api/medicine-histories/missed
+Kirim
+{
+    "schedule_time_id":57,
+    "scheduled_date":"2026-07-18",
+}
+
+Hasil
+{
+    "success": true,
+    "message": "Status berhasil diperbarui.",
+    "data": {
+        "id": 2,
+        "schedule_time_id": 57,
+        "scheduled_date": "2026-07-18T00:00:00.000000Z",
+        "status": "missed",
+        "taken_at": null,
+        "notes": null,
+        "rescheduled_time": null,
+        "created_at": "2026-07-18T09:08:31.000000Z",
+        "updated_at": "2026-07-18T09:19:28.000000Z"
+    }
 }

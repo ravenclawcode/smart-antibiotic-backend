@@ -12,6 +12,7 @@ class PreferenceResource extends JsonResource
         return [
             'reminder_type' => $this->reminder_type,
             'reminder_sound' => $this->reminder_sound,
+            'timezone' => $this->timezone,
         ];
     }
 }

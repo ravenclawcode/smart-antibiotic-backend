@@ -10,6 +10,7 @@ class UserPreference extends Model
         'user_id',
         'reminder_type',
         'reminder_sound',
+        'timezone',
         'pre_reminder_minutes'
     ];
 

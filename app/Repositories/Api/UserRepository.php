@@ -29,6 +29,7 @@ class UserRepository
             $user->preference()->create([
                 'reminder_type' => $data['reminder_type'],
                 'reminder_sound' => $data['reminder_sound'],
+                'timezone' => $data['timezone'] ?? 'Asia/Jakarta',
                 'pre_reminder_minutes' => 30
             ]);
 

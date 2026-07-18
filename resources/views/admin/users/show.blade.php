@@ -82,7 +82,7 @@
 
                         <td>
 
-                            {{ $user->created_at->format('d F Y H:i') }}
+                            {{ $user->created_at->format('d F Y') }}
 
                         </td>
 

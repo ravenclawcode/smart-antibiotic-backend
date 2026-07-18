@@ -20,6 +20,12 @@ class User extends Model
         );
     }
 
+    public function timezone()
+    {
+        return $this->preference?->timezone
+            ?? 'Asia/Jakarta';
+    }
+
     public function medicines()
     {
         return $this->hasMany(
