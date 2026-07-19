@@ -8,7 +8,7 @@ class AntibioticRepository
 {
     public function getAll()
     {
-        return Antibiotic::latest()->paginate(10);
+        return Antibiotic::oldest()->paginate(10);
     }
 
     public function create(array $data)

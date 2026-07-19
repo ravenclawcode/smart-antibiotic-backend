@@ -3,7 +3,6 @@
 namespace App\Repositories\Admin;
 
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 
 class UserRepository
 {
@@ -12,7 +11,7 @@ class UserRepository
         return User::with(
             'preference'
         )
-            ->latest()
+            ->oldest()
             ->paginate(10);
     }
 

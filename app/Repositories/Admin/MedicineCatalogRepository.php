@@ -8,7 +8,7 @@ class MedicineCatalogRepository
 {
     public function getAll()
     {
-        return MedicineCatalog::latest()->paginate(10);
+        return MedicineCatalog::oldest()->paginate(10);
     }
 
     public function create(array $data)

@@ -807,3 +807,38 @@ Hasil
         "wrong_answers": 1
     }
 }
+
+GET http://127.0.0.1:8000/api/feedbacks?user_id=9
+Hasil
+{
+    "success": true,
+    "data": [
+        {
+            "id": 4,
+            "message": "Apakah Ampicillin boleh diminum sebelum makan?",
+            "status": "replied",
+            "admin_reply": "Ya, Amoxicillin dapat diminum setelah makan untuk mengurangi gangguan lambung.",
+            "created_at": "19 Jul 2026 18:12"
+        }
+    ]
+}
+
+POST http://127.0.0.1:8000/api/feedbacks
+Kirim
+{
+    "user_id": 9,
+    "message": "Apakah Ampicillin boleh diminum sebelum makan?"
+}
+
+Hasil
+{
+    "success": true,
+    "message": "Komentar berhasil dikirim."
+}
+
+DELETE http://127.0.0.1:8000/api/3?user_id=9
+Hasil
+{
+    "success": true,
+    "message": "Komentar berhasil dihapus."
+}

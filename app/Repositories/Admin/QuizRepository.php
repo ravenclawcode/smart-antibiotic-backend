@@ -8,7 +8,7 @@ class QuizRepository
 {
     public function getAll()
     {
-        return Quiz::latest()
+        return Quiz::oldest()
             ->paginate(10);
     }
 

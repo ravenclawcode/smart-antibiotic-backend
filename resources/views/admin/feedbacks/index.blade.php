@@ -125,7 +125,7 @@
 
                     <tr>
 
-                        <td colspan="6" class="text-center py-4">
+                        <td colspan="6" class="text-center py-3">
 
                             Belum ada komentar.
 
@@ -141,7 +141,7 @@
 
         </div>
 
-        <div class="mt-3">
+        <div class="mt-2">
 
             {{ $feedbacks->links() }}
 

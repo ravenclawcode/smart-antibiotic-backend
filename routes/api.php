@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\MedicineController;
 use App\Http\Controllers\Api\PreferenceController;
 use App\Http\Controllers\Api\MedicineHistoryController;
 use App\Http\Controllers\Api\QuizController;
+use App\Http\Controllers\Api\FeedbackController;
 
 Route::post(
     '/onboarding',
@@ -20,39 +21,25 @@ Route::get(
 );
 
 Route::get(
-    '/profile/{uuid}',
-    [UserController::class, 'profile']
+    '/medicine-catalogs',
+    [MedicineCatalogController::class, 'index']
 );
 
-Route::put(
-    '/profile/{uuid}',
-    [UserController::class, 'updateProfile']
-);
+Route::prefix('profile')->group(function () {
+    Route::get('/{uuid}', [UserController::class, 'profile']);
+    Route::put('/{uuid}', [UserController::class, 'updateProfile']);
+});
 
 Route::prefix('preferences')->group(function () {
     Route::get('{uuid}', [PreferenceController::class, 'show']);
     Route::put('{uuid}', [PreferenceController::class, 'update']);
 });
 
-Route::get(
-    '/medicine-catalogs',
-    [MedicineCatalogController::class, 'index']
-);
-
-Route::get('/categories', [
-    AntibioticCategoryController::class,
-    'index'
-]);
-
-Route::get('/categories/{category}/antibiotics', [
-    AntibioticCategoryController::class,
-    'antibiotics'
-]);
-
-Route::get('/categories/{category}/antibiotics/{antibiotic}', [
-    AntibioticCategoryController::class,
-    'show'
-]);
+Route::prefix('categories')->group(function () {
+    Route::get('/', [AntibioticCategoryController::class, 'index']);
+    Route::get('/{category}/antibiotics', [AntibioticCategoryController::class, 'antibiotics']);
+    Route::get('/{category}/antibiotics/{antibiotic}', [AntibioticCategoryController::class, 'show']);
+});
 
 Route::prefix('medicines')->group(function () {
     Route::get('/', [MedicineController::class, 'index']);
@@ -76,7 +63,13 @@ Route::prefix('medicine-histories')->group(function () {
 });
 
 Route::prefix('quizzes')->group(function () {
-    Route::get('/', [QuizController::class,'index']);
-    Route::get('/{quiz}', [QuizController::class,'show']);
-    Route::post('/{quiz}/submit', [QuizController::class,'submit']);
+    Route::get('/', [QuizController::class, 'index']);
+    Route::get('/{quiz}', [QuizController::class, 'show']);
+    Route::post('/{quiz}/submit', [QuizController::class, 'submit']);
+});
+
+Route::prefix('feedbacks')->group(function () {
+    Route::get('/', [FeedbackController::class, 'index']);
+    Route::post('/', [FeedbackController::class, 'store']);
+    Route::delete('/{feedback}', [FeedbackController::class, 'destroy']);
 });

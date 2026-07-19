@@ -16,7 +16,7 @@ class MedicineRepository
             'schedule.days',
             'schedule.times'
         ])
-            ->latest()
+            ->oldest()
             ->get();
     }
 
@@ -28,7 +28,8 @@ class MedicineRepository
             'schedule.times'
         ])
             ->where('user_id', $userId)
-            ->latest()
+            ->orderBy('is_active', 'desc')
+            ->orderBy('start_date')
             ->get();
     }
 

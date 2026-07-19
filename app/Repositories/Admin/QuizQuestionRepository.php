@@ -12,7 +12,7 @@ class QuizQuestionRepository
     ) {
         return $quiz
             ->questions()
-            ->latest()
+            ->oldest()
             ->get();
     }
 

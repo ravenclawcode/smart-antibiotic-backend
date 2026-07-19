@@ -9,7 +9,7 @@ class FeedbackRepository
     public function getAll()
     {
         return Feedback::with('user')
-            ->latest()
+            ->oldest()
             ->paginate(10);
     }
 
