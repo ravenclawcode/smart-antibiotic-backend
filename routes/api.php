@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\AntibioticCategoryController;
 use App\Http\Controllers\Api\MedicineController;
 use App\Http\Controllers\Api\PreferenceController;
 use App\Http\Controllers\Api\MedicineHistoryController;
+use App\Http\Controllers\Api\QuizController;
 
 Route::post(
     '/onboarding',
@@ -29,16 +30,8 @@ Route::put(
 );
 
 Route::prefix('preferences')->group(function () {
-
-    Route::get('{uuid}', [
-        PreferenceController::class,
-        'show'
-    ]);
-
-    Route::put('{uuid}', [
-        PreferenceController::class,
-        'update'
-    ]);
+    Route::get('{uuid}', [PreferenceController::class, 'show']);
+    Route::put('{uuid}', [PreferenceController::class, 'update']);
 });
 
 Route::get(
@@ -80,4 +73,10 @@ Route::prefix('medicine-histories')->group(function () {
     Route::get('/', [MedicineHistoryController::class, 'index']);
     Route::get('/filter-medicines', [MedicineHistoryController::class, 'filterMedicines']);
     Route::get('/export-pdf', [MedicineHistoryController::class, 'exportPdf']);
+});
+
+Route::prefix('quizzes')->group(function () {
+    Route::get('/', [QuizController::class,'index']);
+    Route::get('/{quiz}', [QuizController::class,'show']);
+    Route::post('/{quiz}/submit', [QuizController::class,'submit']);
 });

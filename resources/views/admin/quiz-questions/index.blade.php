@@ -12,13 +12,13 @@
 
             <h4 class="mb-0">
 
-                {{ $quiz->title }}
+                Level {{ $quiz->level }}
 
             </h4>
 
             <small class="text-muted">
 
-                Level {{ $quiz->level }}
+                {{ $quiz->description }}
 
             </small>
 

@@ -17,4 +17,11 @@ class Quiz extends Model
             QuizQuestion::class
         );
     }
+
+    public function results()
+    {
+        return $this->hasMany(
+            QuizResult::class
+        );
+    }
 }

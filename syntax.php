@@ -642,3 +642,168 @@ Hasil
 {
     PDF File
 }
+
+GET http://127.0.0.1:8000/api/quizzes
+Hasil
+{
+    "success": true,
+    "data": [
+        {
+            "id": 6,
+            "level": 1,
+            "description": "Pengenalan Antibiotik"
+        }
+    ]
+}
+
+GET http://127.0.0.1:8000/api/quizzes/6
+Hasil
+{
+    "success": true,
+    "data": {
+        "id": 6,
+        "level": 1,
+        "description": "Pengenalan Antibiotik",
+        "questions": [
+            {
+                "id": 5,
+                "question": "Apa fungsi utama dari antibiotik?",
+                "option_a": "Menghilangkan virus penyebab penyakit",
+                "option_b": "Membunuh atau menghambat pertumbuhan bakteri",
+                "option_c": "Meredakan nyeri dan radang",
+                "option_d": "Meningkatkan sistem kekebalan tubuh"
+            },
+            {
+                "id": 8,
+                "question": "Antibiotik tidak efektif untuk mengobati penyakit yang disebabkan oleh?",
+                "option_a": "Bakteri",
+                "option_b": "Jamur",
+                "option_c": "Virus",
+                "option_d": "Parasit"
+            },
+            {
+                "id": 9,
+                "question": "Mengapa antibiotik harus dihabiskan sesuai anjuran dokter?",
+                "option_a": "Agar obat terasa lebih enak diminum",
+                "option_b": "Untuk mencegah bakteri menjadi kebal terhadap antibiotik",
+                "option_c": "Agar warna obat tidak berubah",
+                "option_d": "Supaya tidak perlu membeli obat lagi"
+            },
+            {
+                "id": 10,
+                "question": "Kapan seseorang sebaiknya menggunakan antibiotik?",
+                "option_a": "Saat mengalami flu biasa",
+                "option_b": "Saat batuk karena alergi",
+                "option_c": "Ketika diresepkan oleh tenaga kesehatan untuk infeksi bakteri",
+                "option_d": "Setiap kali mengalami demam"
+            },
+            {
+                "id": 11,
+                "question": "Apa yang dimaksud dengan resistensi antibiotik?",
+                "option_a": "Antibiotik menjadi lebih kuat",
+                "option_b": "Tubuh kebal terhadap semua obat",
+                "option_c": "Bakteri menjadi kebal terhadap antibiotik sehingga obat tidak lagi efektif",
+                "option_d": "Antibiotik berubah menjadi racun"
+            },
+            {
+                "id": 12,
+                "question": "Apa yang sebaiknya dilakukan jika lupa meminum antibiotik sesuai jadwal?",
+                "option_a": "Minum dua kali lipat pada jadwal berikutnya",
+                "option_b": "Menghentikan pengobatan",
+                "option_c": "Minum segera saat ingat jika belum dekat dengan jadwal berikutnya, lalu lanjutkan sesuai jadwal",
+                "option_d": "Menunggu sampai keesokan harinya"
+            },
+            {
+                "id": 13,
+                "question": "Bolehkah antibiotik yang tersisa diberikan kepada orang lain?",
+                "option_a": "Boleh, jika gejalanya sama",
+                "option_b": "Boleh, jika masih belum kedaluwarsa",
+                "option_c": "Tidak boleh, karena setiap orang memerlukan penanganan yang berbeda",
+                "option_d": "Boleh, jika dosisnya dikurangi"
+            },
+            {
+                "id": 14,
+                "question": "Berikut ini yang merupakan contoh penggunaan antibiotik yang tidak tepat adalah?",
+                "option_a": "Menghabiskan antibiotik sesuai resep",
+                "option_b": "Menggunakan antibiotik atas anjuran dokter",
+                "option_c": "Membeli antibiotik tanpa resep untuk mengobati pilek",
+                "option_d": "Meminum antibiotik pada waktu yang telah ditentukan"
+            },
+            {
+                "id": 15,
+                "question": "Apa akibat penggunaan antibiotik yang tidak tepat?",
+                "option_a": "Penyembuhan menjadi lebih cepat",
+                "option_b": "Risiko terjadinya resistensi antibiotik meningkat",
+                "option_c": "Antibiotik menjadi lebih murah",
+                "option_d": "Semua bakteri langsung mati"
+            },
+            {
+                "id": 16,
+                "question": "Manakah pernyataan yang benar mengenai antibiotik?",
+                "option_a": "Antibiotik dapat menyembuhkan semua jenis infeksi",
+                "option_b": "Antibiotik hanya digunakan untuk mengobati infeksi bakteri tertentu sesuai petunjuk tenaga kesehatan",
+                "option_c": "Antibiotik dapat digunakan kapan saja tanpa aturan",
+                "option_d": "Antibiotik selalu aman digunakan tanpa efek samping"
+            }
+        ]
+    }
+}
+
+POST http://127.0.0.1:8000/api/quizzes/0/submit
+Kirim
+{
+    "user_id": 9,
+    "answers": [
+        {
+            "question_id": 5,
+            "answer": "B"
+        },
+        {
+            "question_id": 8,
+            "answer": "C"
+        },
+        {
+            "question_id": 9,
+            "answer": "B"
+        },
+        {
+            "question_id": 10,
+            "answer": "C"
+        },
+        {
+            "question_id": 11,
+            "answer": "C"
+        },
+        {
+            "question_id": 12,
+            "answer": "C"
+        },
+        {
+            "question_id": 13,
+            "answer": "A"
+        },
+        {
+            "question_id": 14,
+            "answer": "C"
+        },
+        {
+            "question_id": 15,
+            "answer": "B"
+        },
+        {
+            "question_id": 16,
+            "answer": "B"
+        }
+    ]
+}
+
+Hasil
+{
+    "success": true,
+    "message": "Kuis berhasil diselesaikan.",
+    "data": {
+        "score": 90,
+        "correct_answers": 9,
+        "wrong_answers": 1
+    }
+}

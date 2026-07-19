@@ -39,4 +39,11 @@ class User extends Model
             ChatSession::class
         );
     }
+
+    public function quizResults()
+    {
+        return $this->hasMany(
+            QuizResult::class
+        );
+    }
 }
