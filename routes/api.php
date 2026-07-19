@@ -75,3 +75,9 @@ Route::prefix('medicine-histories')->group(function () {
     Route::post('/reschedule', [MedicineHistoryController::class, 'reschedule']);
     Route::post('/missed', [MedicineHistoryController::class, 'missed']);
 });
+
+Route::prefix('medicine-histories')->group(function () {
+    Route::get('/', [MedicineHistoryController::class, 'index']);
+    Route::get('/filter-medicines', [MedicineHistoryController::class, 'filterMedicines']);
+    Route::get('/export-pdf', [MedicineHistoryController::class, 'exportPdf']);
+});

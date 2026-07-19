@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MedicineHistoryRequest;
 use App\Services\Api\MedicineHistoryService;
+use Illuminate\Http\Request;
 
 class MedicineHistoryController extends Controller
 {
@@ -58,5 +59,32 @@ class MedicineHistoryController extends Controller
                 $request->validated()
             )
         ]);
+    }
+
+    public function index(Request $request)
+    {
+        return response()->json([
+            'success' => true,
+            'data' => $this->service->history($request)
+        ]);
+    }
+
+    public function filterMedicines(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id'
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'data' => $this->service->filterMedicines(
+                $request->user_id
+            )
+        ]);
+    }
+
+    public function exportPdf(Request $request)
+    {
+        return $this->service->exportPdf($request);
     }
 }

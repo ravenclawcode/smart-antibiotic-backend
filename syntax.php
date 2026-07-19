@@ -1,3 +1,5 @@
+php artisan medicine:check-missed
+
 POST http://127.0.0.1:8000/api/onboarding
 Kirim
 {
@@ -222,7 +224,7 @@ Kirim
 
 1 kali sehari
 {
-    "uuid": "550e8400-e29b-41d4-a716-446655440005",
+    "uuid": "550e8400-e29b-41d4-a716-446655440001",
     "medicine_catalog_id": 1,
     "dosage": "1 Tablet",
     "instruction": "Sesudah makan",
@@ -239,7 +241,7 @@ Kirim
 
 2 kali sehari
 {
-    "uuid": "550e8400-e29b-41d4-a716-446655440005",
+    "uuid": "550e8400-e29b-41d4-a716-446655440001",
     "medicine_catalog_id": 1,
     "dosage": "1 Tablet",
     "instruction": "Sesudah makan",
@@ -257,7 +259,7 @@ Kirim
 
 3 kali sehari
 {
-    "uuid": "550e8400-e29b-41d4-a716-446655440005",
+    "uuid": "550e8400-e29b-41d4-a716-446655440001",
     "medicine_catalog_id": 1,
     "dosage": "1 Tablet",
     "instruction": "Sesudah makan",
@@ -276,7 +278,7 @@ Kirim
 
 Lebih dari 3 kali sehari
 {
-    "uuid": "550e8400-e29b-41d4-a716-446655440000",
+    "uuid": "550e8400-e29b-41d4-a716-446655440001",
     "medicine_catalog_id": 1,
     "dosage": "1 Tablet",
     "instruction": "Sesudah makan",
@@ -297,7 +299,7 @@ Lebih dari 3 kali sehari
 
 Hari Tertentu
 {
-    "uuid": "550e8400-e29b-41d4-a716-446655440005",
+    "uuid": "550e8400-e29b-41d4-a716-446655440001",
     "medicine_catalog_id": 1,
     "dosage": "1 Tablet",
     "instruction": "Sesudah makan",
@@ -322,7 +324,7 @@ Hari Tertentu
 
 Setiap X Hari
 {
-    "uuid": "550e8400-e29b-41d4-a716-446655440005",
+    "uuid": "550e8400-e29b-41d4-a716-446655440001",
     "medicine_catalog_id": 1,
     "dosage": "1 Tablet",
     "instruction": "Sesudah makan",
@@ -343,7 +345,7 @@ Setiap X Hari
 
 Setiap X Minggu
 {
-    "uuid": "550e8400-e29b-41d4-a716-446655440005",
+    "uuid": "550e8400-e29b-41d4-a716-446655440001",
     "medicine_catalog_id": 1,
     "dosage": "1 Tablet",
     "instruction": "Sesudah makan",
@@ -368,7 +370,7 @@ Setiap X Minggu
 
 Setiap X Bulan
 {
-    "uuid": "550e8400-e29b-41d4-a716-446655440005",
+    "uuid": "550e8400-e29b-41d4-a716-446655440001",
     "medicine_catalog_id": 1,
     "dosage": "1 Tablet",
     "instruction": "Sesudah makan",
@@ -396,7 +398,7 @@ Setiap X Bulan
 GET http://127.0.0.1:8000/api/medicines/{medicine}
 Kirim
 {
-    "uuid": "550e8400-e29b-41d4-a716-446655440005",
+    "uuid": "550e8400-e29b-41d4-a716-446655440001",
 }
 Hasil
 {
@@ -426,7 +428,7 @@ Hasil
 PUT http://127.0.0.1:8000/api/medicines/{medicine}
 Kirim
 {
-    "uuid": "550e8400-e29b-41d4-a716-446655440005",
+    "uuid": "550e8400-e29b-41d4-a716-446655440001",
     "medicine_catalog_id": 1,
     "dosage": "2 Tablet",
     "instruction": "Sesudah makan",
@@ -481,7 +483,7 @@ Hasil
 DELETE http://127.0.0.1:8000/api/medicines/{medicine}
 Kirim
 {
-    "uuid": "550e8400-e29b-41d4-a716-446655440005",
+    "uuid": "550e8400-e29b-41d4-a716-446655440001",
 }
 
 Hasil
@@ -586,4 +588,57 @@ Hasil
         "created_at": "2026-07-18T09:08:31.000000Z",
         "updated_at": "2026-07-18T09:19:28.000000Z"
     }
+}
+
+GET http://127.0.0.1:8000/api/medicine-histories/filter-medicines?user_id=9
+Hasil
+{
+    "success": true,
+    "data": [
+        {
+            "medicine_id": 30,
+            "name": "Amoxicillin"
+        },
+        {
+            "medicine_id": 31,
+            "name": "Cefixime"
+        },
+        {
+            "medicine_id": 35,
+            "name": "Azithromycin"
+        }
+    ]
+}
+
+GET http://127.0.0.1:8000/api/medicine-histories?user_id=0
+Hasil
+{}
+
+GET http://127.0.0.1:8000/api/medicine-histories?user_id=0&format=daily
+Hasil
+{}
+
+GET http://127.0.0.1:8000/api/medicine-histories?user_id=0&format=weekly
+Hasil
+{}
+
+GET http://127.0.0.1:8000/api/medicine-histories?user_id=0&format=monthly
+Hasil
+{}
+
+GET http://127.0.0.1:8000/api/medicine-histories?user_id=9&format=weekly&medicine_id=30
+Hasil
+{}
+
+GET http://127.0.0.1:8000/api/medicine-histories/export-pdf
+Kirim
+{
+    "user_id":0,
+    "medicine_id":0,
+    "format":"weekly"
+}
+
+Hasil
+{
+    PDF File
 }
