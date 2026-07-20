@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\Admin;
+namespace App\Services\Api;
 
-use App\Repositories\Admin\ChatbotRepository;
-use App\Services\Admin\GeminiService;
+use App\Repositories\Api\ChatbotRepository;
+use App\Services\Api\GeminiService;
 
 class ChatbotService
 {
@@ -12,21 +12,24 @@ class ChatbotService
         protected GeminiService $gemini
     ) {}
 
-    public function session(int $userId)
-    {
+    public function session(
+        int $userId
+    ) {
         $session = $this->repository
             ->latestSession($userId);
 
-        if (!$session) {
+        if (! $session) {
 
             $session = $this->repository
                 ->createSession($userId);
 
-            $this->repository->addMessage(
-                $session,
-                'assistant',
-                'Hai! Saya Sherly. Ada yang bisa aku bantu hari ini?'
-            );
+            $this->repository
+                ->addMessage(
+                    $session,
+                    'assistant',
+                    'Hai! Saya Sherly. Ada yang bisa aku bantu hari ini?'
+
+                );
 
             $session->load('messages');
         }
@@ -68,5 +71,12 @@ class ChatbotService
         );
 
         return $assistant;
+    }
+
+    public function delete(
+        int $userId
+    ) {
+        return $this->repository
+            ->deleteByUser($userId);
     }
 }

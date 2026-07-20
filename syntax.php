@@ -39,6 +39,52 @@ Hasil
     "is_registered": true
 }
 
+GET http://127.0.0.1:8000/api/home?user_id=9
+Hasil
+{
+    "success": true,
+    "data": {
+        "user": {
+            "id": 9,
+            "name": "Syifa"
+        },
+        "selected_date": "2026-07-20",
+        "today_schedules": [
+            {
+                "schedule_time_id": 57,
+                "medicine": {
+                    "id": 30,
+                    "name": "Amoxicillin",
+                    "image": "medicine_catalog/k1fTp0E1TB5gqttYZJ76ISUFIOP3QYpKoyy2daks.png",
+                    "dosage": "1 Tablet"
+                },
+                "reminder_time": "08:00",
+                "status": "pending",
+                "taken_at": null
+            },
+            {
+                "schedule_time_id": 65,
+                "medicine": {
+                    "id": 33,
+                    "name": "Ampicillin",
+                    "image": "medicine_catalog/kxBRAYNi1wcBr7M58KuwOZqQdInMZcY06Ufa8ZzK.png",
+                    "dosage": "1 Tablet"
+                },
+                "reminder_time": "08:00",
+                "status": "pending",
+                "taken_at": null
+            }
+        ],
+        "quizzes": [
+            {
+                "id": 6,
+                "level": 1,
+                "description": "Pengenalan Antibiotik"
+            }
+        ]
+    }
+}
+
 GET http://127.0.0.1:8000/api/profile/{uuid}
 Hasil
 {
@@ -841,4 +887,54 @@ Hasil
 {
     "success": true,
     "message": "Komentar berhasil dihapus."
+}
+
+GET http://127.0.0.1:8000/api/chatbot/session?user_id=9
+Hasil
+{
+    "success": true,
+    "data": {
+        "user_id": 9,
+        "title": "Percakapan 20 Jul 2026",
+        "updated_at": "2026-07-20T14:18:59.000000Z",
+        "created_at": "2026-07-20T14:18:59.000000Z",
+        "id": 1,
+        "messages": [
+            {
+                "id": 1,
+                "session_id": 1,
+                "sender": "assistant",
+                "message": "Hai! Saya Sherly. Ada yang bisa aku bantu hari ini?",
+                "created_at": "2026-07-20T14:18:59.000000Z",
+                "updated_at": "2026-07-20T14:18:59.000000Z"
+            }
+        ]
+    }
+}
+
+POST http://127.0.0.1:8000/api/chatbot/send
+Kirim
+{
+    "user_id": 9,
+    "message": "Apa itu Amoxicillin?"
+}
+
+Hasil
+{
+    "success": true,
+    "data": {
+        "sender": "assistant",
+        "message": "Halo! Amoxicillin adalah jenis antibiotik yang digunakan untuk mengobati berbagai infeksi bakteri. Antibiotik ini bekerja dengan cara menghentikan pertumbuhan bakteri penyebab infeksi di dalam tubuh.\n\nPenting untuk diingat bahwa Amoxicillin, seperti antibiotik lainnya, hanya efektif melawan infeksi bakteri dan tidak akan bekerja untuk infeksi yang disebabkan oleh virus, seperti flu atau pilek biasa. Penggunaannya harus sesuai anjuran dan resep dokter untuk memastikan efektivitasnya dan menghindari resistensi antibiotik.",
+        "session_id": 2,
+        "updated_at": "2026-07-20T14:26:51.000000Z",
+        "created_at": "2026-07-20T14:26:51.000000Z",
+        "id": 6
+    }
+}
+
+DELETE http://127.0.0.1:8000/api/chatbot/session?user_id=9
+Hasil
+{
+    "success": true,
+    "message": "Percakapan berhasil dihapus."
 }

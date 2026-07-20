@@ -24,7 +24,8 @@ class ScheduleTime extends Model
     public function histories()
     {
         return $this->hasMany(
-            MedicineHistory::class
+            MedicineHistory::class,
+            'schedule_time_id'
         );
     }
 }

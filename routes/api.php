@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\MedicineCatalogController;
 use App\Http\Controllers\Api\AntibioticCategoryController;
 use App\Http\Controllers\Api\MedicineController;
@@ -9,21 +10,15 @@ use App\Http\Controllers\Api\PreferenceController;
 use App\Http\Controllers\Api\MedicineHistoryController;
 use App\Http\Controllers\Api\QuizController;
 use App\Http\Controllers\Api\FeedbackController;
+use App\Http\Controllers\Api\ChatbotController;
 
-Route::post(
-    '/onboarding',
-    [UserController::class, 'onboarding']
-);
+Route::post('/onboarding', [UserController::class, 'onboarding']);
 
-Route::get(
-    '/splash/{uuid}',
-    [UserController::class, 'splash']
-);
+Route::get('/splash/{uuid}', [UserController::class, 'splash']);
 
-Route::get(
-    '/medicine-catalogs',
-    [MedicineCatalogController::class, 'index']
-);
+Route::get('/home', [HomeController::class, 'index']);
+
+Route::get('/medicine-catalogs', [MedicineCatalogController::class, 'index']);
 
 Route::prefix('profile')->group(function () {
     Route::get('/{uuid}', [UserController::class, 'profile']);
@@ -72,4 +67,10 @@ Route::prefix('feedbacks')->group(function () {
     Route::get('/', [FeedbackController::class, 'index']);
     Route::post('/', [FeedbackController::class, 'store']);
     Route::delete('/{feedback}', [FeedbackController::class, 'destroy']);
+});
+
+Route::prefix('chatbot')->group(function () {
+    Route::get('/session', [ChatbotController::class, 'session']);
+    Route::post('/send', [ChatbotController::class, 'send']);
+    Route::delete('/session', [ChatbotController::class, 'destroy']);
 });

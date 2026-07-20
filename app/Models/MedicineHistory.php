@@ -24,7 +24,8 @@ class MedicineHistory extends Model
     public function scheduleTime()
     {
         return $this->belongsTo(
-            ScheduleTime::class
+            ScheduleTime::class,
+            'schedule_time_id'
         );
     }
 }

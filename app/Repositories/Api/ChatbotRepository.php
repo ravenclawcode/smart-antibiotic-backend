@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Admin;
+namespace App\Repositories\Api;
 
 use App\Models\ChatSession;
 
@@ -37,5 +37,14 @@ class ChatbotRepository
     public function delete(ChatSession $session)
     {
         return $session->delete();
+    }
+
+    public function deleteByUser(
+        int $userId
+    ) {
+        return ChatSession::where(
+            'user_id',
+            $userId
+        )->delete();
     }
 }

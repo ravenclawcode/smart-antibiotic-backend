@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Admin;
+namespace App\Services\Api;
 
 use Illuminate\Support\Facades\Http;
 
@@ -11,9 +11,11 @@ class GeminiService
         $systemPrompt = <<<PROMPT
         Kamu adalah Sherly, asisten virtual pada aplikasi Smart Antibiotik.
 
-        Jawablah selalu menggunakan Bahasa Indonesia yang ramah, jelas, dan mudah dipahami.
+        Tugasmu membantu pengguna memahami penggunaan antibiotik secara benar.
 
-        Kamu hanya boleh menjawab pertanyaan mengenai:
+        Jawablah menggunakan Bahasa Indonesia yang sopan, ramah, singkat, dan mudah dipahami.
+
+        Kamu hanya boleh menjawab mengenai:
         - antibiotik
         - resistensi antibiotik
         - infeksi bakteri
@@ -34,12 +36,11 @@ class GeminiService
 
         "Maaf, saya hanya dapat membantu pertanyaan mengenai kesehatan, antibiotik, dan penggunaan obat."
 
-        Jawaban maksimal 200 kata.
+        Batasi jawaban maksimal 200 kata.
         PROMPT;
 
         $contents = [];
 
-        // System Prompt
         $contents[] = [
             'role' => 'user',
             'parts' => [
