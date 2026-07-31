@@ -7,6 +7,7 @@ use App\Services\Api\UserService;
 use App\Http\Requests\StoreOnboardingRequest;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Resources\ProfileResource;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -49,9 +50,9 @@ class UserController extends Controller
         ]);
     }
 
-    public function profile(string $uuid)
+    public function profile(Request $request)
     {
-        $user = $this->service->getProfile($uuid);
+        $user = $request->attributes->get('user');
 
         return response()->json([
             'success' => true,
@@ -60,11 +61,12 @@ class UserController extends Controller
     }
 
     public function updateProfile(
-        UpdateProfileRequest $request,
-        string $uuid
+        UpdateProfileRequest $request
     ) {
+        $user = $request->attributes->get('user');
+
         $user = $this->service->updateProfile(
-            $uuid,
+            $user,
             $request->validated()
         );
 

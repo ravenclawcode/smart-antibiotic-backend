@@ -58,14 +58,9 @@ class UserRepository
     }
 
     public function updateProfile(
-        string $uuid,
+        User $user,
         array $data
     ) {
-        $user = User::where(
-            'uuid',
-            $uuid
-        )->firstOrFail();
-
         $user->update([
             'name' => $data['name'],
             'age' => $data['age'],

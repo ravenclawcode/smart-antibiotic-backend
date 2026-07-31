@@ -22,11 +22,20 @@ class QuizController extends Controller
     }
 
     public function show(
-        Quiz $quiz
+        int $quiz
     ) {
+        $quizData = Quiz::find($quiz);
+
+        if (!$quizData) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Quiz tidak ditemukan.'
+            ], 404);
+        }
+
         return response()->json([
             'success' => true,
-            'data' => $this->service->getDetail($quiz)
+            'data' => $this->service->getDetail($quizData)
         ]);
     }
 

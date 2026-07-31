@@ -35,13 +35,12 @@ class UserService
     }
 
     public function updateProfile(
-        string $uuid,
+        User $user,
         array $data
     ) {
-        return $this->repository
-            ->updateProfile(
-                $uuid,
-                $data
-            );
+        return $this->repository->updateProfile(
+            $user,
+            $data
+        );
     }
 }

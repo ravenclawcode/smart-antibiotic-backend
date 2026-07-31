@@ -27,33 +27,46 @@ class AntibioticCategoryController extends Controller
     public function antibiotics(
         int $category
     ) {
+        $data = $this->service->antibiotics(
+            $category
+        );
+
+        if ($data === null) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Kategori antibiotik tidak ditemukan.'
+            ], 404);
+        }
+
         return response()->json([
             'success' => true,
             'data' => AntibioticListResource::collection(
-                $this->service->antibiotics(
-                    $category
-                )
+                $data
             )
-        ]);
+        ], 200);
     }
 
     public function show(
         int $category,
         int $antibiotic
     ) {
+        $data = $this->service->find(
+            $category,
+            $antibiotic
+        );
+
+        if (!$data) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Antibiotik tidak ditemukan.'
+            ], 404);
+        }
+
         return response()->json([
-
             'success' => true,
-
             'data' => new AntibioticDetailResource(
-
-                $this->service->find(
-                    $category,
-                    $antibiotic
-                )
-
+                $data
             )
-
-        ]);
+        ], 200);
     }
 }

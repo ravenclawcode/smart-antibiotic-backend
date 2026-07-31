@@ -3,6 +3,7 @@
 namespace App\Services\Api;
 
 use App\Repositories\Api\MedicineRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class MedicineService
 {
@@ -10,40 +11,49 @@ class MedicineService
         protected MedicineRepository $repository
     ) {}
 
-    public function getByUuid(
-        string $uuid
+    public function getByUser(
+        int $userId
     ) {
-        return $this->repository->getByUuid(
-            $uuid
+        return $this->repository->getByUser(
+            $userId
         );
     }
 
-    public function findByUuid(
+    public function findByUser(
         int $medicineId,
-        string $uuid
+        int $userId
     ) {
-        return $this->repository->findByUuid(
+        return $this->repository->findByUser(
             $medicineId,
-            $uuid
+            $userId
         );
     }
 
-    public function create(array $data)
-    {
+    public function create(
+        int $userId,
+        array $data
+    ) {
         return $this->repository->create(
+            $userId,
             $data
         );
     }
 
-    public function updateByUuid(
+    public function updateByUser(
         int $medicineId,
-        string $uuid,
+        int $userId,
         array $data
     ) {
-        $medicine = $this->repository->findByUuid(
+        $medicine = $this->repository->findByUser(
             $medicineId,
-            $uuid
+            $userId
         );
+
+        if (!$medicine) {
+            throw new ModelNotFoundException(
+                'Obat tidak ditemukan.'
+            );
+        }
 
         return $this->repository->update(
             $medicine,
@@ -51,14 +61,20 @@ class MedicineService
         );
     }
 
-    public function deleteByUuid(
+    public function deleteByUser(
         int $medicineId,
-        string $uuid
+        int $userId
     ) {
-        $medicine = $this->repository->findByUuid(
+        $medicine = $this->repository->findByUser(
             $medicineId,
-            $uuid
+            $userId
         );
+
+        if (!$medicine) {
+            throw new ModelNotFoundException(
+                'Obat tidak ditemukan.'
+            );
+        }
 
         return $this->repository->delete(
             $medicine

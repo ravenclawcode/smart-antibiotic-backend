@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MedicineHistoryRequest;
 use App\Services\Api\MedicineHistoryService;
+use App\Http\Requests\MedicineHistoryFilterRequest;
 use Illuminate\Http\Request;
 
 class MedicineHistoryController extends Controller
@@ -69,16 +70,13 @@ class MedicineHistoryController extends Controller
         ]);
     }
 
-    public function filterMedicines(Request $request)
-    {
-        $request->validate([
-            'user_id' => 'required|exists:users,id'
-        ]);
-
+    public function filterMedicines(
+        MedicineHistoryFilterRequest $request
+    ) {
         return response()->json([
             'success' => true,
             'data' => $this->service->filterMedicines(
-                $request->user_id
+                $request->validated()['user_id']
             )
         ]);
     }

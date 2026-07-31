@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\MedicineCatalogController;
@@ -12,65 +13,195 @@ use App\Http\Controllers\Api\QuizController;
 use App\Http\Controllers\Api\FeedbackController;
 use App\Http\Controllers\Api\ChatbotController;
 
-Route::post('/onboarding', [UserController::class, 'onboarding']);
+/*
+|--------------------------------------------------------------------------
+| Public API
+|--------------------------------------------------------------------------
+*/
 
-Route::get('/splash/{uuid}', [UserController::class, 'splash']);
+// Onboarding
+Route::post(
+    '/onboarding',
+    [UserController::class, 'onboarding']
+);
 
-Route::get('/home', [HomeController::class, 'index']);
+// Cek apakah UUID sudah terdaftar
+Route::get(
+    '/splash/{uuid}',
+    [UserController::class, 'splash']
+);
 
-Route::get('/medicine-catalogs', [MedicineCatalogController::class, 'index']);
+// Katalog obat
+Route::get(
+    '/medicine-catalogs',
+    [MedicineCatalogController::class, 'index']
+);
 
-Route::prefix('profile')->group(function () {
-    Route::get('/{uuid}', [UserController::class, 'profile']);
-    Route::put('/{uuid}', [UserController::class, 'updateProfile']);
-});
-
-Route::prefix('preferences')->group(function () {
-    Route::get('{uuid}', [PreferenceController::class, 'show']);
-    Route::put('{uuid}', [PreferenceController::class, 'update']);
-});
-
+// Kategori antibiotik
 Route::prefix('categories')->group(function () {
-    Route::get('/', [AntibioticCategoryController::class, 'index']);
-    Route::get('/{category}/antibiotics', [AntibioticCategoryController::class, 'antibiotics']);
-    Route::get('/{category}/antibiotics/{antibiotic}', [AntibioticCategoryController::class, 'show']);
+
+    Route::get(
+        '/',
+        [AntibioticCategoryController::class, 'index']
+    );
+    Route::get(
+        '/{category}/antibiotics',
+        [AntibioticCategoryController::class, 'antibiotics']
+    );
+    Route::get(
+        '/{category}/antibiotics/{antibiotic}',
+        [AntibioticCategoryController::class, 'show']
+    );
 });
 
-Route::prefix('medicines')->group(function () {
-    Route::get('/', [MedicineController::class, 'index']);
-    Route::post('/', [MedicineController::class, 'store']);
-    Route::get('/{medicine}', [MedicineController::class, 'show']);
-    Route::put('/{medicine}', [MedicineController::class, 'update']);
-    Route::delete('/{medicine}', [MedicineController::class, 'destroy']);
-});
-
-Route::prefix('medicine-histories')->group(function () {
-    Route::post('/taken', [MedicineHistoryController::class, 'taken']);
-    Route::post('/skipped', [MedicineHistoryController::class, 'skipped']);
-    Route::post('/reschedule', [MedicineHistoryController::class, 'reschedule']);
-    Route::post('/missed', [MedicineHistoryController::class, 'missed']);
-});
-
-Route::prefix('medicine-histories')->group(function () {
-    Route::get('/', [MedicineHistoryController::class, 'index']);
-    Route::get('/filter-medicines', [MedicineHistoryController::class, 'filterMedicines']);
-    Route::get('/export-pdf', [MedicineHistoryController::class, 'exportPdf']);
-});
-
+// Kuis
 Route::prefix('quizzes')->group(function () {
-    Route::get('/', [QuizController::class, 'index']);
-    Route::get('/{quiz}', [QuizController::class, 'show']);
-    Route::post('/{quiz}/submit', [QuizController::class, 'submit']);
+
+    Route::get(
+        '/',
+        [QuizController::class, 'index']
+    );
+    Route::get(
+        '/{quiz}',
+        [QuizController::class, 'show']
+    );
 });
 
-Route::prefix('feedbacks')->group(function () {
-    Route::get('/', [FeedbackController::class, 'index']);
-    Route::post('/', [FeedbackController::class, 'store']);
-    Route::delete('/{feedback}', [FeedbackController::class, 'destroy']);
-});
+/*
+|--------------------------------------------------------------------------
+| User API
+|--------------------------------------------------------------------------
+*/
 
-Route::prefix('chatbot')->group(function () {
-    Route::get('/session', [ChatbotController::class, 'session']);
-    Route::post('/send', [ChatbotController::class, 'send']);
-    Route::delete('/session', [ChatbotController::class, 'destroy']);
+Route::middleware('resolve.user')->group(function () {
+
+    // Home
+    Route::get('/home', [
+        HomeController::class,
+        'index'
+    ]);
+
+    // Profile
+    Route::prefix('profile')->group(function () {
+
+        Route::get(
+            '/',
+            [UserController::class, 'profile']
+        );
+        Route::put(
+            '/',
+            [UserController::class, 'updateProfile']
+        );
+    });
+
+    // Preferences
+    Route::prefix('preferences')->group(function () {
+
+        Route::get(
+            '/',
+            [PreferenceController::class, 'show']
+        );
+        Route::put(
+            '/',
+            [PreferenceController::class, 'update']
+        );
+    });
+
+    // Medicines
+    Route::prefix('medicines')->group(function () {
+
+        Route::get(
+            '/',
+            [MedicineController::class, 'index']
+        );
+        Route::post(
+            '/',
+            [MedicineController::class, 'store']
+        );
+        Route::get(
+            '/{medicine}',
+            [MedicineController::class, 'show']
+        );
+        Route::put(
+            '/{medicine}',
+            [MedicineController::class, 'update']
+        );
+        Route::delete(
+            '/{medicine}',
+            [MedicineController::class, 'destroy']
+        );
+    });
+
+    // Medicines
+    Route::prefix('medicine-histories')->group(function () {
+
+        Route::get(
+            '/',
+            [MedicineHistoryController::class, 'index']
+        );
+        Route::get(
+            '/filter-medicines',
+            [MedicineHistoryController::class, 'filterMedicines']
+        );
+        Route::get(
+            '/export-pdf',
+            [MedicineHistoryController::class, 'exportPdf']
+        );
+        Route::post(
+            '/taken',
+            [MedicineHistoryController::class, 'taken']
+        );
+        Route::post(
+            '/skipped',
+            [MedicineHistoryController::class, 'skipped']
+        );
+        Route::post(
+            '/reschedule',
+            [MedicineHistoryController::class, 'reschedule']
+        );
+        Route::post(
+            '/missed',
+            [MedicineHistoryController::class, 'missed']
+        );
+    });
+
+    // Quiz Result
+    Route::post(
+        '/quizzes/{quiz}/submit',
+        [QuizController::class, 'submit']
+    );
+
+    // Feedback
+    Route::prefix('feedbacks')->group(function () {
+
+        Route::get(
+            '/',
+            [FeedbackController::class, 'index']
+        );
+        Route::post(
+            '/',
+            [FeedbackController::class, 'store']
+        );
+        Route::delete(
+            '/{feedback}',
+            [FeedbackController::class, 'destroy']
+        );
+    });
+
+    //Chatbot
+    Route::prefix('chatbot')->group(function () {
+
+        Route::get(
+            '/session',
+            [ChatbotController::class, 'session']
+        );
+        Route::post(
+            '/send',
+            [ChatbotController::class, 'send']
+        );
+        Route::delete(
+            '/session',
+            [ChatbotController::class, 'destroy']
+        );
+    });
 });

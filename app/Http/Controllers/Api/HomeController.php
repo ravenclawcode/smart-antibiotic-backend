@@ -15,11 +15,13 @@ class HomeController extends Controller
     public function index(
         Request $request
     ) {
+        $user = $request->attributes->get('user');
+
         return response()->json([
             'success' => true,
             'data' => $this->service->home(
-                $request->user_id,
-                $request->date
+                $user->id,
+                $request->input('date')
             )
         ]);
     }

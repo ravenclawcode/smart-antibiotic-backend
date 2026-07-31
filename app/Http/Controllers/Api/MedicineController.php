@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Services\Api\MedicineService;
-use Illuminate\Http\Request;
-use App\Http\Resources\MedicineResource;
-use App\Http\Resources\MedicineDetailResource;
-use App\Models\Medicine;
 use App\Http\Requests\StoreMedicineRequest;
 use App\Http\Requests\UpdateMedicineRequest;
+use App\Http\Resources\MedicineDetailResource;
+use App\Http\Resources\MedicineResource;
+use App\Services\Api\MedicineService;
+use Illuminate\Http\Request;
 
 class MedicineController extends Controller
 {
@@ -19,15 +18,10 @@ class MedicineController extends Controller
 
     public function index(Request $request)
     {
-        $request->validate([
-            'uuid' => [
-                'required',
-                'uuid'
-            ]
-        ]);
+        $user = $request->attributes->get('user');
 
-        $medicines = $this->service->getByUuid(
-            $request->uuid
+        $medicines = $this->service->getByUser(
+            $user->id
         );
 
         return response()->json([
@@ -40,19 +34,21 @@ class MedicineController extends Controller
 
     public function show(
         Request $request,
-        Medicine $medicine
+        int $medicineId
     ) {
-        $request->validate([
-            'uuid' => [
-                'required',
-                'uuid'
-            ]
-        ]);
+        $user = $request->attributes->get('user');
 
-        $medicine = $this->service->findByUuid(
-            $medicine->id,
-            $request->uuid
+        $medicine = $this->service->findByUser(
+            $medicineId,
+            $user->id
         );
+
+        if (!$medicine) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Obat tidak ditemukan.'
+            ], 404);
+        }
 
         return response()->json([
             'success' => true,
@@ -63,10 +59,14 @@ class MedicineController extends Controller
     }
 
     public function store(
-        StoreMedicineRequest $request
+        Request $request,
+        StoreMedicineRequest $medicineRequest
     ) {
+        $user = $request->attributes->get('user');
+
         $medicine = $this->service->create(
-            $request->validated()
+            $user->id,
+            $medicineRequest->validated()
         );
 
         return response()->json([
@@ -79,13 +79,16 @@ class MedicineController extends Controller
     }
 
     public function update(
-        UpdateMedicineRequest $request,
-        Medicine $medicine
+        Request $request,
+        UpdateMedicineRequest $medicineRequest,
+        int $medicineId
     ) {
-        $medicine = $this->service->updateByUuid(
-            $medicine->id,
-            $request->uuid,
-            $request->validated()
+        $user = $request->attributes->get('user');
+
+        $medicine = $this->service->updateByUser(
+            $medicineId,
+            $user->id,
+            $medicineRequest->validated()
         );
 
         return response()->json([
@@ -99,18 +102,13 @@ class MedicineController extends Controller
 
     public function destroy(
         Request $request,
-        Medicine $medicine
+        int $medicineId
     ) {
-        $request->validate([
-            'uuid' => [
-                'required',
-                'uuid'
-            ]
-        ]);
+        $user = $request->attributes->get('user');
 
-        $this->service->deleteByUuid(
-            $medicine->id,
-            $request->uuid
+        $this->service->deleteByUser(
+            $medicineId,
+            $user->id
         );
 
         return response()->json([

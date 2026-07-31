@@ -44,11 +44,11 @@ class FeedbackService
     }
 
     public function delete(
-        Feedback $feedback,
+        int $feedbackId,
         int $userId
     ) {
         return $this->repository->delete(
-            $feedback,
+            $feedbackId,
             $userId
         );
     }

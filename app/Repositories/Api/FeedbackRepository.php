@@ -24,18 +24,23 @@ class FeedbackRepository
     }
 
     public function delete(
-        Feedback $feedback,
+        int $feedbackId,
         int $userId
     ) {
-        return Feedback::where(
+        $feedback = Feedback::where(
             'id',
-            $feedback->id
+            $feedbackId
         )
             ->where(
                 'user_id',
                 $userId
             )
-            ->firstOrFail()
-            ->delete();
+            ->first();
+
+        if (!$feedback) {
+            return false;
+        }
+
+        return $feedback->delete();
     }
 }

@@ -14,10 +14,6 @@ class UpdateMedicineRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'uuid' => [
-                'required',
-                'uuid'
-            ],
             'medicine_catalog_id' => [
                 'required',
                 'exists:medicine_catalogs,id'

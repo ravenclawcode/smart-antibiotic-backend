@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Feedback;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FeedbackRequest;
 use App\Services\Api\FeedbackService;
@@ -28,9 +27,11 @@ class FeedbackController extends Controller
     public function store(
         FeedbackRequest $request
     ) {
-        $this->service->create(
-            $request->validated()
-        );
+        $data = $request->validated();
+
+        $data['user_id'] = $request->user_id;
+
+        $this->service->create($data);
 
         return response()->json([
             'success' => true,
@@ -39,17 +40,24 @@ class FeedbackController extends Controller
     }
 
     public function destroy(
-        Feedback $feedback,
+        int $feedback,
         Request $request
     ) {
-        $this->service->delete(
+        $deleted = $this->service->delete(
             $feedback,
             $request->user_id
         );
 
+        if (!$deleted) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Feedback tidak ditemukan.'
+            ], 404);
+        }
+
         return response()->json([
             'success' => true,
             'message' => 'Komentar berhasil dihapus.'
-        ]);
+        ], 200);
     }
 }

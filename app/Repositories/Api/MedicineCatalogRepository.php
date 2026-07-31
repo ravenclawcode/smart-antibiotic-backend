@@ -17,7 +17,6 @@ class MedicineCatalogRepository
                     'like',
                     "%{$search}%"
                 );
-
             })
 
             ->orderBy('name')

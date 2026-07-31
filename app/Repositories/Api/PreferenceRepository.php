@@ -6,25 +6,24 @@ use App\Models\User;
 
 class PreferenceRepository
 {
-    public function show(string $uuid)
+    public function show(int $userId)
     {
-        return User::where(
-            'uuid',
-            $uuid
+        return User::with(
+            'preference'
         )
-            ->with('preference')
-            ->firstOrFail()
+            ->findOrFail(
+                $userId
+            )
             ->preference;
     }
 
     public function update(
-        string $uuid,
+        int $userId,
         array $data
     ) {
-        $user = User::where(
-            'uuid',
-            $uuid
-        )->firstOrFail();
+        $user = User::findOrFail(
+            $userId
+        );
 
         $preference = $user->preference;
 

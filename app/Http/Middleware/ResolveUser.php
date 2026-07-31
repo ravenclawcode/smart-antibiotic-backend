@@ -15,6 +15,7 @@ class ResolveUser
     ): Response {
 
         $uuid = $request->header('X-User-UUID');
+
         if (!$uuid) {
             return response()->json([
                 'success' => false,
@@ -34,10 +35,10 @@ class ResolveUser
             ], 404);
         }
 
-        $request->attributes->set(
-            'user',
-            $user
-        );
+        $request->merge([
+            'user_id' => $user->id
+        ]);
+
         return $next($request);
     }
 }

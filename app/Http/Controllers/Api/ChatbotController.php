@@ -13,13 +13,14 @@ class ChatbotController extends Controller
         protected ChatbotService $service
     ) {}
 
-    public function session(
-        Request $request
-    ) {
+    public function session(Request $request)
+    {
+        $user = $request->attributes->get('user');
+
         return response()->json([
             'success' => true,
             'data' => $this->service->session(
-                $request->user_id
+                $user->id
             )
         ]);
     }
@@ -27,20 +28,23 @@ class ChatbotController extends Controller
     public function send(
         ChatbotMessageRequest $request
     ) {
+        $user = $request->attributes->get('user');
+
         return response()->json([
             'success' => true,
             'data' => $this->service->sendMessage(
-                $request->user_id,
+                $user->id,
                 $request->message
             )
         ]);
     }
 
-    public function destroy(
-        Request $request
-    ) {
+    public function destroy(Request $request)
+    {
+        $user = $request->attributes->get('user');
+
         $this->service->delete(
-            $request->user_id
+            $user->id
         );
 
         return response()->json([

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdatePreferenceRequest;
 use App\Http\Resources\PreferenceResource;
 use App\Services\Api\PreferenceService;
+use Illuminate\Http\Request;
 
 class PreferenceController extends Controller
 {
@@ -13,27 +14,29 @@ class PreferenceController extends Controller
         protected PreferenceService $service
     ) {}
 
-    public function show(
-        string $uuid
-    ) {
+    public function show(Request $request)
+    {
+        $user = $request->attributes->get('user');
 
         return response()->json([
             'success' => true,
             'data' => new PreferenceResource(
-                $this->service->show($uuid)
+                $this->service->show(
+                    $user->id
+                )
             )
-
         ]);
     }
 
     public function update(
-        UpdatePreferenceRequest $request,
-        string $uuid
+        Request $request,
+        UpdatePreferenceRequest $preferenceRequest
     ) {
+        $user = $request->attributes->get('user');
 
         $preference = $this->service->update(
-            $uuid,
-            $request->validated()
+            $user->id,
+            $preferenceRequest->validated()
         );
 
         return response()->json([

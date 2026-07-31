@@ -15,10 +15,6 @@ class StoreMedicineRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'uuid' => [
-                'required',
-                'uuid'
-            ],
             'medicine_catalog_id' => [
                 'required',
                 'exists:medicine_catalogs,id'

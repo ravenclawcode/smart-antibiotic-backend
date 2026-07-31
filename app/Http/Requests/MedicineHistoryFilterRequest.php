@@ -16,16 +16,19 @@ class MedicineHistoryFilterRequest extends FormRequest
         return [
             'user_id' => [
                 'required',
+                'integer',
                 'exists:users,id'
             ],
 
             'medicine_id' => [
                 'nullable',
+                'integer',
                 'exists:medicines,id'
             ],
 
             'format' => [
                 'nullable',
+                'string',
                 'in:daily,weekly,monthly'
             ],
 

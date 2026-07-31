@@ -15,10 +15,20 @@ class AntibioticCategoryRepository
     public function antibiotics(
         int $categoryId
     ) {
+        $category = AntibioticCategory::find(
+            $categoryId
+        );
+
+        if (!$category) {
+            return null;
+        }
+
         return Antibiotic::where(
             'antibiotic_category_id',
             $categoryId
-        )->latest()->get();
+        )
+            ->latest()
+            ->get();
     }
 
     public function find(
@@ -33,6 +43,6 @@ class AntibioticCategoryRepository
                 'id',
                 $antibioticId
             )
-            ->firstOrFail();
+            ->first();
     }
 }

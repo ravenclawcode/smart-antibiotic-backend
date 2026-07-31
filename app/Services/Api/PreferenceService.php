@@ -11,19 +11,19 @@ class PreferenceService
     ) {}
 
     public function show(
-        string $uuid
+        int $userId
     ) {
         return $this->repository->show(
-            $uuid
+            $userId
         );
     }
 
     public function update(
-        string $uuid,
+        int $userId,
         array $data
     ) {
         return $this->repository->update(
-            $uuid,
+            $userId,
             $data
         );
     }
