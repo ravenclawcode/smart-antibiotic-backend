@@ -39,6 +39,11 @@ class ResolveUser
             'user_id' => $user->id
         ]);
 
+        $request->attributes->set(
+            'user',
+            $user
+        );
+
         return $next($request);
     }
 }
