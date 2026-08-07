@@ -48,13 +48,14 @@ class MedicineRepository
         return DB::transaction(function () use ($data) {
 
             $medicine = Medicine::create([
-                'user_id'       => $data['user_id'],
+                'user_id' => $data['user_id'],
                 'medicine_catalog_id' => $data['medicine_catalog_id'],
-                'dosage'        => $data['dosage'],
-                'instruction'   => $data['instruction'] ?? null,
-                'start_date'    => $data['start_date'],
-                'end_date'      => $data['end_date'],
-                'is_active'     => true,
+                'dosage' => $data['dosage'],
+                'dosage_unit' => $data['dosage_unit'],
+                'instruction' => $data['instruction'] ?? null,
+                'start_date' => $data['start_date'],
+                'end_date' => $data['end_date'],
+                'is_active' => true,
             ]);
 
             $schedule = MedicineSchedule::create([
@@ -114,6 +115,7 @@ class MedicineRepository
             $medicine->update([
                 'medicine_catalog_id' => $data['medicine_catalog_id'],
                 'dosage' => $data['dosage'],
+                'dosage_unit' => $data['dosage_unit'],
                 'instruction' => $data['instruction'] ?? null,
                 'start_date' => $data['start_date'],
                 'end_date' => $data['end_date']

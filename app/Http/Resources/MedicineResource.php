@@ -13,6 +13,7 @@ class MedicineResource extends JsonResource
             'id' => $this->id,
             'medicine_name' => $this->catalog->name,
             'dosage' => $this->dosage,
+            'dosage_unit' => $this->dosage_unit,
             'instruction' => $this->instruction,
             'start_date' => $this->start_date->format('Y-m-d'),
             'end_date' => $this->end_date->format('Y-m-d'),

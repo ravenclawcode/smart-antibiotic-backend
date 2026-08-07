@@ -10,6 +10,7 @@ class Medicine extends Model
         'user_id',
         'medicine_catalog_id',
         'dosage',
+        'dosage_unit',
         'instruction',
         'start_date',
         'end_date',

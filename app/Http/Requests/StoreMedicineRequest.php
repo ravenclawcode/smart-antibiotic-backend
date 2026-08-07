@@ -21,8 +21,13 @@ class StoreMedicineRequest extends FormRequest
             ],
             'dosage' => [
                 'required',
+                'numeric',
+                'min:1'
+            ],
+            'dosage_unit' => [
+                'required',
                 'string',
-                'max:100'
+                'max:50',
             ],
             'instruction' => [
                 'nullable',

@@ -21,6 +21,10 @@
                 <td>{{ $medicine->dosage ?? '-' }}</td>
             </tr>
             <tr>
+                <th>Format</th>
+                <td>{{ ($medicine->dosage_unit) ?? '-' }}</td>
+            </tr>
+            <tr>
                 <th>Instruksi</th>
                 <td>{{ $medicine->instruction ?? '-' }}</td>
             </tr>

@@ -20,7 +20,13 @@ class UpdateMedicineRequest extends FormRequest
             ],
             'dosage' => [
                 'required',
-                'string'
+                'numeric',
+                'min:1'
+            ],
+            'dosage_unit' => [
+                'required',
+                'string',
+                'max:50',
             ],
             'instruction' => [
                 'nullable',
