@@ -2,7 +2,6 @@
 
 namespace App\Services\Api;
 
-use App\Models\Feedback;
 use App\Repositories\Api\FeedbackRepository;
 
 class FeedbackService
@@ -20,13 +19,13 @@ class FeedbackService
 
                 return [
                     'id' => $feedback->id,
+                    'name' => $feedback->user->name,
                     'message' => $feedback->message,
                     'status' => $feedback->status,
                     'admin_reply' => $feedback->admin_reply,
                     'created_at' => optional(
                         $feedback->created_at
-                    )->format('d M Y H:i')
-
+                    )->utc()->toIso8601String(),
                 ];
             });
     }

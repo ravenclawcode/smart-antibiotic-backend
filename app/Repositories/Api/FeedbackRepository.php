@@ -9,10 +9,11 @@ class FeedbackRepository
     public function getByUser(
         int $userId
     ) {
-        return Feedback::where(
-            'user_id',
-            $userId
-        )
+        return Feedback::with('user')
+            ->where(
+                'user_id',
+                $userId
+            )
             ->latest()
             ->get();
     }
