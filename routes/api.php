@@ -44,10 +44,17 @@ Route::prefix('categories')->group(function () {
         '/',
         [AntibioticCategoryController::class, 'index']
     );
+
+    Route::get(
+        '/search',
+        [AntibioticCategoryController::class, 'search']
+    );
+
     Route::get(
         '/{category}/antibiotics',
         [AntibioticCategoryController::class, 'antibiotics']
     );
+
     Route::get(
         '/{category}/antibiotics/{antibiotic}',
         [AntibioticCategoryController::class, 'show']

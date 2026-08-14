@@ -9,7 +9,9 @@ class AntibioticCategoryRepository
 {
     public function getAll()
     {
-        return AntibioticCategory::latest()->get();
+        return AntibioticCategory::withCount('antibiotics')
+            ->latest()
+            ->get();
     }
 
     public function antibiotics(
@@ -44,5 +46,13 @@ class AntibioticCategoryRepository
                 $antibioticId
             )
             ->first();
+    }
+
+    public function searchCategories(string $keyword)
+    {
+        return AntibioticCategory::withCount('antibiotics')
+            ->where('name', 'like', '%' . $keyword . '%')
+            ->latest()
+            ->get();
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryResource extends JsonResource
 {
@@ -12,8 +13,14 @@ class CategoryResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'image' => $this->image,
-            'description' => $this->description
+            'image' => $this->image
+                ? url(Storage::url($this->image))
+                : null,
+            'description' => $this->description,
+            'antibiotics_count' => $this->when(
+                isset($this->antibiotics_count),
+                $this->antibiotics_count
+            ),
         ];
     }
 }

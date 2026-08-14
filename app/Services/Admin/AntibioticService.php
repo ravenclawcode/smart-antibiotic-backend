@@ -4,15 +4,21 @@ namespace App\Services\Admin;
 
 use App\Models\Antibiotic;
 use App\Repositories\Admin\AntibioticRepository;
+use App\Services\Api\YouTubeService;
 use Illuminate\Support\Facades\Storage;
 
 class AntibioticService
 {
     protected AntibioticRepository $repository;
 
-    public function __construct(AntibioticRepository $repository)
-    {
+    protected YouTubeService $youtubeService;
+
+    public function __construct(
+        AntibioticRepository $repository,
+        YouTubeService $youtubeService
+    ) {
         $this->repository = $repository;
+        $this->youtubeService = $youtubeService;
     }
 
     public function getAll()
@@ -22,12 +28,22 @@ class AntibioticService
 
     public function create(array $data)
     {
-        if (isset($data['image']) && $data['image']) {
 
+        if (!empty($data['image'])) {
             $data['image'] = $data['image']->store(
                 'antibiotics',
                 'public'
             );
+        }
+
+        if (!empty($data['video_url'])) {
+
+            $youtube = $this->youtubeService
+                ->getMetadata($data['video_url']);
+
+            $data['video_title'] = $youtube['video_title'];
+            $data['video_duration'] = $youtube['video_duration'];
+            $data['video_thumbnail'] = $youtube['video_thumbnail'];
         }
 
         return $this->repository->create($data);
@@ -38,10 +54,9 @@ class AntibioticService
         array $data
     ) {
 
-        if (isset($data['image']) && $data['image']) {
+        if (!empty($data['image'])) {
 
             if ($antibiotic->image) {
-
                 Storage::disk('public')
                     ->delete($antibiotic->image);
             }
@@ -50,6 +65,16 @@ class AntibioticService
                 'antibiotics',
                 'public'
             );
+        }
+
+        if (!empty($data['video_url'])) {
+
+            $youtube = $this->youtubeService
+                ->getMetadata($data['video_url']);
+
+            $data['video_title'] = $youtube['video_title'];
+            $data['video_duration'] = $youtube['video_duration'];
+            $data['video_thumbnail'] = $youtube['video_thumbnail'];
         }
 
         return $this->repository->update(
@@ -61,7 +86,6 @@ class AntibioticService
     public function delete(Antibiotic $antibiotic)
     {
         if ($antibiotic->image) {
-
             Storage::disk('public')
                 ->delete($antibiotic->image);
         }

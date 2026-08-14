@@ -20,7 +20,26 @@ class AntibioticCategoryController extends Controller
             'success' => true,
             'data' => CategoryResource::collection(
                 $this->service->getAll()
-            )
+            ),
+        ]);
+    }
+
+    public function search()
+    {
+        $keyword = request()->query('q', '');
+
+        if (trim($keyword) === '') {
+            return response()->json([
+                'success' => true,
+                'data' => [],
+            ]);
+        }
+
+        $data = $this->service->searchCategories($keyword);
+
+        return response()->json([
+            'success' => true,
+            'data' => CategoryResource::collection($data),
         ]);
     }
 
@@ -34,7 +53,7 @@ class AntibioticCategoryController extends Controller
         if ($data === null) {
             return response()->json([
                 'success' => false,
-                'message' => 'Kategori antibiotik tidak ditemukan.'
+                'message' => 'Kategori antibiotik tidak ditemukan.',
             ], 404);
         }
 
@@ -42,7 +61,7 @@ class AntibioticCategoryController extends Controller
             'success' => true,
             'data' => AntibioticListResource::collection(
                 $data
-            )
+            ),
         ], 200);
     }
 
@@ -58,7 +77,7 @@ class AntibioticCategoryController extends Controller
         if (!$data) {
             return response()->json([
                 'success' => false,
-                'message' => 'Antibiotik tidak ditemukan.'
+                'message' => 'Antibiotik tidak ditemukan.',
             ], 404);
         }
 
@@ -66,7 +85,7 @@ class AntibioticCategoryController extends Controller
             'success' => true,
             'data' => new AntibioticDetailResource(
                 $data
-            )
+            ),
         ], 200);
     }
 }

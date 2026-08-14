@@ -11,7 +11,7 @@ class AntibioticCategoryRepository
         return AntibioticCategory::oldest()->get();
     }
 
-    public function find($id)
+    public function find(int|string $id)
     {
         return AntibioticCategory::findOrFail($id);
     }

@@ -32,4 +32,9 @@ class AntibioticCategoryService
             $antibioticId
         );
     }
+
+    public function searchCategories(string $keyword)
+    {
+        return $this->repository->searchCategories($keyword);
+    }
 }

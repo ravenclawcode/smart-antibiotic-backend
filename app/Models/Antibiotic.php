@@ -14,7 +14,10 @@ class Antibiotic extends Model
         'indication',
         'mechanism',
         'dosage',
-        'video_url'
+        'video_url',
+        'video_title',
+        'video_duration',
+        'video_thumbnail',
     ];
 
     public function category()
