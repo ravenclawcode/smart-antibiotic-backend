@@ -2,12 +2,12 @@
 
 namespace App\Repositories\Api;
 
+use App\Models\Medicine;
 use App\Models\MedicineHistory;
 use App\Models\ScheduleTime;
-use App\Models\Medicine;
-use Carbon\Carbon;
-use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class MedicineHistoryRepository
 {
@@ -25,14 +25,13 @@ class MedicineHistoryRepository
         return MedicineHistory::updateOrCreate(
             [
                 'schedule_time_id' => $scheduleTime->id,
-                'scheduled_date' => $data['scheduled_date']
+                'scheduled_date' => $data['scheduled_date'],
             ],
-
             [
                 'status' => 'taken',
                 'taken_at' => now($user->timezone()),
                 'notes' => null,
-                'rescheduled_time' => null
+                'rescheduled_time' => null,
             ]
         );
     }
@@ -42,14 +41,13 @@ class MedicineHistoryRepository
         return MedicineHistory::updateOrCreate(
             [
                 'schedule_time_id' => $data['schedule_time_id'],
-                'scheduled_date' => $data['scheduled_date']
+                'scheduled_date' => $data['scheduled_date'],
             ],
-
             [
                 'status' => 'skipped',
                 'taken_at' => null,
                 'notes' => $data['notes'],
-                'rescheduled_time' => null
+                'rescheduled_time' => null,
             ]
         );
     }
@@ -59,14 +57,13 @@ class MedicineHistoryRepository
         return MedicineHistory::updateOrCreate(
             [
                 'schedule_time_id' => $data['schedule_time_id'],
-                'scheduled_date' => $data['scheduled_date']
+                'scheduled_date' => $data['scheduled_date'],
             ],
-
             [
                 'status' => 'rescheduled',
                 'taken_at' => null,
                 'notes' => null,
-                'rescheduled_time' => $data['rescheduled_time']
+                'rescheduled_time' => $data['rescheduled_time'],
             ]
         );
     }
@@ -76,16 +73,14 @@ class MedicineHistoryRepository
         return MedicineHistory::updateOrCreate(
             [
                 'schedule_time_id' => $data['schedule_time_id'],
-                'scheduled_date' => $data['scheduled_date']
+                'scheduled_date' => $data['scheduled_date'],
             ],
-
             [
                 'status' => 'missed',
                 'taken_at' => null,
                 'notes' => null,
-                'rescheduled_time' => null
+                'rescheduled_time' => null,
             ]
-
         );
     }
 
@@ -94,10 +89,9 @@ class MedicineHistoryRepository
         $format = $request->format ?? 'daily';
 
         $startDate = Carbon::today();
-        $endDate   = Carbon::today();
+        $endDate = Carbon::today();
 
         switch ($format) {
-
             case 'weekly':
                 $startDate = Carbon::today()->subDays(6);
                 break;
@@ -108,25 +102,21 @@ class MedicineHistoryRepository
         }
 
         $query = MedicineHistory::with([
-            'scheduleTime.schedule.medicine.catalog'
+            'scheduleTime.schedule.medicine',
         ])
-
             ->whereBetween('scheduled_date', [
                 $startDate,
-                $endDate
+                $endDate,
             ])
-
             ->whereHas(
                 'scheduleTime.schedule.medicine',
                 function ($q) use ($request) {
-
                     $q->where(
                         'user_id',
                         $request->user_id
                     );
 
                     if ($request->filled('medicine_id')) {
-
                         $q->where(
                             'id',
                             $request->medicine_id
@@ -134,12 +124,10 @@ class MedicineHistoryRepository
                     }
                 }
             )
-
             ->orderBy(
                 'scheduled_date',
                 'desc'
             )
-
             ->orderBy(
                 'schedule_time_id'
             );
@@ -147,182 +135,150 @@ class MedicineHistoryRepository
         $histories = $query->get();
 
         return [
-
             'period' => [
-
                 'title' => match ($format) {
                     'weekly' => 'Status Mingguan',
                     'monthly' => 'Status Bulanan',
-                    default => 'Status Harian'
+                    default => 'Status Harian',
                 },
 
                 'start_date' => $startDate->toDateString(),
                 'end_date' => $endDate->toDateString(),
-
             ],
 
             'data' => $histories
-
                 ->groupBy(function ($history) {
-
                     return Carbon::parse(
                         $history->scheduled_date
                     )->toDateString();
                 })
-
                 ->map(function ($items, $date) {
-
                     return [
-
                         'date' => $date,
 
-                        'items' => $items->map(function ($history) {
-
-                            return [
-
-                                'history_id' => $history->id,
-
-                                'medicine_id' => $history
+                        'items' => $items
+                            ->map(function ($history) {
+                                $medicine = $history
                                     ->scheduleTime
                                     ->schedule
-                                    ->medicine
-                                    ->id,
+                                    ->medicine;
 
-                                'medicine_name' => $history
-                                    ->scheduleTime
-                                    ->schedule
-                                    ->medicine
-                                    ->catalog
-                                    ->name,
+                                return [
+                                    'history_id' => $history->id,
 
-                                'medicine_image' => $history
-                                    ->scheduleTime
-                                    ->schedule
-                                    ->medicine
-                                    ->catalog
-                                    ->image,
+                                    'medicine_id' => $medicine->id,
 
-                                'dosage' => $history
-                                    ->scheduleTime
-                                    ->schedule
-                                    ->medicine
-                                    ->dosage,
+                                    'name' => $medicine->name,
 
-                                'time' => substr(
-                                    $history
-                                        ->scheduleTime
-                                        ->reminder_time,
-                                    0,
-                                    5
-                                ),
+                                    'medicine_image' => null,
 
-                                'status' => $history->status,
+                                    'dosage' => $medicine->dosage,
 
-                                'taken_at' => $history->taken_at,
+                                    'time' => substr(
+                                        $history
+                                            ->scheduleTime
+                                            ->reminder_time,
+                                        0,
+                                        5
+                                    ),
 
-                                'notes' => $history->notes,
+                                    'status' => $history->status,
 
-                                'rescheduled_time' => $history->rescheduled_time
+                                    'taken_at' => $history->taken_at,
 
-                            ];
-                        })->values()
+                                    'notes' => $history->notes,
 
+                                    'rescheduled_time' =>
+                                    $history->rescheduled_time,
+                                ];
+                            })
+                            ->values(),
                     ];
                 })
-
-                ->values()
+                ->values(),
         ];
     }
 
     public function filterMedicines(int $userId)
     {
         return Medicine::query()
-            ->with('catalog:id,name')
             ->where('user_id', $userId)
-            ->select('id', 'medicine_catalog_id')
+            ->select(
+                'id',
+                'name'
+            )
             ->orderByDesc('id')
             ->get()
             ->map(function ($medicine) {
                 return [
                     'medicine_id' => $medicine->id,
-                    'name' => $medicine->catalog->name,
+                    'name' => $medicine->name,
                 ];
             });
     }
 
     public function exportPdf($request)
-{
-    $history = $this->history($request);
+    {
+        $history = $this->history($request);
 
-    $user = User::findOrFail(
-        $request->user_id
-    );
+        $user = User::findOrFail(
+            $request->user_id
+        );
 
-    $summary = MedicineHistory::query()
-
-        ->whereHas(
-            'scheduleTime.schedule.medicine',
-            function ($q) use ($request) {
-
-                $q->where(
-                    'user_id',
-                    $request->user_id
-                );
-
-                if ($request->filled('medicine_id')) {
-
+        $summary = MedicineHistory::query()
+            ->whereHas(
+                'scheduleTime.schedule.medicine',
+                function ($q) use ($request) {
                     $q->where(
-                        'id',
-                        $request->medicine_id
+                        'user_id',
+                        $request->user_id
                     );
 
+                    if ($request->filled('medicine_id')) {
+                        $q->where(
+                            'id',
+                            $request->medicine_id
+                        );
+                    }
                 }
+            )
+            ->whereBetween(
+                'scheduled_date',
+                [
+                    $history['period']['start_date'],
+                    $history['period']['end_date'],
+                ]
+            )
+            ->selectRaw("
+                COUNT(*) as total,
+                SUM(status='taken') as taken,
+                SUM(status='skipped') as skipped,
+                SUM(status='missed') as missed
+            ")
+            ->first();
 
-            }
+        $adherence = $summary->total > 0
+            ? round(
+                ($summary->taken / $summary->total) * 100,
+                1
+            )
+            : 0;
 
-        )
-
-        ->whereBetween(
-            'scheduled_date',
+        $pdf = Pdf::loadView(
+            'pdf.medicine-history',
             [
-                $history['period']['start_date'],
-                $history['period']['end_date']
+                'user' => $user,
+                'history' => $history,
+                'summary' => $summary,
+                'adherence' => $adherence,
             ]
-        )
+        )->setPaper(
+            'a4',
+            'landscape'
+        );
 
-        ->selectRaw("
-            COUNT(*) as total,
-            SUM(status='taken') as taken,
-            SUM(status='skipped') as skipped,
-            SUM(status='missed') as missed
-        ")
-
-        ->first();
-
-    $adherence = $summary->total > 0
-        ? round(
-            ($summary->taken / $summary->total) * 100,
-            1
-        )
-        : 0;
-
-    $pdf = Pdf::loadView(
-        'pdf.medicine-history',
-
-        [
-            'user' => $user,
-            'history' => $history,
-            'summary' => $summary,
-            'adherence' => $adherence
-        ]
-
-    )->setPaper(
-        'a4',
-        'landscape'
-    );
-
-    return $pdf->download(
-        'Riwayat_Obat.pdf'
-    );
-}
+        return $pdf->download(
+            'Riwayat_Obat.pdf'
+        );
+    }
 }

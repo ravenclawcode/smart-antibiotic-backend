@@ -3,41 +3,37 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Medicine extends Model
 {
     protected $fillable = [
         'user_id',
-        'medicine_catalog_id',
+        'name',
         'dosage',
         'dosage_unit',
         'instruction',
         'start_date',
         'end_date',
-        'is_active'
+        'is_active',
     ];
 
     protected $casts = [
         'start_date' => 'date',
         'end_date' => 'date',
-        'is_active' => 'boolean'
+        'is_active' => 'boolean',
     ];
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function catalog()
+    public function schedule(): HasOne
     {
-        return $this->belongsTo(
-            MedicineCatalog::class,
-            'medicine_catalog_id'
+        return $this->hasOne(
+            MedicineSchedule::class
         );
-    }
-
-    public function schedule()
-    {
-        return $this->hasOne(MedicineSchedule::class);
     }
 }

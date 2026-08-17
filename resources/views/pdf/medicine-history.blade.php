@@ -219,7 +219,7 @@
 
                 <td>
 
-                    {{ $item['medicine_name'] }}
+                    {{ $item['name'] }}
 
                 </td>
 

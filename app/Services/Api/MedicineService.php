@@ -44,10 +44,11 @@ class MedicineService
         int $userId,
         array $data
     ) {
-        $medicine = $this->repository->findByUser(
-            $medicineId,
-            $userId
-        );
+        $medicine =
+            $this->repository->findByUser(
+                $medicineId,
+                $userId
+            );
 
         if (!$medicine) {
             throw new ModelNotFoundException(
@@ -65,10 +66,11 @@ class MedicineService
         int $medicineId,
         int $userId
     ) {
-        $medicine = $this->repository->findByUser(
-            $medicineId,
-            $userId
-        );
+        $medicine =
+            $this->repository->findByUser(
+                $medicineId,
+                $userId
+            );
 
         if (!$medicine) {
             throw new ModelNotFoundException(

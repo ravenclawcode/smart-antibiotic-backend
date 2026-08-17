@@ -11,14 +11,17 @@ class MedicineRepository
         protected AdminMedicineRepository $medicineRepository
     ) {}
 
-    public function getByUser(int $userId)
-    {
+    public function getByUser(
+        int $userId
+    ) {
         return Medicine::with([
-            'catalog',
             'schedule.days',
-            'schedule.times'
+            'schedule.times',
         ])
-            ->where('user_id', $userId)
+            ->where(
+                'user_id',
+                $userId
+            )
             ->latest()
             ->get();
     }
@@ -28,12 +31,17 @@ class MedicineRepository
         int $userId
     ) {
         return Medicine::with([
-            'catalog',
             'schedule.days',
-            'schedule.times'
+            'schedule.times',
         ])
-            ->where('id', $medicineId)
-            ->where('user_id', $userId)
+            ->where(
+                'id',
+                $medicineId
+            )
+            ->where(
+                'user_id',
+                $userId
+            )
             ->first();
     }
 

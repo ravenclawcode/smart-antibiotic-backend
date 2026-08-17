@@ -14,87 +14,109 @@ class UpdateMedicineRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'medicine_catalog_id' => [
+
+            'name' => [
                 'required',
-                'exists:medicine_catalogs,id'
+                'string',
+                'max:100',
             ],
+
             'dosage' => [
                 'required',
                 'numeric',
-                'min:1'
+                'min:1',
             ],
+
             'dosage_unit' => [
                 'required',
                 'string',
                 'max:50',
             ],
+
             'instruction' => [
                 'nullable',
-                'string'
+                'string',
             ],
+
             'start_date' => [
                 'required',
-                'date'
+                'date',
             ],
+
             'end_date' => [
                 'nullable',
                 'date',
-                'after_or_equal:start_date'
+                'after_or_equal:start_date',
             ],
+
             'frequency_type' => [
                 'required',
-                'in:daily,certain_days,interval_days,interval_weeks,interval_months'
+                'in:daily,certain_days,interval_days,interval_weeks,interval_months',
             ],
+
             'times_per_day' => [
-                'required',
+                'required_if:frequency_type,daily',
+                'nullable',
                 'integer',
-                'min:1'
+                'min:1',
             ],
+
             'interval_value' => [
                 'nullable',
                 'integer',
-                'min:1'
+                'min:1',
             ],
+
             'times' => [
                 'required',
                 'array',
-                'min:1'
+                'min:1',
             ],
+
             'times.*' => [
-                'date_format:H:i'
+                'date_format:H:i',
             ],
+
             'days' => [
                 'nullable',
-                'array'
+                'array',
             ],
+
             'days.*' => [
-                'string'
+                'integer',
+                'between:1,7',
             ],
+
             'dates' => [
                 'nullable',
-                'array'
+                'array',
             ],
+
             'dates.*' => [
                 'integer',
-                'between:1,31'
-            ]
+                'between:1,31',
+            ],
         ];
 
-        if ($this->frequency_type == 'certain_days') {
-
+        if (
+            $this->frequency_type ===
+            'certain_days'
+        ) {
             $rules['days'] = [
                 'required',
                 'array',
-                'min:1'
+                'min:1',
             ];
         }
 
-        if ($this->frequency_type == 'interval_weeks') {
-
+        if (
+            $this->frequency_type ===
+            'interval_weeks'
+        ) {
             $rules['days'] = [
                 'required',
                 'array',
-                'min:1'
+                'min:1',
             ];
         }
 
@@ -104,26 +126,29 @@ class UpdateMedicineRequest extends FormRequest
                 [
                     'interval_days',
                     'interval_weeks',
-                    'interval_months'
-                ]
+                    'interval_months',
+                ],
+                true
             )
         ) {
-
             $rules['interval_value'] = [
                 'required',
                 'integer',
-                'min:1'
+                'min:1',
             ];
         }
 
-        if ($this->frequency_type == 'interval_months') {
-
+        if (
+            $this->frequency_type ===
+            'interval_months'
+        ) {
             $rules['dates'] = [
                 'required',
                 'array',
-                'min:1'
+                'min:1',
             ];
         }
+
         return $rules;
     }
 }

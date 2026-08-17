@@ -18,17 +18,23 @@ class MedicineController extends Controller
 
     public function index(Request $request)
     {
-        $user = $request->attributes->get('user');
+        $user =
+            $request->attributes->get(
+                'user'
+            );
 
-        $medicines = $this->service->getByUser(
-            $user->id
-        );
+        $medicines =
+            $this->service->getByUser(
+                $user->id
+            );
 
         return response()->json([
             'success' => true,
-            'data' => MedicineResource::collection(
+
+            'data' =>
+            MedicineResource::collection(
                 $medicines
-            )
+            ),
         ]);
     }
 
@@ -36,25 +42,32 @@ class MedicineController extends Controller
         Request $request,
         int $medicineId
     ) {
-        $user = $request->attributes->get('user');
+        $user =
+            $request->attributes->get(
+                'user'
+            );
 
-        $medicine = $this->service->findByUser(
-            $medicineId,
-            $user->id
-        );
+        $medicine =
+            $this->service->findByUser(
+                $medicineId,
+                $user->id
+            );
 
         if (!$medicine) {
             return response()->json([
                 'success' => false,
-                'message' => 'Obat tidak ditemukan.'
+                'message' =>
+                'Obat tidak ditemukan.',
             ], 404);
         }
 
         return response()->json([
             'success' => true,
-            'data' => new MedicineDetailResource(
+
+            'data' =>
+            new MedicineDetailResource(
                 $medicine
-            )
+            ),
         ]);
     }
 
@@ -62,19 +75,27 @@ class MedicineController extends Controller
         Request $request,
         StoreMedicineRequest $medicineRequest
     ) {
-        $user = $request->attributes->get('user');
+        $user =
+            $request->attributes->get(
+                'user'
+            );
 
-        $medicine = $this->service->create(
-            $user->id,
-            $medicineRequest->validated()
-        );
+        $medicine =
+            $this->service->create(
+                $user->id,
+                $medicineRequest->validated()
+            );
 
         return response()->json([
             'success' => true,
-            'message' => 'Obat berhasil ditambahkan.',
-            'data' => new MedicineDetailResource(
+
+            'message' =>
+            'Obat berhasil ditambahkan.',
+
+            'data' =>
+            new MedicineDetailResource(
                 $medicine
-            )
+            ),
         ], 201);
     }
 
@@ -83,20 +104,28 @@ class MedicineController extends Controller
         UpdateMedicineRequest $medicineRequest,
         int $medicineId
     ) {
-        $user = $request->attributes->get('user');
+        $user =
+            $request->attributes->get(
+                'user'
+            );
 
-        $medicine = $this->service->updateByUser(
-            $medicineId,
-            $user->id,
-            $medicineRequest->validated()
-        );
+        $medicine =
+            $this->service->updateByUser(
+                $medicineId,
+                $user->id,
+                $medicineRequest->validated()
+            );
 
         return response()->json([
             'success' => true,
-            'message' => 'Obat berhasil diperbarui.',
-            'data' => new MedicineDetailResource(
+
+            'message' =>
+            'Obat berhasil diperbarui.',
+
+            'data' =>
+            new MedicineDetailResource(
                 $medicine
-            )
+            ),
         ]);
     }
 
@@ -104,7 +133,10 @@ class MedicineController extends Controller
         Request $request,
         int $medicineId
     ) {
-        $user = $request->attributes->get('user');
+        $user =
+            $request->attributes->get(
+                'user'
+            );
 
         $this->service->deleteByUser(
             $medicineId,
@@ -113,7 +145,9 @@ class MedicineController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Obat berhasil dihapus.'
+
+            'message' =>
+            'Obat berhasil dihapus.',
         ]);
     }
 }

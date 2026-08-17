@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ScheduleDay extends Model
 {
@@ -10,10 +11,14 @@ class ScheduleDay extends Model
 
     protected $fillable = [
         'schedule_id',
-        'value'
+        'value',
     ];
 
-    public function schedule()
+    protected $casts = [
+        'value' => 'integer',
+    ];
+
+    public function schedule(): BelongsTo
     {
         return $this->belongsTo(
             MedicineSchedule::class,

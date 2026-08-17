@@ -12,9 +12,8 @@ class MedicineRepository
     {
         return Medicine::with([
             'user',
-            'catalog',
             'schedule.days',
-            'schedule.times'
+            'schedule.times',
         ])
             ->oldest()
             ->get();
@@ -23,13 +22,20 @@ class MedicineRepository
     public function getByUser(int $userId)
     {
         return Medicine::with([
-            'catalog',
             'schedule.days',
-            'schedule.times'
+            'schedule.times',
         ])
-            ->where('user_id', $userId)
-            ->orderBy('is_active', 'desc')
-            ->orderBy('start_date')
+            ->where(
+                'user_id',
+                $userId
+            )
+            ->orderBy(
+                'is_active',
+                'desc'
+            )
+            ->orderBy(
+                'start_date'
+            )
             ->get();
     }
 
@@ -37,159 +43,311 @@ class MedicineRepository
     {
         return Medicine::with([
             'user',
-            'catalog',
             'schedule.days',
-            'schedule.times.histories'
+            'schedule.times.histories',
         ])->findOrFail($id);
     }
 
     public function create(array $data)
     {
-        return DB::transaction(function () use ($data) {
+        return DB::transaction(
+            function () use ($data) {
 
-            $medicine = Medicine::create([
-                'user_id' => $data['user_id'],
-                'medicine_catalog_id' => $data['medicine_catalog_id'],
-                'dosage' => $data['dosage'],
-                'dosage_unit' => $data['dosage_unit'],
-                'instruction' => $data['instruction'] ?? null,
-                'start_date' => $data['start_date'],
-                'end_date' => $data['end_date'],
-                'is_active' => true,
-            ]);
+                $medicine = Medicine::create([
+                    'user_id' =>
+                    $data['user_id'],
 
-            $schedule = MedicineSchedule::create([
-                'medicine_id'    => $medicine->id,
-                'frequency_type' => $data['frequency_type'],
-                'times_per_day'  => $data['times_per_day'] ?? null,
-                'interval_value' => $data['interval_value'] ?? null,
-            ]);
+                    'name' =>
+                    $data['name'],
 
-            if (!empty($data['days'])) {
+                    'dosage' =>
+                    $data['dosage'],
 
-                foreach ($data['days'] as $day) {
+                    'dosage_unit' =>
+                    $data['dosage_unit'],
 
-                    $schedule->days()->create([
+                    'instruction' =>
+                    $data['instruction'] ?? null,
 
-                        'value' => $day
+                    'start_date' =>
+                    $data['start_date'],
 
+                    'end_date' =>
+                    $data['end_date'],
+
+                    'is_active' => true,
+                ]);
+
+                $schedule =
+                    MedicineSchedule::create([
+                        'medicine_id' =>
+                        $medicine->id,
+
+                        'frequency_type' =>
+                        $data['frequency_type'],
+
+                        'times_per_day' =>
+                        $data['times_per_day'] ?? null,
+
+                        'interval_value' =>
+                        $data['interval_value'] ?? null,
                     ]);
+
+                /*
+                |--------------------------------------------------------------------------
+                | DAYS
+                |--------------------------------------------------------------------------
+                |
+                | schedule_days.value digunakan untuk:
+                |
+                | certain_days  -> 1-7
+                | interval_weeks -> 1-7
+                |
+                */
+
+                if (
+                    !empty($data['days'])
+                ) {
+                    foreach (
+                        $data['days']
+                        as $day
+                    ) {
+                        $schedule
+                            ->days()
+                            ->create([
+                                'value' => $day,
+                            ]);
+                    }
                 }
-            }
 
-            if (!empty($data['dates'])) {
+                /*
+                |--------------------------------------------------------------------------
+                | DATES
+                |--------------------------------------------------------------------------
+                |
+                | Untuk interval_months:
+                | schedule_days.value digunakan sebagai
+                | tanggal dalam bulan 1-31.
+                |
+                */
 
-                foreach ($data['dates'] as $date) {
-
-                    $schedule->days()->create([
-
-                        'value' => $date
-
-                    ]);
+                if (
+                    $data['frequency_type'] ===
+                    'interval_months'
+                ) {
+                    foreach (
+                        $data['dates'] ?? []
+                        as $date
+                    ) {
+                        $schedule
+                            ->days()
+                            ->create([
+                                'value' => $date,
+                            ]);
+                    }
                 }
-            }
 
-            foreach ($data['times'] ?? [] as $time) {
+                /*
+                |--------------------------------------------------------------------------
+                | TIMES
+                |--------------------------------------------------------------------------
+                */
 
-                $schedule->times()->create([
-                    'reminder_time' => $time
+                foreach (
+                    $data['times'] ?? []
+                    as $time
+                ) {
+                    $schedule
+                        ->times()
+                        ->create([
+                            'reminder_time' =>
+                            $time,
+                        ]);
+                }
+
+                return $medicine->load([
+                    'schedule.days',
+                    'schedule.times',
                 ]);
             }
-
-            return $medicine->load([
-                'schedule.days',
-                'schedule.times'
-            ]);
-        });
+        );
     }
 
     public function update(
         Medicine $medicine,
         array $data
     ) {
-        return DB::transaction(function () use (
-            $medicine,
-            $data
-        ) {
+        return DB::transaction(
+            function () use (
+                $medicine,
+                $data
+            ) {
 
-            $medicine->update([
-                'medicine_catalog_id' => $data['medicine_catalog_id'],
-                'dosage' => $data['dosage'],
-                'dosage_unit' => $data['dosage_unit'],
-                'instruction' => $data['instruction'] ?? null,
-                'start_date' => $data['start_date'],
-                'end_date' => $data['end_date']
-            ]);
+                $medicine->update([
+                    'name' =>
+                    $data['name'],
 
-            $schedule = $medicine->schedule;
+                    'dosage' =>
+                    $data['dosage'],
 
-            $schedule->update([
-                'frequency_type' => $data['frequency_type'],
-                'times_per_day' => $data['times_per_day'],
-                'interval_value' => $data['interval_value'] ?? null
-            ]);
+                    'dosage_unit' =>
+                    $data['dosage_unit'],
 
-            $schedule->days()->delete();
+                    'instruction' =>
+                    $data['instruction'] ?? null,
 
-            $schedule->times()->delete();
+                    'start_date' =>
+                    $data['start_date'],
 
-            if (!empty($data['days'])) {
+                    'end_date' =>
+                    $data['end_date'] ?? null,
+                ]);
 
-                foreach ($data['days'] as $day) {
+                $schedule =
+                    $medicine->schedule;
 
-                    $schedule->days()->create([
+                if (!$schedule) {
+                    $schedule =
+                        MedicineSchedule::create([
+                            'medicine_id' =>
+                            $medicine->id,
 
-                        'value' => $day
+                            'frequency_type' =>
+                            $data['frequency_type'],
 
+                            'times_per_day' =>
+                            $data['times_per_day'] ?? null,
+
+                            'interval_value' =>
+                            $data['interval_value'] ?? null,
+                        ]);
+                } else {
+                    $schedule->update([
+                        'frequency_type' =>
+                        $data['frequency_type'],
+
+                        'times_per_day' =>
+                        $data['times_per_day'] ?? null,
+
+                        'interval_value' =>
+                        $data['interval_value'] ?? null,
                     ]);
                 }
-            }
 
-            if (!empty($data['dates'])) {
+                /*
+                |--------------------------------------------------------------------------
+                | Hapus schedule lama
+                |--------------------------------------------------------------------------
+                */
 
-                foreach ($data['dates'] as $date) {
+                $schedule
+                    ->days()
+                    ->delete();
 
-                    $schedule->days()->create([
+                $schedule
+                    ->times()
+                    ->delete();
 
-                        'value' => $date
+                /*
+                |--------------------------------------------------------------------------
+                | DAYS
+                |--------------------------------------------------------------------------
+                */
 
-                    ]);
+                if (
+                    in_array(
+                        $data['frequency_type'],
+                        [
+                            'certain_days',
+                            'interval_weeks',
+                        ],
+                        true
+                    )
+                ) {
+                    foreach (
+                        $data['days'] ?? []
+                        as $day
+                    ) {
+                        $schedule
+                            ->days()
+                            ->create([
+                                'value' => $day,
+                            ]);
+                    }
                 }
-            }
 
-            foreach ($data['times'] as $time) {
+                /*
+                |--------------------------------------------------------------------------
+                | DATES
+                |--------------------------------------------------------------------------
+                */
 
-                $schedule->times()->create([
+                if (
+                    $data['frequency_type'] ===
+                    'interval_months'
+                ) {
+                    foreach (
+                        $data['dates'] ?? []
+                        as $date
+                    ) {
+                        $schedule
+                            ->days()
+                            ->create([
+                                'value' => $date,
+                            ]);
+                    }
+                }
 
-                    'reminder_time' => $time
+                /*
+                |--------------------------------------------------------------------------
+                | TIMES
+                |--------------------------------------------------------------------------
+                */
 
+                foreach (
+                    $data['times'] ?? []
+                    as $time
+                ) {
+                    $schedule
+                        ->times()
+                        ->create([
+                            'reminder_time' =>
+                            $time,
+                        ]);
+                }
+
+                return $medicine->load([
+                    'schedule.days',
+                    'schedule.times',
                 ]);
             }
-
-            return $medicine->load([
-
-                'catalog',
-
-                'schedule.days',
-
-                'schedule.times'
-
-            ]);
-        });
+        );
     }
 
-    public function delete(Medicine $medicine)
-    {
-        return DB::transaction(function () use ($medicine) {
+    public function delete(
+        Medicine $medicine
+    ) {
+        return DB::transaction(
+            function () use ($medicine) {
 
-            $schedule = $medicine->schedule;
+                $schedule =
+                    $medicine->schedule;
 
-            if ($schedule) {
-                $schedule->days()->delete();
-                $schedule->times()->delete();
-                $schedule->delete();
+                if ($schedule) {
+
+                    $schedule
+                        ->days()
+                        ->delete();
+
+                    $schedule
+                        ->times()
+                        ->delete();
+
+                    $schedule->delete();
+                }
+
+                return $medicine->delete();
             }
-            return $medicine->delete();
-        });
+        );
     }
 }

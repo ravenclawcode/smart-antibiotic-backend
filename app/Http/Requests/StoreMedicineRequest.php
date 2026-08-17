@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -15,34 +16,40 @@ class StoreMedicineRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'medicine_catalog_id' => [
+            'name' => [
                 'required',
-                'exists:medicine_catalogs,id'
+                'string',
+                'max:100',
             ],
+
             'dosage' => [
                 'required',
                 'numeric',
-                'min:1'
+                'min:1',
             ],
+
             'dosage_unit' => [
                 'required',
                 'string',
                 'max:50',
             ],
+
             'instruction' => [
                 'nullable',
-                'string'
+                'string',
             ],
+
             'start_date' => [
                 'required',
                 'date',
-                'after_or_equal:today'
             ],
+
             'end_date' => [
                 'required',
                 'date',
-                'after_or_equal:start_date'
+                'after_or_equal:start_date',
             ],
+
             'frequency_type' => [
                 'required',
                 Rule::in([
@@ -50,128 +57,171 @@ class StoreMedicineRequest extends FormRequest
                     'certain_days',
                     'interval_days',
                     'interval_weeks',
-                    'interval_months'
-                ])
+                    'interval_months',
+                ]),
             ],
+
             'times_per_day' => [
                 'required_if:frequency_type,daily',
                 'nullable',
                 'integer',
-                'min:1'
+                'min:1',
             ],
+
             'interval_value' => [
                 'required_if:frequency_type,interval_days,interval_weeks,interval_months',
                 'nullable',
                 'integer',
-                'min:1'
+                'min:1',
             ],
+
             'days' => [
-                'required_if:frequency_type,certain_days',
                 'nullable',
-                'array'
+                'array',
             ],
+
             'days.*' => [
-
-                Rule::in([
-                    'senin',
-                    'selasa',
-                    'rabu',
-                    'kamis',
-                    'jumat',
-                    'sabtu',
-                    'minggu'
-                ])
-
+                'integer',
+                'between:1,7',
             ],
+
             'dates' => [
                 'nullable',
-                'array'
+                'array',
             ],
+
             'dates.*' => [
                 'integer',
-                'between:1,31'
+                'between:1,31',
             ],
+
             'times' => [
                 'required',
                 'array',
-                'min:1'
+                'min:1',
             ],
+
             'times.*' => [
-                'date_format:H:i'
-            ]
+                'date_format:H:i',
+            ],
         ];
     }
 
-    public function withValidator($validator)
-    {
-        $validator->after(function ($validator) {
-            $frequency = $this->frequency_type;
-            $times = $this->times ?? [];
-            $timesPerDay = $this->times_per_day;
+    public function withValidator(
+        Validator $validator
+    ): void {
+        $validator->after(
+            function ($validator) {
 
-            /*
-         |---------------------------------
-         | DAILY
-         |---------------------------------
-         */
-            if ($frequency === 'daily') {
-                if (!$timesPerDay) {
-                    $validator->errors()->add(
-                        'times_per_day',
-                        'Times per day wajib diisi.'
-                    );
+                $frequency = $this->frequency_type;
+
+                $times = $this->times ?? [];
+
+                $timesPerDay =
+                    $this->times_per_day;
+
+                /*
+                |--------------------------------------------------------------------------
+                | DAILY
+                |--------------------------------------------------------------------------
+                */
+
+                if ($frequency === 'daily') {
+
+                    if (!$timesPerDay) {
+                        $validator->errors()->add(
+                            'times_per_day',
+                            'Times per day wajib diisi.'
+                        );
+                    }
+
+                    if (
+                        $timesPerDay &&
+                        count($times) !==
+                        (int) $timesPerDay
+                    ) {
+                        $validator->errors()->add(
+                            'times',
+                            'Jumlah reminder harus sama dengan times_per_day.'
+                        );
+                    }
                 }
 
-                if (count($times) != $timesPerDay) {
-                    $validator->errors()->add(
-                        'times',
-                        'Jumlah reminder harus sama dengan times_per_day.'
-                    );
+                /*
+                |--------------------------------------------------------------------------
+                | CERTAIN DAYS
+                |--------------------------------------------------------------------------
+                */
+
+                if ($frequency === 'certain_days') {
+
+                    if (empty($this->days)) {
+                        $validator->errors()->add(
+                            'days',
+                            'Minimal pilih satu hari.'
+                        );
+                    }
                 }
-            }
 
-            /*
-         |---------------------------------
-         | CERTAIN DAYS
-         |---------------------------------
-         */
-            if ($frequency === 'certain_days') {
-                if (empty($this->days)) {
-                    $validator->errors()->add(
-                        'days',
-                        'Minimal pilih satu hari.'
-                    );
+                /*
+                |--------------------------------------------------------------------------
+                | INTERVAL WEEKS
+                |--------------------------------------------------------------------------
+                */
+
+                if ($frequency === 'interval_weeks') {
+
+                    if (empty($this->days)) {
+                        $validator->errors()->add(
+                            'days',
+                            'Minimal pilih satu hari.'
+                        );
+                    }
                 }
-            }
 
-            /*
-         |---------------------------------
-         | INTERVAL
-         |---------------------------------
-         */
-            if ($this->frequency_type == 'interval_months') {
-                $rules['dates'] = [
-                    'required',
-                    'array',
-                    'min:1'
-                ];
-            }
+                /*
+                |--------------------------------------------------------------------------
+                | INTERVAL
+                |--------------------------------------------------------------------------
+                */
 
-            if (
-                in_array($frequency, [
-                    'interval_days',
-                    'interval_weeks',
+                if (
+                    in_array(
+                        $frequency,
+                        [
+                            'interval_days',
+                            'interval_weeks',
+                            'interval_months',
+                        ],
+                        true
+                    )
+                ) {
+                    if (!$this->interval_value) {
+                        $validator->errors()->add(
+                            'interval_value',
+                            'Interval wajib diisi.'
+                        );
+                    }
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | INTERVAL MONTHS
+                |--------------------------------------------------------------------------
+                */
+
+                if (
+                    $frequency ===
                     'interval_months'
-                ])
-                &&
-                !$this->interval_value
-            ) {
-
-                $validator->errors()->add(
-                    'interval_value',
-                    'Interval wajib diisi.'
-                );
+                ) {
+                    if (empty($this->dates)) {
+                        $validator->errors()->add(
+                            'dates',
+                            'Minimal pilih satu tanggal.'
+                        );
+                    }
+                }
             }
-        });
+        );
     }
 }
