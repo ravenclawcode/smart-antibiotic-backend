@@ -45,7 +45,7 @@ class StoreMedicineRequest extends FormRequest
             ],
 
             'end_date' => [
-                'required',
+                'nullable',
                 'date',
                 'after_or_equal:start_date',
             ],

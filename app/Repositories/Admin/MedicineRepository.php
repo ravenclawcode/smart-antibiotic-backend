@@ -73,7 +73,7 @@ class MedicineRepository
                     $data['start_date'],
 
                     'end_date' =>
-                    $data['end_date'],
+                    $data['end_date'] ?? null,
 
                     'is_active' => true,
                 ]);
@@ -87,7 +87,9 @@ class MedicineRepository
                         $data['frequency_type'],
 
                         'times_per_day' =>
-                        $data['times_per_day'] ?? null,
+                        $data['times_per_day']
+                            ?? count($data['times'] ?? [])
+                            ?: 1,
 
                         'interval_value' =>
                         $data['interval_value'] ?? null,
@@ -216,7 +218,9 @@ class MedicineRepository
                             $data['frequency_type'],
 
                             'times_per_day' =>
-                            $data['times_per_day'] ?? null,
+                            $data['times_per_day']
+                                ?? count($data['times'] ?? [])
+                                ?: 1,
 
                             'interval_value' =>
                             $data['interval_value'] ?? null,
@@ -227,7 +231,9 @@ class MedicineRepository
                         $data['frequency_type'],
 
                         'times_per_day' =>
-                        $data['times_per_day'] ?? null,
+                        $data['times_per_day']
+                            ?? count($data['times'] ?? [])
+                            ?: 1,
 
                         'interval_value' =>
                         $data['interval_value'] ?? null,
