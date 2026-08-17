@@ -134,7 +134,6 @@
                 <tr>
 
                     <td colspan="6" class="text-center py-4">
-                        class="text-center">
 
                         Belum ada data.
 

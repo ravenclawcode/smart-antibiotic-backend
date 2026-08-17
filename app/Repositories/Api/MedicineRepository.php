@@ -22,7 +22,7 @@ class MedicineRepository
                 'user_id',
                 $userId
             )
-            ->latest()
+            ->oldest()
             ->get();
     }
 

@@ -10,7 +10,7 @@ class AntibioticCategoryRepository
     public function getAll()
     {
         return AntibioticCategory::withCount('antibiotics')
-            ->latest()
+            ->oldest()
             ->get();
     }
 
@@ -29,7 +29,7 @@ class AntibioticCategoryRepository
             'antibiotic_category_id',
             $categoryId
         )
-            ->latest()
+            ->oldest()
             ->get();
     }
 
