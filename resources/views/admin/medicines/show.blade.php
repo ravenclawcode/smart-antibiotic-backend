@@ -14,7 +14,7 @@
         <table class="table">
             <tr>
                 <th width="180">Nama</th>
-                <td>{{ $medicine->catalog?->name ?? '-' }}</td>
+                <td>{{ $medicine->name ?? '-' }}</td>
             </tr>
             <tr>
                 <th>Dosis</th>
@@ -31,9 +31,9 @@
             <tr>
                 <th>Periode</th>
                 <td>
-                    {{ $medicine->start_date?->format('d M Y') ?? '-' }}
+                    {{ $medicine->start_date?->format('d M Y') ?? '' }}
                     -
-                    {{ $medicine->end_date?->format('d M Y') ?? '-' }}
+                    {{ $medicine->end_date?->format('d M Y') ?? '' }}
                 </td>
             </tr>
         </table>

@@ -58,7 +58,7 @@
 
                     <td>{{ $medicine->user->name }}</td>
 
-                    <td>{{ $medicine->catalog->name }}</td>
+                    <td>{{ $medicine->name }}</td>
 
                     <td>{{ $medicine->dosage }}</td>
 
