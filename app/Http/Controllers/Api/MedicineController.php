@@ -147,7 +147,29 @@ class MedicineController extends Controller
             'success' => true,
 
             'message' =>
-            'Obat berhasil dihapus.',
+            'Obat berhasil dihapus. Riwayat penggunaan tetap tersimpan.',
+        ]);
+    }
+
+    public function destroyPermanent(
+        Request $request,
+        int $medicineId
+    ) {
+        $user =
+            $request->attributes->get(
+                'user'
+            );
+
+        $this->service->deletePermanentByUser(
+            $medicineId,
+            $user->id
+        );
+
+        return response()->json([
+            'success' => true,
+
+            'message' =>
+            'Obat dan seluruh riwayatnya berhasil dihapus.',
         ]);
     }
 }

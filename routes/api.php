@@ -134,6 +134,10 @@ Route::middleware('resolve.user')->group(function () {
             [MedicineController::class, 'update']
         );
         Route::delete(
+            '/{medicine}/permanent',
+            [MedicineController::class, 'destroyPermanent']
+        );
+        Route::delete(
             '/{medicine}',
             [MedicineController::class, 'destroy']
         );

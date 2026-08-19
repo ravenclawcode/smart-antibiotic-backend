@@ -82,4 +82,25 @@ class MedicineService
             $medicine
         );
     }
+
+    public function deletePermanentByUser(
+        int $medicineId,
+        int $userId
+    ) {
+        $medicine =
+            $this->repository->findByUser(
+                $medicineId,
+                $userId
+            );
+
+        if (!$medicine) {
+            throw new ModelNotFoundException(
+                'Obat tidak ditemukan.'
+            );
+        }
+
+        return $this->repository->deletePermanent(
+            $medicine
+        );
+    }
 }

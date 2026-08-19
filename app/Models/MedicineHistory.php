@@ -8,11 +8,14 @@ class MedicineHistory extends Model
 {
     protected $fillable = [
         'schedule_time_id',
+        'medicine_name',
+        'dosage',
+        'dosage_unit',
         'scheduled_date',
         'status',
         'taken_at',
         'notes',
-        'rescheduled_time'
+        'rescheduled_time',
     ];
 
     protected $casts = [

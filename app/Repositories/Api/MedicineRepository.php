@@ -22,6 +22,10 @@ class MedicineRepository
                 'user_id',
                 $userId
             )
+            ->where(
+                'is_active',
+                true
+            )
             ->oldest()
             ->get();
     }
@@ -70,6 +74,14 @@ class MedicineRepository
         Medicine $medicine
     ) {
         return $this->medicineRepository->delete(
+            $medicine
+        );
+    }
+
+    public function deletePermanent(
+        Medicine $medicine
+    ) {
+        return $this->medicineRepository->deletePermanent(
             $medicine
         );
     }

@@ -5,6 +5,7 @@ namespace App\Repositories\Admin;
 use App\Models\Medicine;
 use App\Models\MedicineSchedule;
 use Illuminate\Support\Facades\DB;
+use App\Models\MedicineHistory;
 
 class MedicineRepository
 {
@@ -336,21 +337,81 @@ class MedicineRepository
         return DB::transaction(
             function () use ($medicine) {
 
+                $medicine->update([
+                    'is_active' => false,
+                ]);
+
+                return $medicine->fresh([
+                    'schedule.days',
+                    'schedule.times',
+                ]);
+            }
+        );
+    }
+
+    public function deletePermanent(
+        Medicine $medicine
+    ) {
+        return DB::transaction(
+            function () use ($medicine) {
+
                 $schedule =
                     $medicine->schedule;
 
                 if ($schedule) {
 
+                    /*
+                |--------------------------------------------------------------------------
+                | Hapus history terlebih dahulu
+                |--------------------------------------------------------------------------
+                */
+
+                    $scheduleTimeIds =
+                        $schedule
+                        ->times()
+                        ->pluck('id');
+
+                    if ($scheduleTimeIds->isNotEmpty()) {
+                        MedicineHistory::whereIn(
+                            'schedule_time_id',
+                            $scheduleTimeIds
+                        )->delete();
+                    }
+
+                    /*
+                |--------------------------------------------------------------------------
+                | Hapus schedule days
+                |--------------------------------------------------------------------------
+                */
+
                     $schedule
                         ->days()
                         ->delete();
+
+                    /*
+                |--------------------------------------------------------------------------
+                | Hapus schedule times
+                |--------------------------------------------------------------------------
+                */
 
                     $schedule
                         ->times()
                         ->delete();
 
+                    /*
+                |--------------------------------------------------------------------------
+                | Hapus schedule
+                |--------------------------------------------------------------------------
+                */
+
                     $schedule->delete();
                 }
+
+                /*
+            |--------------------------------------------------------------------------
+            | Hapus medicine
+            |--------------------------------------------------------------------------
+            */
 
                 return $medicine->delete();
             }
