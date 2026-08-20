@@ -31,6 +31,11 @@ class MedicineHistoryService
         return $this->repository->missed($data);
     }
 
+    public function cancel(array $data)
+    {
+        return $this->repository->cancel($data);
+    }
+
     public function history(Request $request)
     {
         return $this->repository->history($request);

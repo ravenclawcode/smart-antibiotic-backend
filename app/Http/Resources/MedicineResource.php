@@ -65,14 +65,10 @@ class MedicineResource extends JsonResource
             $this->instruction,
 
             'start_date' =>
-            $this->start_date?->format(
-                'Y-m-d'
-            ),
+            $this->start_date?->format('Y-m-d'),
 
             'end_date' =>
-            $this->end_date?->format(
-                'Y-m-d'
-            ),
+            $this->end_date?->format('Y-m-d'),
 
             'is_active' =>
             $this->is_active,
@@ -95,14 +91,28 @@ class MedicineResource extends JsonResource
             'dates' =>
             $dates,
 
-            'times' =>
+            'times' => $this->schedule?->times
+                ->map(function ($time) {
+                    return [
+                        'id' => $time->id,
+                        'reminder_time' => $time->reminder_time,
+                    ];
+                })
+                ->values(),
+
+            'schedule_times' =>
             $this->schedule?->times
                 ? $this->schedule->times
-                ->pluck('reminder_time')
-                ->map(
-                    fn($time) =>
-                    substr($time, 0, 5)
-                )
+                ->map(function ($time) {
+                    return [
+                        'id' => $time->id,
+                        'time' => substr(
+                            $time->reminder_time,
+                            0,
+                            5
+                        ),
+                    ];
+                })
                 ->values()
                 ->toArray()
                 : [],

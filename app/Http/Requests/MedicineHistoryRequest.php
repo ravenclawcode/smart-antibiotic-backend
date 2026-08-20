@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class MedicineHistoryRequest extends FormRequest
 {
@@ -19,29 +18,34 @@ class MedicineHistoryRequest extends FormRequest
         $rules = [
             'schedule_time_id' => [
                 'required',
-                'exists:schedule_times,id'
+                'exists:schedule_times,id',
             ],
 
             'scheduled_date' => [
                 'required',
-                'date'
+                'date',
             ],
         ];
 
-        if ($status === 'skipped') {
+        if (in_array($status, ['taken', 'skipped'], true)) {
+            $rules['action_time'] = [
+                'required',
+                'in:now,scheduled',
+            ];
+        }
 
+        if ($status === 'skipped') {
             $rules['notes'] = [
                 'required',
                 'string',
-                'max:255'
+                'max:255',
             ];
         }
 
         if ($status === 'reschedule') {
-
             $rules['rescheduled_time'] = [
                 'required',
-                'date'
+                'date',
             ];
         }
 

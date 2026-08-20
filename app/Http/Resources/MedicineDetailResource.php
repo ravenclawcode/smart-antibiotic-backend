@@ -100,16 +100,15 @@ class MedicineDetailResource extends JsonResource
                 'times' =>
                 $this->schedule?->times
                     ? $this->schedule->times
-                    ->pluck(
-                        'reminder_time'
-                    )
                     ->map(
-                        fn($time) =>
-                        substr(
-                            $time,
-                            0,
-                            5
-                        )
+                        fn($time) => [
+                            'id' => $time->id,
+                            'time' => substr(
+                                $time->reminder_time,
+                                0,
+                                5
+                            ),
+                        ]
                     )
                     ->values()
                     : [],

@@ -22,6 +22,17 @@ class MedicineHistoryRepository
             ->medicine
             ->user;
 
+        $timezone = $user->timezone();
+
+        if ($data['action_time'] === 'now') {
+            $takenAt = now($timezone);
+        } else {
+            $takenAt = Carbon::parse(
+                $data['scheduled_date'] . ' ' . $scheduleTime->reminder_time,
+                $timezone
+            );
+        }
+
         return MedicineHistory::updateOrCreate(
             [
                 'schedule_time_id' => $scheduleTime->id,
@@ -29,7 +40,8 @@ class MedicineHistoryRepository
             ],
             [
                 'status' => 'taken',
-                'taken_at' => now($user->timezone()),
+                'taken_at' => $takenAt,
+                'skipped_at' => null,
                 'notes' => null,
                 'rescheduled_time' => null,
             ]
@@ -38,14 +50,35 @@ class MedicineHistoryRepository
 
     public function skipped(array $data)
     {
+        $scheduleTime = ScheduleTime::with(
+            'schedule.medicine.user.preference'
+        )->findOrFail($data['schedule_time_id']);
+
+        $user = $scheduleTime
+            ->schedule
+            ->medicine
+            ->user;
+
+        $timezone = $user->timezone();
+
+        if ($data['action_time'] === 'now') {
+            $skippedAt = now($timezone);
+        } else {
+            $skippedAt = Carbon::parse(
+                $data['scheduled_date'] . ' ' . $scheduleTime->reminder_time,
+                $timezone
+            );
+        }
+
         return MedicineHistory::updateOrCreate(
             [
-                'schedule_time_id' => $data['schedule_time_id'],
+                'schedule_time_id' => $scheduleTime->id,
                 'scheduled_date' => $data['scheduled_date'],
             ],
             [
                 'status' => 'skipped',
                 'taken_at' => null,
+                'skipped_at' => $skippedAt,
                 'notes' => $data['notes'],
                 'rescheduled_time' => null,
             ]
@@ -62,6 +95,7 @@ class MedicineHistoryRepository
             [
                 'status' => 'rescheduled',
                 'taken_at' => null,
+                'skipped_at' => null,
                 'notes' => null,
                 'rescheduled_time' => $data['rescheduled_time'],
             ]
@@ -78,26 +112,50 @@ class MedicineHistoryRepository
             [
                 'status' => 'missed',
                 'taken_at' => null,
+                'skipped_at' => null,
                 'notes' => null,
                 'rescheduled_time' => null,
             ]
         );
     }
 
+    public function cancel(array $data)
+    {
+        $history = MedicineHistory::where(
+            'schedule_time_id',
+            $data['schedule_time_id']
+        )
+            ->where(
+                'scheduled_date',
+                $data['scheduled_date']
+            )
+            ->first();
+
+        if ($history) {
+            $history->delete();
+        }
+
+        return true;
+    }
+
     public function history($request)
     {
         $format = $request->format ?? 'daily';
 
-        $startDate = Carbon::today();
-        $endDate = Carbon::today();
+        $date = $request->date
+            ? Carbon::parse($request->date)
+            : Carbon::today();
+
+        $startDate = $date->copy();
+        $endDate = $date->copy();
 
         switch ($format) {
             case 'weekly':
-                $startDate = Carbon::today()->subDays(6);
+                $startDate = $date->copy()->subDays(6);
                 break;
 
             case 'monthly':
-                $startDate = Carbon::today()->subDays(29);
+                $startDate = $date->copy()->subDays(29);
                 break;
         }
 
@@ -186,10 +244,11 @@ class MedicineHistoryRepository
 
                                     'taken_at' => $history->taken_at,
 
+                                    'skipped_at' => $history->skipped_at,
+
                                     'notes' => $history->notes,
 
-                                    'rescheduled_time' =>
-                                    $history->rescheduled_time,
+                                    'rescheduled_time' => $history->rescheduled_time,
                                 ];
                             })
                             ->values(),

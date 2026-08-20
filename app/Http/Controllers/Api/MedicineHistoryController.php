@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MedicineHistoryRequest;
-use App\Services\Api\MedicineHistoryService;
 use App\Http\Requests\MedicineHistoryFilterRequest;
+use App\Services\Api\MedicineHistoryService;
 use Illuminate\Http\Request;
 
 class MedicineHistoryController extends Controller
@@ -62,6 +62,18 @@ class MedicineHistoryController extends Controller
         ]);
     }
 
+    public function cancel(
+        MedicineHistoryRequest $request
+    ) {
+        return response()->json([
+            'success' => true,
+            'message' => 'Status obat berhasil dibatalkan.',
+            'data' => $this->service->cancel(
+                $request->validated()
+            )
+        ]);
+    }
+
     public function index(Request $request)
     {
         return response()->json([
@@ -76,7 +88,7 @@ class MedicineHistoryController extends Controller
         return response()->json([
             'success' => true,
             'data' => $this->service->filterMedicines(
-                $request->validated()['user_id']
+                $request->user_id
             )
         ]);
     }

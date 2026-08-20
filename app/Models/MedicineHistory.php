@@ -14,6 +14,7 @@ class MedicineHistory extends Model
         'scheduled_date',
         'status',
         'taken_at',
+        'skipped_at',
         'notes',
         'rescheduled_time',
     ];
@@ -21,7 +22,8 @@ class MedicineHistory extends Model
     protected $casts = [
         'scheduled_date' => 'date',
         'taken_at' => 'datetime',
-        'rescheduled_time' => 'datetime'
+        'skipped_at' => 'datetime',
+        'rescheduled_time' => 'datetime',
     ];
 
     public function scheduleTime()

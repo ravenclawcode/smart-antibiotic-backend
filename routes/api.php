@@ -174,6 +174,10 @@ Route::middleware('resolve.user')->group(function () {
             '/missed',
             [MedicineHistoryController::class, 'missed']
         );
+        Route::post(
+            '/cancel',
+            [MedicineHistoryController::class, 'cancel']
+        );
     });
 
     // Quiz Result
