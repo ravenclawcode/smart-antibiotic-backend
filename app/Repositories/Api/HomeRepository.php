@@ -7,7 +7,6 @@ use App\Models\Quiz;
 use App\Models\User;
 use App\Models\Medicine;
 use App\Models\MedicineScheduleException;
-use Illuminate\Support\Facades\Log;
 
 class HomeRepository
 {
@@ -53,25 +52,11 @@ class HomeRepository
 
             ->get();
 
-        Log::info('HOME MEDICINES FOUND', [
-            'user_id' => $userId,
-            'date' => $date->format('Y-m-d'),
-            'count' => $medicines->count(),
-            'medicine_ids' => $medicines
-                ->pluck('id')
-                ->values()
-                ->toArray(),
-        ]);
-
         $todaySchedules = collect();
 
         foreach ($medicines as $medicine) {
 
             if (! $medicine->schedule) {
-                Log::warning('HOME MEDICINE WITHOUT SCHEDULE', [
-                    'medicine_id' => $medicine->id,
-                ]);
-
                 continue;
             }
 
@@ -84,7 +69,7 @@ class HomeRepository
 
             foreach ($medicine->schedule->times as $time) {
 
-                $isDeleted = MedicineScheduleException::where(
+                $exception = MedicineScheduleException::where(
                     'medicine_id',
                     $medicine->id
                 )
@@ -96,23 +81,31 @@ class HomeRepository
                         'scheduled_date',
                         $date
                     )
-                    ->where(
-                        'action',
-                        'deleted'
-                    )
-                    ->exists();
+                    ->latest('id')
+                    ->first();
 
-                if ($isDeleted) {
+                if ($exception?->action === 'deleted') {
                     continue;
                 }
 
                 $history = $time->histories->first();
 
-                $dosage = $history?->dosage
-                    ?? $medicine->dosage;
+                $dosage = $exception?->action === 'updated'
+                    ? $exception->dosage
+                    : ($history?->dosage ?? $medicine->dosage);
 
-                $dosageUnit = $history?->dosage_unit
-                    ?? $medicine->dosage_unit;
+                $dosageUnit = $exception?->action === 'updated'
+                    ? $exception->dosage_unit
+                    : ($history?->dosage_unit ?? $medicine->dosage_unit);
+
+                $instruction = $exception?->action === 'updated'
+                    ? $exception->instruction
+                    : $medicine->instruction;
+
+                $reminderTime = $exception?->action === 'updated'
+                    && $exception->reminder_time
+                    ? $exception->reminder_time
+                    : $time->reminder_time;
 
                 $todaySchedules->push([
 
@@ -138,8 +131,7 @@ class HomeRepository
                         'dosage_unit' =>
                         $dosageUnit,
 
-                        'instruction' =>
-                        $medicine->instruction,
+                        'instruction' => $instruction,
 
                         'start_date' =>
                         $medicine->start_date?->format('Y-m-d'),
@@ -190,9 +182,8 @@ class HomeRepository
                             ->toArray(),
                     ],
 
-                    'reminder_time' =>
-                    substr(
-                        (string) $time->reminder_time,
+                    'reminder_time' => substr(
+                        (string) $reminderTime,
                         0,
                         5
                     ),
@@ -227,12 +218,6 @@ class HomeRepository
                 ]);
             }
         }
-
-        Log::info('HOME TODAY SCHEDULES', [
-            'user_id' => $userId,
-            'date' => $date->format('Y-m-d'),
-            'count' => $todaySchedules->count(),
-        ]);
 
         return [
             'user' => [

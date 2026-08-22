@@ -20,7 +20,6 @@ class MedicineScheduleException extends Model
 
     protected $casts = [
         'scheduled_date' => 'date',
-        'dosage' => 'decimal:2',
         'reminder_time' => 'string',
     ];
 
