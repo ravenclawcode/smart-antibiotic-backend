@@ -92,13 +92,20 @@ class MedicineResource extends JsonResource
             $dates,
 
             'times' => $this->schedule?->times
+                ? $this->schedule->times
                 ->map(function ($time) {
                     return [
                         'id' => $time->id,
-                        'reminder_time' => $time->reminder_time,
+                        'reminder_time' => substr(
+                            $time->reminder_time,
+                            0,
+                            5
+                        ),
                     ];
                 })
-                ->values(),
+                ->values()
+                ->toArray()
+                : [],
 
             'schedule_times' =>
             $this->schedule?->times

@@ -6,6 +6,7 @@ use App\Models\Medicine;
 use App\Models\MedicineSchedule;
 use Illuminate\Support\Facades\DB;
 use App\Models\MedicineHistory;
+use App\Models\MedicineScheduleException;
 
 class MedicineRepository
 {
@@ -79,40 +80,34 @@ class MedicineRepository
                     'is_active' => true,
                 ]);
 
-                $schedule =
-                    MedicineSchedule::create([
-                        'medicine_id' =>
-                        $medicine->id,
+                $schedule = MedicineSchedule::create([
+                    'medicine_id' =>
+                    $medicine->id,
 
-                        'frequency_type' =>
-                        $data['frequency_type'],
+                    'frequency_type' =>
+                    $data['frequency_type'],
 
-                        'times_per_day' =>
-                        $data['times_per_day']
-                            ?? count($data['times'] ?? [])
-                            ?: 1,
+                    'times_per_day' =>
+                    $data['times_per_day']
+                        ?? count($data['times'] ?? [])
+                        ?: 1,
 
-                        'interval_value' =>
-                        $data['interval_value'] ?? null,
-                    ]);
-
-                /*
-                |--------------------------------------------------------------------------
-                | DAYS
-                |--------------------------------------------------------------------------
-                |
-                | schedule_days.value digunakan untuk:
-                |
-                | certain_days  -> 1-7
-                | interval_weeks -> 1-7
-                |
-                */
+                    'interval_value' =>
+                    $data['interval_value'] ?? null,
+                ]);
 
                 if (
-                    !empty($data['days'])
+                    in_array(
+                        $data['frequency_type'],
+                        [
+                            'certain_days',
+                            'interval_weeks',
+                        ],
+                        true
+                    )
                 ) {
                     foreach (
-                        $data['days']
+                        $data['days'] ?? []
                         as $day
                     ) {
                         $schedule
@@ -122,17 +117,6 @@ class MedicineRepository
                             ]);
                     }
                 }
-
-                /*
-                |--------------------------------------------------------------------------
-                | DATES
-                |--------------------------------------------------------------------------
-                |
-                | Untuk interval_months:
-                | schedule_days.value digunakan sebagai
-                | tanggal dalam bulan 1-31.
-                |
-                */
 
                 if (
                     $data['frequency_type'] ===
@@ -149,12 +133,6 @@ class MedicineRepository
                             ]);
                     }
                 }
-
-                /*
-                |--------------------------------------------------------------------------
-                | TIMES
-                |--------------------------------------------------------------------------
-                */
 
                 foreach (
                     $data['times'] ?? []
@@ -206,27 +184,27 @@ class MedicineRepository
                     $data['end_date'] ?? null,
                 ]);
 
-                $schedule =
-                    $medicine->schedule;
+                $schedule = $medicine->schedule;
 
                 if (!$schedule) {
-                    $schedule =
-                        MedicineSchedule::create([
-                            'medicine_id' =>
-                            $medicine->id,
 
-                            'frequency_type' =>
-                            $data['frequency_type'],
+                    $schedule = MedicineSchedule::create([
+                        'medicine_id' =>
+                        $medicine->id,
 
-                            'times_per_day' =>
-                            $data['times_per_day']
-                                ?? count($data['times'] ?? [])
-                                ?: 1,
+                        'frequency_type' =>
+                        $data['frequency_type'],
 
-                            'interval_value' =>
-                            $data['interval_value'] ?? null,
-                        ]);
+                        'times_per_day' =>
+                        $data['times_per_day']
+                            ?? count($data['times'] ?? [])
+                            ?: 1,
+
+                        'interval_value' =>
+                        $data['interval_value'] ?? null,
+                    ]);
                 } else {
+
                     $schedule->update([
                         'frequency_type' =>
                         $data['frequency_type'],
@@ -241,25 +219,9 @@ class MedicineRepository
                     ]);
                 }
 
-                /*
-                |--------------------------------------------------------------------------
-                | Hapus schedule lama
-                |--------------------------------------------------------------------------
-                */
-
                 $schedule
                     ->days()
                     ->delete();
-
-                $schedule
-                    ->times()
-                    ->delete();
-
-                /*
-                |--------------------------------------------------------------------------
-                | DAYS
-                |--------------------------------------------------------------------------
-                */
 
                 if (
                     in_array(
@@ -283,12 +245,6 @@ class MedicineRepository
                     }
                 }
 
-                /*
-                |--------------------------------------------------------------------------
-                | DATES
-                |--------------------------------------------------------------------------
-                */
-
                 if (
                     $data['frequency_type'] ===
                     'interval_months'
@@ -305,25 +261,96 @@ class MedicineRepository
                     }
                 }
 
-                /*
-                |--------------------------------------------------------------------------
-                | TIMES
-                |--------------------------------------------------------------------------
-                */
+                $existingTimes = $schedule
+                    ->times()
+                    ->orderBy('id')
+                    ->get();
 
-                foreach (
+                $newTimes = array_values(
                     $data['times'] ?? []
-                    as $time
+                );
+
+                $existingCount = $existingTimes->count();
+                $newCount = count($newTimes);
+
+                $commonCount = min(
+                    $existingCount,
+                    $newCount
+                );
+
+                for (
+                    $i = 0;
+                    $i < $commonCount;
+                    $i++
                 ) {
-                    $schedule
-                        ->times()
-                        ->create([
-                            'reminder_time' =>
-                            $time,
-                        ]);
+                    $existingTimes[$i]->update([
+                        'reminder_time' =>
+                        $newTimes[$i],
+                    ]);
                 }
 
-                return $medicine->load([
+                if ($newCount > $existingCount) {
+
+                    for (
+                        $i = $existingCount;
+                        $i < $newCount;
+                        $i++
+                    ) {
+                        $schedule
+                            ->times()
+                            ->create([
+                                'reminder_time' =>
+                                $newTimes[$i],
+                            ]);
+                    }
+                }
+
+                if ($existingCount > $newCount) {
+
+                    for (
+                        $i = $newCount;
+                        $i < $existingCount;
+                        $i++
+                    ) {
+                        $scheduleTime =
+                            $existingTimes[$i];
+
+                        $hasHistory =
+                            MedicineHistory::where(
+                                'schedule_time_id',
+                                $scheduleTime->id
+                            )->exists();
+
+                        if (!$hasHistory) {
+
+                            MedicineScheduleException::where(
+                                'medicine_id',
+                                $medicine->id
+                            )
+                                ->where(
+                                    'schedule_time_id',
+                                    $scheduleTime->id
+                                )
+                                ->delete();
+
+                            $scheduleTime->delete();
+                        } else {
+
+                            MedicineScheduleException::where(
+                                'medicine_id',
+                                $medicine->id
+                            )
+                                ->where(
+                                    'schedule_time_id',
+                                    $scheduleTime->id
+                                )
+                                ->whereNull('scheduled_date')
+                                ->delete();
+                        }
+                    }
+                }
+
+                return $medicine->fresh([
                     'schedule.days',
                     'schedule.times',
                 ]);
@@ -355,63 +382,45 @@ class MedicineRepository
         return DB::transaction(
             function () use ($medicine) {
 
-                $schedule =
-                    $medicine->schedule;
+                $schedule = $medicine->schedule;
 
                 if ($schedule) {
-
-                    /*
-                |--------------------------------------------------------------------------
-                | Hapus history terlebih dahulu
-                |--------------------------------------------------------------------------
-                */
 
                     $scheduleTimeIds =
                         $schedule
                         ->times()
                         ->pluck('id');
 
-                    if ($scheduleTimeIds->isNotEmpty()) {
+                    if (
+                        $scheduleTimeIds->isNotEmpty()
+                    ) {
                         MedicineHistory::whereIn(
                             'schedule_time_id',
                             $scheduleTimeIds
                         )->delete();
                     }
 
-                    /*
-                |--------------------------------------------------------------------------
-                | Hapus schedule days
-                |--------------------------------------------------------------------------
-                */
+                    MedicineScheduleException::where(
+                        'medicine_id',
+                        $medicine->id
+                    )->delete();
 
                     $schedule
                         ->days()
                         ->delete();
 
-                    /*
-                |--------------------------------------------------------------------------
-                | Hapus schedule times
-                |--------------------------------------------------------------------------
-                */
-
                     $schedule
                         ->times()
                         ->delete();
 
-                    /*
-                |--------------------------------------------------------------------------
-                | Hapus schedule
-                |--------------------------------------------------------------------------
-                */
-
                     $schedule->delete();
-                }
+                } else {
 
-                /*
-            |--------------------------------------------------------------------------
-            | Hapus medicine
-            |--------------------------------------------------------------------------
-            */
+                    MedicineScheduleException::where(
+                        'medicine_id',
+                        $medicine->id
+                    )->delete();
+                }
 
                 return $medicine->delete();
             }

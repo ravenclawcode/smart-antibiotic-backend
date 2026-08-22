@@ -5,27 +5,32 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class MedicineHistory extends Model
+class MedicineScheduleException extends Model
 {
     protected $fillable = [
+        'medicine_id',
         'schedule_time_id',
-        'medicine_name',
+        'scheduled_date',
+        'action',
         'dosage',
         'dosage_unit',
-        'scheduled_date',
-        'status',
-        'taken_at',
-        'skipped_at',
-        'notes',
-        'rescheduled_time',
+        'instruction',
+        'reminder_time',
     ];
 
     protected $casts = [
         'scheduled_date' => 'date',
-        'taken_at' => 'datetime',
-        'skipped_at' => 'datetime',
-        'rescheduled_time' => 'datetime',
+        'dosage' => 'decimal:2',
+        'reminder_time' => 'string',
     ];
+
+    public function medicine(): BelongsTo
+    {
+        return $this->belongsTo(
+            Medicine::class,
+            'medicine_id'
+        );
+    }
 
     public function scheduleTime(): BelongsTo
     {

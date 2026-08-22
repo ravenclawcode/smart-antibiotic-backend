@@ -11,9 +11,8 @@ class MedicineService
         protected MedicineRepository $repository
     ) {}
 
-    public function getByUser(
-        int $userId
-    ) {
+    public function getByUser(int $userId)
+    {
         return $this->repository->getByUser(
             $userId
         );
@@ -33,6 +32,8 @@ class MedicineService
         int $userId,
         array $data
     ) {
+        $data['user_id'] = $userId;
+
         return $this->repository->create(
             $userId,
             $data
@@ -44,11 +45,10 @@ class MedicineService
         int $userId,
         array $data
     ) {
-        $medicine =
-            $this->repository->findByUser(
-                $medicineId,
-                $userId
-            );
+        $medicine = $this->repository->findByUser(
+            $medicineId,
+            $userId
+        );
 
         if (!$medicine) {
             throw new ModelNotFoundException(
@@ -66,11 +66,10 @@ class MedicineService
         int $medicineId,
         int $userId
     ) {
-        $medicine =
-            $this->repository->findByUser(
-                $medicineId,
-                $userId
-            );
+        $medicine = $this->repository->findByUser(
+            $medicineId,
+            $userId
+        );
 
         if (!$medicine) {
             throw new ModelNotFoundException(
@@ -87,11 +86,10 @@ class MedicineService
         int $medicineId,
         int $userId
     ) {
-        $medicine =
-            $this->repository->findByUser(
-                $medicineId,
-                $userId
-            );
+        $medicine = $this->repository->findByUser(
+            $medicineId,
+            $userId
+        );
 
         if (!$medicine) {
             throw new ModelNotFoundException(
@@ -101,6 +99,52 @@ class MedicineService
 
         return $this->repository->deletePermanent(
             $medicine
+        );
+    }
+
+    public function updateDoseByUser(
+        int $medicineId,
+        int $userId,
+        array $data
+    ) {
+        $medicine = $this->repository->findByUser(
+            $medicineId,
+            $userId
+        );
+
+        if (!$medicine) {
+            throw new ModelNotFoundException(
+                'Obat tidak ditemukan.'
+            );
+        }
+
+        return $this->repository->updateDose(
+            $medicine,
+            $data
+        );
+    }
+
+    public function deleteSingleDose(
+        int $medicineId,
+        int $userId,
+        int $scheduleTimeId,
+        string $scheduledDate
+    ) {
+        $medicine = $this->repository->findByUser(
+            $medicineId,
+            $userId
+        );
+
+        if (!$medicine) {
+            throw new ModelNotFoundException(
+                'Obat tidak ditemukan.'
+            );
+        }
+
+        return $this->repository->deleteSingleDose(
+            $medicine,
+            $scheduleTimeId,
+            $scheduledDate
         );
     }
 }

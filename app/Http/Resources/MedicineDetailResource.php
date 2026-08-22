@@ -111,6 +111,7 @@ class MedicineDetailResource extends JsonResource
                         ]
                     )
                     ->values()
+                    ->toArray()
                     : [],
             ],
         ];

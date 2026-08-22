@@ -30,4 +30,12 @@ class ScheduleTime extends Model
             'schedule_time_id'
         );
     }
+
+    public function exceptions(): HasMany
+    {
+        return $this->hasMany(
+            MedicineScheduleException::class,
+            'schedule_time_id'
+        );
+    }
 }

@@ -13,12 +13,6 @@ use App\Http\Controllers\Api\QuizController;
 use App\Http\Controllers\Api\FeedbackController;
 use App\Http\Controllers\Api\ChatbotController;
 
-/*
-|--------------------------------------------------------------------------
-| Public API
-|--------------------------------------------------------------------------
-*/
-
 // Onboarding
 Route::post(
     '/onboarding',
@@ -74,12 +68,6 @@ Route::prefix('quizzes')->group(function () {
     );
 });
 
-/*
-|--------------------------------------------------------------------------
-| User API
-|--------------------------------------------------------------------------
-*/
-
 Route::middleware('resolve.user')->group(function () {
 
     // Home
@@ -114,7 +102,6 @@ Route::middleware('resolve.user')->group(function () {
         );
     });
 
-    // Medicines
     Route::prefix('medicines')->group(function () {
 
         Route::get(
@@ -134,12 +121,20 @@ Route::middleware('resolve.user')->group(function () {
             [MedicineController::class, 'update']
         );
         Route::delete(
+            '/{medicine}',
+            [MedicineController::class, 'destroy']
+        );
+        Route::delete(
             '/{medicine}/permanent',
             [MedicineController::class, 'destroyPermanent']
         );
+        Route::put(
+            '/{medicine}/dose',
+            [MedicineController::class, 'updateDose']
+        );
         Route::delete(
-            '/{medicine}',
-            [MedicineController::class, 'destroy']
+            '/{medicine}/single-dose',
+            [MedicineController::class, 'destroySingleDose']
         );
     });
 
