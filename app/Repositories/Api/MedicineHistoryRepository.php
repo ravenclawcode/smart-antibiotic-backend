@@ -232,6 +232,8 @@ class MedicineHistoryRepository
 
                                     'dosage' => $medicine->dosage,
 
+                                    'dosage_unit' => $medicine->dosage_unit,
+
                                     'time' => substr(
                                         $history
                                             ->scheduleTime
