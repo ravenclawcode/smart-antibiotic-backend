@@ -30,9 +30,14 @@ class FeedbackService
         Feedback $feedback,
         array $data
     ) {
+        $data['admin_reply'] = ucfirst(
+            trim($data['admin_reply'])
+        );
+
         $data['admin_id'] = Auth::id();
         $data['status'] = 'replied';
         $data['replied_at'] = Carbon::now();
+
         return $this->repository->update(
             $feedback,
             $data
