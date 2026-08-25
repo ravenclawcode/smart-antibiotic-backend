@@ -142,20 +142,28 @@ class MedicineHistoryRepository
     {
         $format = $request->format ?? 'daily';
 
-        $date = $request->date
-            ? Carbon::parse($request->date)
-            : Carbon::today();
+        $user = User::with('preference')->findOrFail(
+            $request->user_id
+        );
 
-        $startDate = $date->copy();
-        $endDate = $date->copy();
+        $timezone = $user->timezone();
+
+        $date = $request->filled('date')
+            ? Carbon::parse($request->date, $timezone)
+            : Carbon::now($timezone)->startOfDay();
+
+        $startDate = $date->copy()->startOfDay();
+        $endDate = $date->copy()->endOfDay();
 
         switch ($format) {
             case 'weekly':
-                $startDate = $date->copy()->subDays(6);
+                $startDate = $date->copy()->subDays(6)->startOfDay();
+                $endDate = $date->copy()->endOfDay();
                 break;
 
             case 'monthly':
-                $startDate = $date->copy()->subDays(29);
+                $startDate = $date->copy()->subDays(29)->startOfDay();
+                $endDate = $date->copy()->endOfDay();
                 break;
         }
 
@@ -163,8 +171,8 @@ class MedicineHistoryRepository
             'scheduleTime.schedule.medicine',
         ])
             ->whereBetween('scheduled_date', [
-                $startDate,
-                $endDate,
+                $startDate->toDateString(),
+                $endDate->toDateString(),
             ])
             ->whereHas(
                 'scheduleTime.schedule.medicine',
@@ -250,7 +258,8 @@ class MedicineHistoryRepository
 
                                     'notes' => $history->notes,
 
-                                    'rescheduled_time' => $history->rescheduled_time,
+                                    'rescheduled_time' =>
+                                    $history->rescheduled_time,
                                 ];
                             })
                             ->values(),
