@@ -9,10 +9,5 @@ class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
 
-    public function run(): void
-    {
-        $this->call([
-            AdminSeeder::class,
-        ]);
-    }
+    public function run(): void {}
 }
