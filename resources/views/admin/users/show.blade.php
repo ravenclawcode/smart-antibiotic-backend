@@ -148,22 +148,6 @@
 
                     </tr>
 
-                    <tr>
-
-                        <th>
-
-                            Pre Reminder
-
-                        </th>
-
-                        <td>
-
-                            {{ $user->preference->pre_reminder_minutes }} Menit
-
-                        </td>
-
-                    </tr>
-
                 </table>
 
                 @else
