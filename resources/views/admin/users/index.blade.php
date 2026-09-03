@@ -60,7 +60,7 @@
 
                     <td>
 
-                        {{ $users->firstItem() + $loop->index }}
+                        {{ $loop->iteration + ($users->currentPage() - 1) * $users->perPage() }}
 
                     </td>
 
@@ -121,9 +121,9 @@
 
         </table>
 
-        <div class="mt-3">
+        <div class="d-flex justify-content-center mt-3">
 
-            {{ $users->links() }}
+            {{ $users->onEachSide(1)->links('pagination::bootstrap-4') }}
 
         </div>
 

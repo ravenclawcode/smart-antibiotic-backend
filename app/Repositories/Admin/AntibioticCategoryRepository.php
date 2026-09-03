@@ -8,7 +8,7 @@ class AntibioticCategoryRepository
 {
     public function getAll()
     {
-        return AntibioticCategory::oldest()->get();
+        return AntibioticCategory::oldest()->paginate(10);
     }
 
     public function find(int|string $id)

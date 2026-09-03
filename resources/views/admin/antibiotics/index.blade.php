@@ -67,7 +67,7 @@
 
                 <tr>
 
-                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $loop->iteration + ($antibiotics->currentPage() - 1) * $antibiotics->perPage() }}</td>
 
                     <td>
 
@@ -133,7 +133,7 @@
 
                 <tr>
 
-                    <td colspan="6" class="text-center py-4">
+                    <td colspan="5" class="text-center py-4">
 
                         Belum ada data.
 
@@ -146,6 +146,12 @@
             </tbody>
 
         </table>
+
+        <div class="d-flex justify-content-center mt-3">
+
+            {{ $antibiotics->onEachSide(1)->links('pagination::bootstrap-4') }}
+
+        </div>
 
     </div>
 

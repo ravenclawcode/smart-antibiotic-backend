@@ -18,7 +18,7 @@ class MedicineRepository
             'schedule.times',
         ])
             ->oldest()
-            ->get();
+            ->paginate(10);
     }
 
     public function getByUser(int $userId)

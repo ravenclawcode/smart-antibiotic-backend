@@ -69,7 +69,7 @@
 
                         <td>
 
-                            {{ $loop->iteration }}
+                            {{ $loop->iteration + ($quizzes->currentPage() - 1) * $quizzes->perPage() }}
 
                         </td>
 
@@ -128,7 +128,7 @@
 
                     <tr>
 
-                        <td colspan="6" class="text-center py-4">
+                        <td colspan="4" class="text-center py-4">
 
                             Belum ada data.
 
@@ -141,6 +141,12 @@
                 </tbody>
 
             </table>
+
+        </div>
+
+        <div class="d-flex justify-content-center mt-3">
+
+            {{ $quizzes->onEachSide(1)->links('pagination::bootstrap-4') }}
 
         </div>
 

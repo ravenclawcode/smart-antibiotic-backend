@@ -67,7 +67,7 @@
 
                 <tr>
 
-                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $loop->iteration + ($categories->currentPage() - 1) * $categories->perPage() }}</td>
 
                     <td>
 
@@ -134,7 +134,7 @@
 
                 <tr>
 
-                    <td colspan="6"
+                    <td colspan="5"
                         class="text-center py-4">
 
                         Belum ada kategori.
@@ -148,6 +148,10 @@
             </tbody>
 
         </table>
+
+        <div class="d-flex justify-content-center mt-3">
+            {{ $categories->onEachSide(1)->links('pagination::bootstrap-4') }}
+        </div>
 
     </div>
 

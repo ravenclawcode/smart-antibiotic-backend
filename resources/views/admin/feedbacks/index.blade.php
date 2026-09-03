@@ -64,7 +64,7 @@
 
                         <td>
 
-                            {{ $loop->iteration }}
+                            {{ $loop->iteration + ($feedbacks->currentPage() - 1) * $feedbacks->perPage() }}
 
                         </td>
 
@@ -141,9 +141,9 @@
 
         </div>
 
-        <div class="mt-2">
+        <div class="d-flex justify-content-center mt-3">
 
-            {{ $feedbacks->links() }}
+            {{ $feedbacks->onEachSide(1)->links('pagination::bootstrap-4') }}
 
         </div>
 

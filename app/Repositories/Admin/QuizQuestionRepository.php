@@ -13,7 +13,7 @@ class QuizQuestionRepository
         return $quiz
             ->questions()
             ->oldest()
-            ->get();
+            ->paginate(10);
     }
 
     public function create(array $data)

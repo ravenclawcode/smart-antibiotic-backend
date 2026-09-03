@@ -135,3 +135,37 @@ body {
     border-color: #508CAD;
     box-shadow: 0 0 0 .2rem rgba(80, 140, 173, .2);
 }
+
+/* ==========================
+   CUSTOM PAGINATION
+========================== */
+
+.pagination+div,
+.pagination-info,
+small.text-muted.has-text-grey,
+div:has(> .pagination)>p.text-sm {
+    display: none !important;
+}
+
+.pagination .page-link {
+    color: #508CAD;
+    border-color: #dee2e6;
+    box-shadow: none !important;
+}
+
+.pagination .page-link:hover {
+    color: #42779D;
+    background-color: #E0EFF7;
+    border-color: #dee2e6;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #508CAD;
+    border-color: #508CAD;
+    color: white;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #6c757d;
+    background-color: #fff;
+}
